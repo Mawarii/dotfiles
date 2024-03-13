@@ -1,0 +1,10 @@
+import = ["/home/dmarkovic/.config/alacritty/custom_theme.toml"]
+
+[font]
+size = 12
+
+[font.normal]
+family = "Hack Nerd Font"
+
+[window]
+opacity=0.95

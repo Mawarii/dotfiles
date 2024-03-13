@@ -1,0 +1,30 @@
+# Auth with polkit-gnome:
+exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+
+# Desktop notifications
+exec dunst --config $HOME/.config/dunst/dunstrc
+
+# Network Applet
+exec nm-applet --indicator
+
+# autotiling
+exec autotiling-rs
+
+# Thunderbird
+exec thunderbird
+
+# Microsoft Teams
+exec chromium
+
+# Spotify
+exec spotify-launcher
+
+# Bitwarden
+exec bitwarden-desktop
+
+# RocketChat
+exec rocketchat-desktop
+
+  
+# Welcome App
+exec dex -a -s /etc/xdg/autostart/:~/.config/autostart/  
