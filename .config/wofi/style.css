@@ -8,11 +8,12 @@ Arc-Dark Color Scheme
 @define-color base3  #4b5160;
 
 *{
-    font-family: UbuntuMono;
+    font-family: FontAwesome;
 }
 
 window {
     border: 1px solid @highlight;
+    border-width: 5px;
 }
 
 #input {

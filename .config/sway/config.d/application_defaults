@@ -5,6 +5,8 @@ for_window [app_id="(?i)firefox"] focus
 assign [class="(?i)firefox"] 2
 for_window [class="(?i)firefox"] focus
 
+assign [class="(?i)vscodium"] 3
+
 assign [class="(?i)chromium"] 4
 
 assign [class="(?i)thunderbird"] 5

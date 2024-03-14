@@ -201,7 +201,7 @@ bindsym $mod+r mode "resize"
 #
 # Screenshots
 #
-    bindsym print exec flameshot gui
+   bindsym print exec grim -g "$(slurp -d)" - | wl-copy
 #
 # Notification
 #
@@ -210,3 +210,7 @@ bindsym $mod+r mode "resize"
 # Lockscreen
 #
     bindsym $mod+Escape exec swaylock -ti ~/images/background_blured.png
+#
+# Exit Sway
+#
+    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'

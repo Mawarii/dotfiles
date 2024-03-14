@@ -1,6 +1,6 @@
 * {
-    font-family: "UbuntuMono Nerd Font";
-    font-size: 16px;
+    font-family: "FontAwesome";
+    font-size: 14px;
 }
 
 
@@ -18,7 +18,7 @@ window#waybar {
 
 .modules-right {
     background-color: #2E3440;
-    padding: 0px 5px 0px 0px;
+    margin-right: 0;
 }
 
 
@@ -72,17 +72,18 @@ window#waybar.empty {
 }
 
 
+#temperature {
+    padding: 0px 0px;
+}
+
 #network,
-#temperature,
-#backlight,
 #pulseudio,
 #battery {
-    padding: 0px 15px 0px 15px;
+    padding: 0px 15px;
 }
 
 
 #clock {
-    margin: 0px 15px 0px 15px;
 }
 
 
@@ -102,7 +103,7 @@ window#waybar.empty {
 }
 
 .custom-spotify {
-    padding: 0 10px;
-    margin: 0 4px;
+/*    padding: 0 10px;
+    margin: 0 4px;*/
     color: #1DB954;
 }
