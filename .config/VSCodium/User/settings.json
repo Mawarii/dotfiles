@@ -1,0 +1,85 @@
+{
+    "workbench.startupEditor": "none",
+    "editor.fontSize": 15,
+    "editor.wordWrap": "on",
+    "git.confirmSync": false,
+    "editor.fontFamily": "'Hack Nerd Font', 'monospace', monospace",
+    "vs-kubernetes": {
+        "vs-kubernetes.crd-code-completion": "disabled",
+        "vs-kubernetes.knownKubeconfigs": [
+            "/home/dmarkovic/.kube/joscha",
+            "/home/dmarkovic/.kube/metasonic"
+        ],
+        "vs-kubernetes.kubeconfig": {
+            "nodeType": "folder.resource",
+            "nodeCategory": "kubernetes-explorer-node",
+            "id": "namespace",
+            "displayName": "Namespaces",
+            "contextValue": "vsKubernetes.kind",
+            "kind": {
+                "displayName": "Namespace",
+                "pluralDisplayName": "Namespaces",
+                "manifestKind": "Namespace",
+                "abbreviation": "namespace",
+                "apiName": "namespaces"
+            }
+        }
+    },
+    "redhat.telemetry.enabled": false,
+    "update.showReleaseNotes": false,
+    "git.ignoreRebaseWarning": true,
+    "go.toolsManagement.autoUpdate": true,
+    "cSpell.userWords": [
+        "matomo"
+    ],
+    "better-comments.tags": [
+
+        
+        {
+            "tag": "!",
+            "color": "#BB2D00",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
+        },
+        {
+            "tag": "?",
+            "color": "#5DC3B9",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
+        },
+        {
+            "tag": "//",
+            "color": "#474747",
+            "strikethrough": true,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
+        },
+        {
+            "tag": "todo",
+            "color": "#FF8C00",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
+        },
+        {
+            "tag": "*",
+            "color": "#98C379",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
+        }
+    ],
+    "python.languageServer": "Pylance",
+}
