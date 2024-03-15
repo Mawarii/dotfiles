@@ -71,11 +71,11 @@ window#waybar.empty {
     background-color: #323232;
 }
 
-
 #temperature {
     padding: 0px 0px;
 }
 
+#custom-dunst, 
 #network,
 #pulseudio,
 #battery {

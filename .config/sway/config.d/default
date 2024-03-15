@@ -203,9 +203,9 @@ bindsym $mod+r mode "resize"
 #
    bindsym print exec grim -g "$(slurp -d)" - | wl-copy
 #
-# Notification
+# Mute Notification
 #
-#    bindsym $mod+m exec python $HOME/.config/sway/i3blocks/scripts/dunst --toggle
+    bindsym $mod+m exec dunstctl set-paused toggle
 #
 # Lockscreen
 #

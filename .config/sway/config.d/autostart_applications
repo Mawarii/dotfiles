@@ -14,7 +14,7 @@ exec autotiling-rs
 exec thunderbird
 
 # Microsoft Teams
-exec chromium
+exec google-chrome-stable
 
 # Spotify
 exec spotify-launcher

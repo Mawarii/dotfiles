@@ -14,8 +14,15 @@
         "pulseaudio",
         "battery",
         "clock",
+        "custom/dunst",
         "tray"
     ],
+    "custom/dunst": {
+        "exec": "~/.config/waybar/scripts/dunst.py",
+        "interval": 1,
+        "format": "{}",
+        "on-click": "dunstctl set-paused toggle"
+    },
     "custom/spotify": {
         "exec": "~/.config/waybar/scripts/spotify.py --player spotify",
         "format": "  {}",
