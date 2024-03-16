@@ -1,4 +1,4 @@
-import = ["/home/dmarkovic/.config/alacritty/custom_theme.toml"]
+import = ["$HOME/.config/alacritty/custom_theme.toml"]
 
 [font]
 size = 12
