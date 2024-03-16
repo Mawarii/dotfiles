@@ -4,27 +4,6 @@
     "editor.wordWrap": "on",
     "git.confirmSync": false,
     "editor.fontFamily": "'Hack Nerd Font', 'monospace', monospace",
-    "vs-kubernetes": {
-        "vs-kubernetes.crd-code-completion": "disabled",
-        "vs-kubernetes.knownKubeconfigs": [
-            "/home/dmarkovic/.kube/joscha",
-            "/home/dmarkovic/.kube/metasonic"
-        ],
-        "vs-kubernetes.kubeconfig": {
-            "nodeType": "folder.resource",
-            "nodeCategory": "kubernetes-explorer-node",
-            "id": "namespace",
-            "displayName": "Namespaces",
-            "contextValue": "vsKubernetes.kind",
-            "kind": {
-                "displayName": "Namespace",
-                "pluralDisplayName": "Namespaces",
-                "manifestKind": "Namespace",
-                "abbreviation": "namespace",
-                "apiName": "namespaces"
-            }
-        }
-    },
     "redhat.telemetry.enabled": false,
     "update.showReleaseNotes": false,
     "git.ignoreRebaseWarning": true,
@@ -33,8 +12,6 @@
         "matomo"
     ],
     "better-comments.tags": [
-
-        
         {
             "tag": "!",
             "color": "#BB2D00",
