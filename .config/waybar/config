@@ -98,14 +98,15 @@
     },
     "pulseaudio": {
         "format": "{icon}  {volume}%",
-        "format-bluetooth": "  {volume}%",
-        "format-muted": "婢  Mute",
+        "format-bluetooth": "{icon}  {volume}%",
+        "format-muted": " Mute",
         "interval": 60,
         "format-icons": {
             "default": [
                 ""
             ]
         },
-        "on-click": "blueman-manager"
+        "on-click": "pavucontrol",
+        "on-click-right": "pactl set-sink-mute 0 toggle"
     }
 }
