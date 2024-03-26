@@ -27,7 +27,7 @@
         "exec": "~/.config/waybar/scripts/spotify.py --player spotify",
         "format": "  {}",
         "return-type": "json" ,
-        "on-click": "playerctl play-pause"
+        "on-click-right": "playerctl play-pause"
     },
     "sway/workspaces": {
         "disable-scroll": true,
