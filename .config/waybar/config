@@ -88,7 +88,8 @@
     "network": {
         "interface": "wlan0",
         "format-wifi": "  ({signalStrength}%)",
-        "format-disconnected": "  Disconnected",
+        "format-disconnected": "  Disconnected",
+        "tooltip-format": "{essid}",
         "interval": 60
     },
     "temperature": {
