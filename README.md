@@ -9,3 +9,4 @@
 - wofi
 - vscodium-bin
 - full-dracula-theme-git
+- gvfs (includes trash management for thunar)
