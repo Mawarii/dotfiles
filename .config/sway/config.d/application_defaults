@@ -14,7 +14,9 @@ assign [class="(?i)thunderbird"] 5
 for_window [class="(?i)spotify"] move to workspace 10
 
 assign [class="(?i)rocket.chat"] 7
-for_window [class="(?i)rocket.chat"] focus
+
+assign [class="(?i)discord"] 8
+assign [class="(?i)schildichat"] 8
 
 # set floating (nontiling)for apps needing it:
 for_window [class="Yad" instance="yad"] floating enable
