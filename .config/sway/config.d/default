@@ -202,6 +202,7 @@ bindsym $mod+r mode "resize"
 # Screenshots
 #
    bindsym print exec grim -g "$(slurp -d)" - | wl-copy
+   bindsym $mod+Shift+p exec grim -g "$(slurp)" - | swappy -f -
 #
 # Mute Notification
 #

@@ -1,0 +1,6 @@
+[Default]
+save_dir=$HOME/images/screenshots
+line_size=5
+text_size=20
+paint_mode=blur
+early_exit=true
