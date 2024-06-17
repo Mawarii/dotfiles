@@ -22,11 +22,11 @@ exec spotify-launcher
 # Bitwarden
 exec bitwarden-desktop
 
-# Discord
-exec discord
-
 # RocketChat
 exec rocketchat-desktop
+
+# Discord
+exec discord
 
 # Schildichat
 exec schildichat-desktop
