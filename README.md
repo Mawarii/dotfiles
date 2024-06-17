@@ -3,6 +3,7 @@
 ## Packages (Arch only)
 
 - sway
+- swappy
 - waybar
 - dunst
 - alacritty
@@ -10,3 +11,5 @@
 - vscodium-bin
 - full-dracula-theme-git
 - gvfs (includes trash management for thunar)
+- ttf-hack-nerd
+- autotiling-rs
