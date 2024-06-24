@@ -9,6 +9,7 @@
         "custom/spotify"
     ],
     "modules-right": [
+	"disk",
         "temperature",
         "network",
         "pulseaudio",
@@ -109,5 +110,8 @@
         },
         "on-click": "pavucontrol",
         "on-click-right": "pactl set-sink-mute 0 toggle"
-    }
+    },
+    "disk": {
+        "format": "{free}",
+    },
 }
