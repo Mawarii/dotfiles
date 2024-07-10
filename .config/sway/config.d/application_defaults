@@ -31,6 +31,7 @@ for_window [class="Bluetooth-sendto" instance="bluetooth-sendto"] floating enabl
 for_window [class="Lxappearance"] floating enable, resize set width 60 ppt height 70 ppt
 for_window [instance="(?i)bitwarden"] floating enable, resize set 1300 900, move scratchpad
 for_window [app_id="pulseUI"] floating enable
+for_window [app_id="(?i)mate-calculator"] floating enable
 
 # set floating for window roles
 for_window [window_role="pop-up"] floating enable
