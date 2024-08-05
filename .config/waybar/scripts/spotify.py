@@ -11,6 +11,7 @@ import gi
 import json
 import os
 from typing import List
+from html import escape
 
 logger = logging.getLogger(__name__)
 
@@ -111,8 +112,8 @@ class PlayerManager:
     def on_metadata_changed(self, player, metadata, _=None):
         logger.debug(f"Metadata changed for player {player.props.player_name}")
         player_name = player.props.player_name
-        artist = player.get_artist()
-        title = player.get_title()
+        artist = escape(player.get_artist())
+        title = escape(player.get_title())
 
         track_info = ""
         if player_name == "spotify" and "mpris:trackid" in metadata.keys() and ":ad:" in player.props.metadata["mpris:trackid"]:
