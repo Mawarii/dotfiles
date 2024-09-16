@@ -71,20 +71,14 @@ window#waybar.empty {
     background-color: #323232;
 }
 
-#temperature {
-    padding: 0px 0px;
-}
-
+#temperature,
 #custom-dunst, 
 #disk,
 #network,
-#pulseudio,
+#pulseaudio,
+#clock,
 #battery {
-    padding: 0px 15px;
-}
-
-
-#clock {
+    padding: 0px 9px;
 }
 
 
@@ -104,7 +98,5 @@ window#waybar.empty {
 }
 
 .custom-spotify {
-/*    padding: 0 10px;
-    margin: 0 4px;*/
     color: #1DB954;
 }

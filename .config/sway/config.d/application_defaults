@@ -16,7 +16,10 @@ for_window [class="(?i)spotify"] move to workspace 10
 assign [class="(?i)rocket.chat"] 7
 
 assign [class="(?i)discord"] 8
+for_window [class="(?i)discord"] move left
+
 assign [class="(?i)schildichat"] 8
+for_window [class="(?i)schildichat"] move right
 
 # set floating (nontiling)for apps needing it:
 for_window [class="Yad" instance="yad"] floating enable
