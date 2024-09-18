@@ -31,6 +31,10 @@ window#waybar {
 
 #workspaces {}
 
+#workspaces button:hover {
+    color: #ffffff
+}
+
 
 #workspaces button {
     padding: 0px 11px 0px 11px;
