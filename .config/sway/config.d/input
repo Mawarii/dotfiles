@@ -10,10 +10,6 @@ input type:touchpad {
     natural_scroll enabled
 }
 
-input type:pointer {
-    scroll_factor 2.0
-}
-
 # Read `man 5 sway-input` for more information about this section.
 #
 input type:keyboard xkb_layout "de"
