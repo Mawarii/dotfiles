@@ -54,6 +54,7 @@ for_window [app_id="firefox" title="Firefox — Sharing Indicator"] kill
 for_window [app_id="firefox" title="Removing Cookies and Site Data"] floating enable, resize set width 15 ppt height 16 ppt
 for_window [app_id="firefox" title="Extension: \(Bitwarden Password Manager\) \- Bitwarden \— Mozilla Firefox"] floating enable
 for_window [app_id="thunderbird" title="Save Message"] floating enable, resize set 400 120
+for_window [app_id="thunderbird" title="Link Mismatch Detected"] floating enable, resize set 700 160
 
 # Inhibit idle
 for_window [app_id="firefox"] inhibit_idle fullscreen
