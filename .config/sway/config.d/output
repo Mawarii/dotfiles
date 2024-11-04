@@ -8,6 +8,10 @@
 #
 # You can also bind workspaces 1,2,3 to specific outputs
 #
+output eDP-1 pos 0,90
+output HDMI-A-1 pos 1440,0
+output "Ancor Communications Inc ASUS VS247 J7LMTF067976" pos 3360,0
+
 workspace  4 output eDP-1
 
 workspace  1 output HDMI-A-1
