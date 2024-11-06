@@ -14,6 +14,7 @@ assign [app_id="(?i)thunderbird"] 5
 for_window [class="(?i)spotify"] move to workspace 10
 
 assign [class="(?i)rocket.chat"] 7
+assign [class="(?i)vivaldi-stable"] 7
 
 assign [class="(?i)discord"] 8
 for_window [class="(?i)discord"] move left

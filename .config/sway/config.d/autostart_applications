@@ -24,6 +24,7 @@ exec bitwarden-desktop
 
 # RocketChat
 exec rocketchat-desktop
+exec vivaldi-stable
 
 # Discord
 exec discord
