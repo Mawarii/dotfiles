@@ -22,8 +22,7 @@ exec spotify-launcher
 # Bitwarden
 exec bitwarden-desktop
 
-# RocketChat
-exec rocketchat-desktop
+# Chat
 exec vivaldi-stable
 
 # Discord
