@@ -26,7 +26,7 @@ exec bitwarden-desktop
 exec vivaldi-stable
 
 # Discord
-exec discord
+exec vesktop
 
 # Schildichat
 exec schildichat-desktop
