@@ -56,6 +56,7 @@ for_window [app_id="firefox" title="Removing Cookies and Site Data"] floating en
 for_window [app_id="firefox" title="Extension: \(Bitwarden Password Manager\) \- Bitwarden \— Mozilla Firefox"] floating enable
 for_window [app_id="thunderbird" title="Save Message"] floating enable, resize set 400 120
 for_window [app_id="thunderbird" title="Link Mismatch Detected"] floating enable, resize set 700 160
+for_window [class="(?i)VirtualBoxVM" title="Close Virtual Machine"] floating enable, resize set 274 163
 
 # Inhibit idle
 for_window [app_id="firefox"] inhibit_idle fullscreen
