@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdfreactor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pdfreactor
+  template:
+    metadata:
+      labels:
+        app: pdfreactor
+    spec:
+      containers:
+        - name: pdfreactor
+          image: realobjects/pdfreactor:12.2.1
+          ports:
+            - containerPort: 9423
+          env:
+            - name: PDFREACTOR_LICENSE
+              valueFrom:
+                secretKeyRef:
+                  name: pdfreactor-license
+                  key: license-key
+          resources:
+            limits:
+              memory: "2Gi"
+              cpu: "1"
+            requests:
+              memory: "1Gi"
+              cpu: "500m"

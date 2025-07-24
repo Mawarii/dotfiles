@@ -1,0 +1,5 @@
+---
+- name: Apply kubeadm upgrade
+  ansible.builtin.command:
+    cmd: kubectl uncordon {{ inventory_hostname }}
+  changed_when: true

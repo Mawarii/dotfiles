@@ -1,0 +1,14 @@
+auth:
+  rootPassword: "TjHmlLcpgZIAzmjkuP6QoTgZrOyx2Zss8nr6nbPcUAuoBmfyFrsD2MrthvlYOP99"
+  database: nextcloud
+  username: "nextcloud"
+  password: "IaPt0gSX66ogY4CqcK9OedZqt5N4oCn7"
+
+primary:
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    limits:
+      cpu: 750m
+      memory: 1024Mi

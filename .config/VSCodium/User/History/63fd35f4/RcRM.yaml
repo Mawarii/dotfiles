@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: efacluster-mna-dashboard
+  namespace: argocd
+spec:
+  clusterResourceWhitelist:
+    - group: ""
+      kind: "Namespace"
+  #    - group: "*"
+  #      kind: "*"
+  destinations:
+    - name: in-cluster
+      namespace: "mna-dashboard"
+      server: "*"
+    - name: in-cluster
+      namespace: "mna-dashboard-backend"
+      server: "*"
+    - name: in-cluster
+      namespace: "mna-dashboard-api"
+      server: "*"
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  sourceNamespaces:
+    - mna-dashboard-*
+  sourceRepos:
+    - "*"

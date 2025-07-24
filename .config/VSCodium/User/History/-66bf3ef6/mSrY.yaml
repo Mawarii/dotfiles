@@ -1,0 +1,3 @@
+---
+- ansible.builtin.include_tasks: "./generate-passwords.yaml"
+- ansible.builtin.include_tasks: "./deploy-forms-flow.yaml"

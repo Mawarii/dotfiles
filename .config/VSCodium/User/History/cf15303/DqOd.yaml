@@ -1,0 +1,14 @@
+formio:
+  email: admin@example.com
+  password: changeme
+  jwt_secret: shouldbeagoodsecret
+  database:
+    username: admin
+    password: changeme
+    database: formio
+
+bpm:
+  database:
+    username: admin
+    password: changeme
+    database: formsflow-bpm

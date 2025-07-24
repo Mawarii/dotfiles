@@ -1,0 +1,4 @@
+auth:
+  existingSecret: "minio-auth"
+  rootUserSecretKey: "root-user"
+  rootPasswordSecretKey: "root-password"

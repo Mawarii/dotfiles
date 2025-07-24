@@ -1,0 +1,31 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: velero
+  namespace: velero
+spec:
+  interval: 5m
+  url: https://vmware-tanzu.github.io/helm-charts
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: velero
+spec:
+  releaseName: velero
+  targetNamespace: velero
+  install:
+    createNamespace: true
+  interval: 5m
+  chart:
+    spec:
+      chart: velero
+      version: "8.7.2"
+      sourceRef:
+        kind: HelmRepository
+        name: velero
+        namespace: velero
+  valuesFrom:
+    - kind: ConfigMap
+      name: velero-values

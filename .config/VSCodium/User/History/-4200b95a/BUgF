@@ -1,0 +1,16 @@
+KEYCLOAK_URL=https://keycloak.formsflow.verein360.de
+KEYCLOAK_URL_REALM=forms-flow-ai
+KEYCLOAK_WEB_CLIENT_ID=forms-flow-web
+
+DATA_ANALYSIS_DB_USER=analysis
+DATA_ANALYSIS_DB_PASSWORD=44Vm4A6tcOBEr5ViDGTb8tzFu9Qb8t3M
+DATA_ANALYSIS_DB_NAME=dataanalysis
+DATA_ANALYSIS_DB_URL=postgresql://analysis:44Vm4A6tcOBEr5ViDGTb8tzFu9Qb8t3M@forms-flow-data-analysis-db:5432/dataanalysis
+DATA_ANALYSIS_API_BASE_URL=https://data-analysis.formsflow.verein360.de
+MODEL_ID=Seethal/sentiment_analysis_generic_dataset
+DATABASE_SUPPORT=DISABLED
+
+# Testing
+# TEST_REVIEWER_USERID=
+# TEST_REVIEWER_PASSWORD=
+# DATABASE_URL_TEST=

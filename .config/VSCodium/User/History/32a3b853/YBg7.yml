@@ -1,0 +1,13 @@
+stages:
+  - build
+
+build:
+  stage: build
+  image:
+    name: harbor.dev.publicplan.cloud/docker_proxy/postgres:16-bullseye
+  script:
+    - apt update
+    - apt install neofetch -y
+    - neofetch
+  only:
+    - main

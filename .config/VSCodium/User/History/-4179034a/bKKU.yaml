@@ -1,0 +1,4 @@
+auth:
+  existingSecret: ""
+
+initdbScriptsConfigMap: "mariadb-init"

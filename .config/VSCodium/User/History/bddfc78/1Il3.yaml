@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: devcluster-empfangsclient
+  namespace: argocd
+spec:
+  destination:
+    namespace: empfangsclient
+    name: publicplan-dev
+  project: devcluster-projects-empfangsclient
+  sources:
+    - targetRevision: HEAD
+      repoURL: git@gitlab.publicplan.cloud:themenwelt-kommunales/infrastructure/nextcloud-vo_federation-dist.git
+      path: kubernetes/envs/dev
+    - chart: mariadb-operator
+      helm:
+        valueFiles:
+          - $values/applications/mariadb-operator/values.yaml
+      repoURL: https://mariadb-operator.github.io/mariadb-operator
+      targetRevision: 0.23.1
+    - ref: values
+      repoURL: git@gitlab.publicplan.cloud:team-kops/infra-internal/pp-dev-cluster.git
+      targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

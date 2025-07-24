@@ -1,0 +1,31 @@
+---
+- name: Ensure forms-flow {{ item }} directory exists
+  ansible.builtin.file:
+    path: "{{ formsflow_install_path }}/{{ item }}"
+    state: directory
+
+- name: Check whether .env already exists so that the passwords are not overwritten
+  ansible.builtin.stat:
+    path: "{{ formsflow_install_path }}/{{ item }}/.env"
+  register: stat_res
+
+- name: Generate {{ item }} .env file if it does not exist
+  ansible.builtin.template:
+    src: "./{{ item }}/{{ item }}.env.j2"
+    dest: "{{ formsflow_install_path }}/{{ item }}/.env"
+  when: not stat_res.stat.exists
+
+- name: Generate {{ item }} compose file
+  ansible.builtin.template:
+    src: "./{{ item }}/{{ item }}-compose.yaml.j2"
+    dest: "{{ formsflow_install_path }}/{{ item }}/compose.yaml"
+
+- name: Create database table for redash
+  ansible.builtin.command: "docker compose -f {{ formsflow_install_path }}/{{ item }}/compose.yaml run --rm server create_db"
+  when: item == "analytics"
+
+- name: Create and start services
+  community.docker.docker_compose_v2:
+    project_src: "{{ formsflow_install_path }}/{{ item }}"
+
+# docker compose run --rm server ./manage.py users create_root admin2@example.com admin2 --password 123123 --org ichmagkekse

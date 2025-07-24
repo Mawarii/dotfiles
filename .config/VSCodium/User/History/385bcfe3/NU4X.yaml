@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/dockerconfigjson
+metadata:
+  annotations:
+    replicator.v1.mittwald.de/replicate-to: "*"
+  name: gitlab-registry
+  namespace: argo-cd
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJnaXRsYWIucHVibGljcGxhbi5jbG91ZDo1MDUwIjp7InVzZXJuYW1lIjoidHd3LXR3Zi1ib3QiLCJwYXNzd29yZCI6IlNveXNDQldoX3o5R0tibTJLY1lUIiwiYXV0aCI6ImRIZDNMWFIzWmkxaWIzUTZVMjk1YzBOQ1YyaGZlamxIUzJKdE1rdGpXVlE9In19fQ==

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dca-backend
+spec:
+  revisionHistoryLimit: 1
+  replicas: 1
+  template:
+    spec:
+      initContainers:
+        - command: ["sh", "-c", "cp -r /run/nginx/* /nginx"]
+      containers:
+        - name: application
+          image: DCA_BACKEND_IMAGE
+          command:
+            - "/bin/sh"
+            - "-c"
+            - | 
+              /var/www/project/bin/console doctrine:migrations:migrate -n && \
+              crond && php-fpm -D && nginx -g 'daemon off;'
+          env:
+            - name: SENTRY_ENVIRONMENT
+              value: "dev-orm"          
+            - name: ORM_DB_URL
+              value: "mysql://user:superGeheim@mariadb:3306/dca?serverVersion=11.4.4-MariaDB"
+            - name: PERSISTENCE_TYPE
+              value: orm
+            - name: BASE_URI
+              value: "http://localhost:8080"

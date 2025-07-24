@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: govforms2-workflow-core
+  labels:
+    k8s-env: staging
+spec:
+  template:
+    spec:
+      containers:
+        - name: application
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              value: "govforms2"
+            - name: RABBITMQ_DEFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-auth
+                  key: rabbitmq-password
+            - name: RABBITMQ_URL
+              value: "rabbitmq-headless.govforms2-workflow-core.svc:5672"
+            - name: RABBITMQ_DSN
+              value: "amqp://$(RABBITMQ_DEFAULT_USER):$(RABBITMQ_DEFAULT_PASS)@$(RABBITMQ_URL)"
+          envFrom:
+            - secretRef:
+                name: govforms2-workflow-core-secrets
+            - configMapRef:
+                name: govforms2-workflow-core-configmap

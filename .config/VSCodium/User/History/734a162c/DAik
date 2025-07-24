@@ -1,0 +1,5 @@
+.vscode
+.ansible-lint-ignore
+inventory
+debug.yaml
+group_vars/*

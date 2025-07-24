@@ -1,0 +1,6 @@
+auth:
+  database: oots
+  username: oots
+  existingSecret: mariadb
+primary:
+  resources:

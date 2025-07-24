@@ -1,0 +1,5 @@
+services:
+  nginx:
+    image: nginxinc/nginx-unprivileged:1.25
+    container_name: cdn_nginx
+    

@@ -1,0 +1,51 @@
+---
+- name: Install required packages
+  ansible.builtin.apt:
+    pkg:
+      - vim
+      - fail2ban
+      - rsyslog
+      - kubelet={{ kube_version_long.stdout }}
+      - kubeadm={{ kube_version_long.stdout }}
+      - kubectl={{ kube_version_long.stdout }}
+      - cri-o={{ crio_version_long.stdout }}
+    state: present
+    update_cache: true
+    allow_change_held_packages: true
+
+- name: Hold Kubernetes packages
+  block:
+    - name: Holding kubeadm package
+      ansible.builtin.dpkg_selections:
+        name: kubeadm
+        selection: hold
+
+    - name: Holding kubelet package
+      ansible.builtin.dpkg_selections:
+        name: kubelet
+        selection: hold
+
+    - name: Holding kubectl package
+      ansible.builtin.dpkg_selections:
+        name: kubectl
+        selection: hold
+
+    - name: Holding cri-o package
+      ansible.builtin.dpkg_selections:
+        name: cri-o
+        selection: hold
+
+- name: Update all packages to their latest version
+  ansible.builtin.apt:
+    name: "*"
+    state: latest
+    update_cache: true
+
+- name: Remove dependencies that are no longer required
+  ansible.builtin.apt:
+    autoremove: true
+
+- name: Check if reboot is required
+  ansible.builtin.stat:
+    path: /var/run/reboot-required
+  register: reboot_required_file

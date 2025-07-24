@@ -1,0 +1,4 @@
+auth:
+  username: govforms2
+  existingPasswordSecret: "rabbitmq-auth"
+  existingErlangSecret: "rabbitmq-auth"

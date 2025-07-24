@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wip-config
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Work in Progress</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                font-size: 40px;
+                text-align: center;
+                padding-top: 80px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Work in Progress</h1>
+        <p>Comming soon!</p>
+        <p><i>Estimated Release Date: First Quarter of 2026</i></p>
+    </body>
+    </html>

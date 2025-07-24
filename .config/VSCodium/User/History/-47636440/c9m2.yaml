@@ -1,0 +1,23 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+resources:
+  - ../../base/
+
+patches:
+  - path: ./nextcloud-server-ingress.patch.yaml
+    target:
+      name: nextcloud-server
+      kind: Ingress
+
+images:
+  - name: gitlab.publicplan.cloud:5050/themenwelt-kommunales/nextcloud-server
+    newName: gitlab.publicplan.cloud:5050/themenwelt-kommunales/nextcloud-server
+    newTag: dcf5ef2f
+
+configMapGenerator:
+  - name: nextcloud-server-config
+    envs:
+      - mixins/nextcloud-server-config.env
+    options:
+      disableNameSuffixHash: true

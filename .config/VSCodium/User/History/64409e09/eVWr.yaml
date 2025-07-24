@@ -1,0 +1,469 @@
+## Install Prometheus Operator CRDs
+##
+## ArgoCD can't roll this out via the chart, because some limit is reached
+## Use the resources folder to update the CRDs
+## find them here: https://github.com/prometheus-community/helm-charts/tree/main
+crds:
+  enabled: false
+
+## Create default rules for monitoring the cluster
+##
+defaultRules:
+  create: true
+  rules:
+    alertmanager: true
+    etcd: true
+    configReloaders: true
+    general: true
+    k8sContainerCpuUsageSecondsTotal: true
+    k8sContainerMemoryCache: true
+    k8sContainerMemoryRss: true
+    k8sContainerMemorySwap: true
+    k8sContainerResource: true
+    k8sContainerMemoryWorkingSetBytes: true
+    k8sPodOwner: true
+    kubeApiserverAvailability: true
+    kubeApiserverBurnrate: true
+    kubeApiserverHistogram: true
+    kubeApiserverSlos: true
+    kubeControllerManager: true
+    kubelet: true
+    kubeProxy: false
+    kubePrometheusGeneral: true
+    kubePrometheusNodeRecording: true
+    kubernetesApps: true
+    kubernetesResources: true
+    kubernetesStorage: true
+    kubernetesSystem: true
+    kubeSchedulerAlerting: true
+    kubeSchedulerRecording: true
+    kubeStateMetrics: true
+    network: true
+    node: true
+    nodeExporterAlerting: true
+    nodeExporterRecording: true
+    prometheus: true
+    prometheusOperator: true
+    windows: false
+
+  # Labels for default rules
+  labels:
+    role: alert-rules
+
+  ## Disabled PrometheusRule alerts
+  disabled: {}
+  # KubeAPIDown: true
+  # NodeRAIDDegraded: true
+
+## Configuration for alertmanager
+## ref: https://prometheus.io/docs/alerting/alertmanager/
+##
+alertmanager:
+
+  ## Deploy alertmanager
+  ##
+  enabled: true
+  extraSecret:
+    # -- If not set, name will be auto generated
+    name: "alertmanager-basic-auth"
+    data:
+      # -- generated with htpasswd (PLEASE CHANGE!)
+      auth: "clopsadmin:$apr1$EgREbufl$gTAJp8g5ZhV.DMF5AYufB."
+  config:
+    global:
+      resolve_timeout: 5m
+    inhibit_rules:
+    - equal:
+      - namespace
+      - alertname
+      source_match:
+        severity: critical
+      target_match_re:
+        severity: warning|info
+    - equal:
+      - namespace
+      - alertname
+      source_match:
+        severity: warning
+      target_match_re:
+        severity: info
+    route:
+      group_by:
+      - namespace
+      group_interval: 5m
+      group_wait: 30s
+      receiver: Default
+      repeat_interval: 6h
+      routes:
+      - match:
+          alertname: Watchdog
+        receiver: Watchdog
+      - match:
+          severity: critical
+        receiver: Critical
+      - match:
+          severity: warning
+        receiver: Warning
+    receivers:
+    - name: Default
+    - name: Watchdog
+    - name: Warning
+      webhook_configs:
+        - send_resolved: true
+          url: https://api.eu.squadcast.com/v1/incidents/prometheus/ef22ef0ac46b833585975521794baef3c135c18b
+    - name: Critical
+      webhook_configs:
+        - send_resolved: true
+          url: https://api.eu.squadcast.com/v1/incidents/prometheus/ef22ef0ac46b833585975521794baef3c135c18b
+
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      kubernetes.io/tls-acme: "true"
+      # -- Enable Basic Auth
+      nginx.ingress.kubernetes.io/auth-type: basic
+      nginx.ingress.kubernetes.io/auth-secret: alertmanager-basic-auth
+      nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
+    ## Override ingress to a different defined port on the service
+    # servicePort: 8081
+    ## Override ingress to a different service then the default, this is useful if you need to
+    ## point to a specific instance of the alertmanager (eg kube-prometheus-stack-alertmanager-0)
+    # serviceName: kube-prometheus-stack-alertmanager-0
+
+    ## Hosts must be provided if Ingress is enabled.
+    ##
+    hosts:
+      - alertmanager.monitoring.publicplan.cloud
+    pathType: ImplementationSpecific
+    tls:
+    - secretName: tls-alertmanager-monitoring-publicplan-cloud
+      hosts:
+      - alertmanager.monitoring.publicplan.cloud
+
+# Prometheus Config
+prometheus:
+  service:
+    # targetPort: 4180 # used for OauthProxContainer (Keycloak)
+    targetPort: 9090
+    # -- Additional ports for the service
+    additionalPorts:
+      - name: prometheus
+        port: 9191
+        protocol: TCP
+        targetPort: 9090
+  # -- Enable PDB for prometheus
+  podDisruptionBudget:
+    enabled: true
+  # -- Set Basic Auth Secret
+  extraSecret:
+    # -- If not set, name will be auto generated
+    name: "prometheus-basic-auth"
+    data:
+      # -- generated with htpasswd (PLEASE CHANGE!)
+      auth: |
+          dehe1cephcluster:$apr1$V0sow4LN$P6se3.X9X0P3AJxBJyuv./
+          dehe1prometheus:$apr1$59VxZn6a$SvsRCRdK/lm7XnpWebiA31
+          dehe2prometheus:$apr1$yiBgGrAu$BdVb/lEHyqd1sVRX5g8Hw0
+          clopsadmin:$apr1$EgREbufl$gTAJp8g5ZhV.DMF5AYufB.
+  # Prometheus ingress configuration
+  ingress:
+    # -- Specifies whether an ingress should be created
+    enabled: true
+    # -- Ingress Class Name. MAY be required for Kubernetes versions >= 1.18
+    ingressClassName: nginx
+    # -- Annotations for the ingress
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      kubernetes.io/tls-acme: "true"
+      # -- Enable Basic Auth
+      nginx.ingress.kubernetes.io/auth-type: basic
+      nginx.ingress.kubernetes.io/auth-secret: prometheus-basic-auth
+      nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
+    # -- Hosts configuration for the ingress
+    hosts:
+      - "prometheus.monitoring.publicplan.cloud"
+    # -- TLS configuration for the ingress
+    tls:
+      - secretName: tls-promtheus-monitoring-publicplan-cloud
+        hosts:
+          - "prometheus.monitoring.publicplan.cloud"
+  prometheusSpec:
+    # -- enable --web.enable-remote-write-receiver flag on prometheus-server
+    enableRemoteWriteReceiver: true
+    # -- The external URL prometheus will be available under
+    externalUrl: "https://prometheus.monitoring.publicplan.cloud"
+    # this causes the prometheus operator to lookout for
+    # labels defined in the rules
+    # I enable this because custom rules like the velero ones
+    # should also be included in the evaluation of prometheus rules.
+    # this requires the label in the default rules to be set
+    ruleSelectorNilUsesHelmValues: false
+    # -- PrometheusRules to be selected for target discovery
+    ruleSelector:
+      matchLabels:
+        role: alert-rules
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+    # -- How long to retain metrics
+    retention: 30d
+    ## Prometheus StorageSpec for persistent data
+    ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/storage.md
+    ##
+    storageSpec: 
+    ## Using PersistentVolumeClaim
+    ##
+      volumeClaimTemplate:
+        spec:
+          storageClassName: hcloud-volumes
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 100Gi
+        selector: {}
+    ## Enable compression of the write-ahead log using Snappy
+    walCompression: false
+    # -- Number of prometheus replicas
+    replicas: 1
+    # Resource limits & requests
+    resources:
+      requests:
+        memory: 400Mi
+    ## Annotations for Prometheus Pod
+    ##
+    podMetadata:
+      annotations:
+        backup.velero.io/backup-volumes-excludes: "prometheus-monitoring-monitoring-kube-prometheus-db"
+
+## Using default values from https://github.com/grafana/helm-charts/blob/main/charts/grafana/values.yaml
+##
+grafana:
+  enabled: true
+
+  ## ForceDeployDatasources Create datasource configmap even if grafana deployment has been disabled
+  ##
+  forceDeployDatasources: false
+
+  ## ForceDeployDashboard Create dashboard configmap even if grafana deployment has been disabled
+  ##
+  forceDeployDashboards: false
+
+  ## Deploy default dashboards
+  ##
+  defaultDashboardsEnabled: true
+
+  ## Timezone for the default dashboards
+  ## Other options are: browser or a specific timezone, i.e. Europe/Luxembourg
+  ##
+  defaultDashboardsTimezone: utc
+
+  ## Editable flag for the default dashboards
+  ##
+  defaultDashboardsEditable: true
+  adminUser: clopsadmin
+  adminPassword: "YQnxSnsLlwZRxioBTOVFKyTgsHPqKPAS"
+
+  rbac:
+    ## If true, Grafana PSPs will be created
+    ##
+    pspEnabled: true
+
+  ingress:
+    ## If true, Grafana Ingress will be created
+    ##
+    enabled: true
+    ## IngressClassName for Grafana Ingress.
+    ## Should be provided if Ingress is enable.
+    ##
+    ingressClassName: nginx
+
+    ## Annotations for Grafana Ingress
+    ##
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-body-size: 1024m
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      kubernetes.io/tls-acme: "true"
+
+    ## Hostnames.
+    ## Must be provided if Ingress is enable.
+    ##
+    # hosts:
+    #   - grafana.domain.com
+    hosts:
+      - grafana.monitoring.publicplan.cloud
+    tls:
+      - hosts:
+          - grafana.monitoring.publicplan.cloud
+        secretName: tls-monitoring-publicplan-cloud
+
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      labelValue: "1"
+      # Allow discovery in all namespaces for dashboards
+      searchNamespace: ALL
+
+      # Support for new table panels, when enabled grafana auto migrates the old table panels to newer table panels
+      enableNewTablePanelSyntax: false
+
+      ## Annotations for Grafana dashboard configmaps
+      ##
+      annotations: {}
+      multicluster:
+        global:
+          enabled: false
+        etcd:
+          enabled: false
+      provider:
+        allowUiUpdates: false
+    datasources:
+      enabled: true
+      defaultDatasourceEnabled: true
+      isDefaultDatasource: true
+
+      name: Prometheus
+      uid: prometheus
+
+      ## URL of prometheus datasource
+      ##
+      url: http://kube-prometheus-stack-prometheus:9090/
+
+      ## Prometheus request timeout in seconds
+      # timeout: 30
+
+      # If not defined, will use prometheus.prometheusSpec.scrapeInterval or its default
+      # defaultDatasourceScrapeInterval: 15s
+
+      ## Annotations for Grafana datasource configmaps
+      ##
+      annotations: {}
+
+      ## Set method for HTTP to send query to datasource
+      httpMethod: POST
+
+      ## Create datasource for each Pod of Prometheus StatefulSet;
+      ## this uses headless service `prometheus-operated` which is
+      ## created by Prometheus Operator
+      ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/0fee93e12dc7c2ea1218f19ae25ec6b893460590/pkg/prometheus/statefulset.go#L255-L286
+      createPrometheusReplicasDatasources: false
+      label: grafana_datasource
+      labelValue: "1"
+
+      ## Field with internal link pointing to existing data source in Grafana.
+      ## Can be provisioned via additionalDataSources
+      exemplarTraceIdDestinations: {}
+        # datasourceUid: Jaeger
+        # traceIdLabelName: trace_id
+      alertmanager:
+        enabled: true
+        name: Alertmanager
+        uid: alertmanager
+        handleGrafanaManagedAlerts: false
+        implementation: prometheus
+
+  extraConfigmapMounts: []
+  # - name: certs-configmap
+  #   mountPath: /etc/grafana/ssl/
+  #   configMap: certs-configmap
+  #   readOnly: true
+
+  deleteDatasources: []
+  # - name: example-datasource
+  #   orgId: 1
+
+  ## Configure additional grafana datasources (passed through tpl)
+  ## ref: http://docs.grafana.org/administration/provisioning/#datasources
+  additionalDataSources:
+  - name: loki-logshipping
+    type: loki
+    url: "http://clops-logshipping-loki-gateway.logshipping.svc"
+    isDefault: false
+    basicAuth: true
+    basicAuthUser: lokiuser
+    jsonData:
+      httpHeaderName1: X-Scope-OrgID
+    secureJsonData:
+      basicAuthPassword: 'qrNEcopRJwMEBxzodOaYcAggCSJULmrO'
+      httpHeaderValue1: "1"
+    withCredentials: true
+  # - name: prometheus-sample
+  #   access: proxy
+  #   basicAuth: true
+  #   secureJsonData:
+  #       basicAuthPassword: pass
+  #   basicAuthUser: daco
+  #   editable: false
+  #   jsonData:
+  #       tlsSkipVerify: true
+  #   orgId: 1
+  #   type: prometheus
+  #   url: https://{{ printf "%s-prometheus.svc" .Release.Name }}:9090
+  #   version: 1
+
+  # Flag to mark provisioned data sources for deletion if they are no longer configured.
+  # It takes no effect if data sources are already listed in the deleteDatasources section.
+  # ref: https://grafana.com/docs/grafana/latest/administration/provisioning/#example-data-source-config-file
+  prune: false
+
+  ## Passed to grafana subchart and used by servicemonitor below
+  ##
+  service:
+    portName: http-web
+    ipFamilies: []
+    ipFamilyPolicy: ""
+
+  serviceMonitor:
+    # If true, a ServiceMonitor CRD is created for a prometheus operator
+    # https://github.com/coreos/prometheus-operator
+    #
+    enabled: true
+
+    # Path to use for scraping metrics. Might be different if server.root_url is set
+    # in grafana.ini
+    path: "/metrics"
+
+    #  namespace: monitoring  (defaults to use the namespace this chart is deployed to)
+
+    # labels for the ServiceMonitor
+    labels: {}
+
+    # Scrape interval. If not set, the Prometheus default scrape interval is used.
+    #
+    interval: ""
+    scheme: http
+    tlsConfig: {}
+    scrapeTimeout: 30s
+
+    ## RelabelConfigs to apply to samples before scraping
+    ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#relabelconfig
+    ##
+    relabelings: []
+    # - sourceLabels: [__meta_kubernetes_pod_node_name]
+    #   separator: ;
+    #   regex: ^(.*)$
+    #   targetLabel: nodename
+    #   replacement: $1
+    #   action: replace
+
+    
+## Since were using the Cilium Proxy, define options here
+## Component scraping kube proxy
+##
+kubeProxy:
+  enabled: false
+
+  ## If your kube proxy is not deployed as a pod, specify IPs it can be found on
+  ##
+  endpoints:
+  - 192.168.1.2
+  - 192.168.1.3
+  - 192.168.1.4
+
+  # Cilium Proxy Replacement has no pods
+  service:
+    enabled: false
+
+  serviceMonitor:
+    enabled: false

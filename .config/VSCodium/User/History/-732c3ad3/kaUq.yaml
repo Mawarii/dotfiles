@@ -1,0 +1,5 @@
+---
+- name: Check kubeadm upgrade
+  ansible.builtin.command:
+    cmd: kubeadm upgrade plan
+  changed_when: false

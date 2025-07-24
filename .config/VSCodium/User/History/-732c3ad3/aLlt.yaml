@@ -1,0 +1,19 @@
+---
+- name: Upgrade kubeadm package
+  when: auto_upgrades and kube_upgrade_needed
+  ansible.builtin.apt:
+    pkg:
+      - kubeadm={{ kube_version_latest.stdout }}
+    state: present
+    update_cache: true
+    allow_change_held_packages: true
+
+- name: Check kubeadm upgrade
+  ansible.builtin.command:
+    cmd: kubeadm upgrade plan
+  changed_when: false
+
+- name: Apply kubeadm upgrade
+  ansible.builtin.command:
+    cmd: kubeadm upgrade apply "v{{ kube_version_latest.split('-')[0] }}"
+  changed_when: true

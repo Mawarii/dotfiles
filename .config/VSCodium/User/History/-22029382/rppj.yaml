@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sdg-backend-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: "sdg-backend.pre-stage.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: sdg-backend-service
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - "sdg-backend.pre-stage.efa.publicplan.cloud"
+      secretName: "sdg-backend-tls"

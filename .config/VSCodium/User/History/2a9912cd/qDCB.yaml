@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: regmocluster-oots-projectathon
+  namespace: argocd-applications-regmo
+spec:
+  destination:
+    namespace: oots-projectathon
+    name: publicplan-regmo
+  project: regmocluster-projects-regmo
+  sources:
+    - path: env/dev
+      repoURL: 'git@gitlab.publicplan.cloud:regmo/infrastructure/oots-projectathon-dist.git'
+      targetRevision: HEAD
+    - chart: mariadb
+      helm:
+        releaseName: mariadb
+        valueFiles:
+          - $values/helm/mariadb/default-values.yaml
+          - $values/helm/mariadb/values.yaml
+      repoURL: registry-1.docker.io/bitnamicharts
+      targetRevision: 20.2.2
+    - ref: values
+      repoURL: "git@gitlab.publicplan.cloud:iac/efa/distributions/dca/dca-backend-dist.git"
+      targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,125 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: domibus
+  labels:
+    app: domibus
+spec:
+  ports:
+    - port: 8080
+  selector:
+    app: domibus
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: domibus
+  labels:
+    app: domibus
+spec:
+  revisionHistoryLimit: 1
+  replicas: 1
+  selector:
+    matchLabels:
+      app: domibus
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: domibus
+    spec:
+      containers:
+        - image: code.europa.eu:4567/edelivery/docker/domibus-tomcat9:5.1
+          name: domibus
+          env:
+            - name: DB_TYPE
+              value: MySQL
+            - name: DB_HOST
+              value: domibus-mysql
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: "secrets"
+                  key: mysql-user
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: "secrets"
+                  key: mysql-password
+            - name: LOGGER_LEVEL_ORG_APACHE_CXF
+              value: INFO
+            - name: CHECK_DEFAULT_PASSWD
+              value: "false"
+            - name: domibus.metrics.sl4j.reporter.enable
+              value: "false"
+            - name: domibus.metrics.monitor.jms.queues
+              value: "false"
+            - name: domibus.metrics.monitor.memory
+              value: "false"
+            - name: domibus.metrics.monitor.gc
+              value: "false"
+            - name: domibus.metrics.monitor.cached.threads
+              value: "false"
+            - name: domibus.passwordPolicy.expiration
+              value: "0"
+            - name: domibus.passwordPolicy.defaultPasswordExpiration
+              value: "0"
+            - name: wsplugin.mtom.enabled
+              value: "false"
+            - name: wsplugin.schema.validation.enabled
+              value: "false"
+            - name: wsplugin.messages.pending.list.max
+              value: "500"
+            - name: wsplugin.messages.notifications
+              value: "MESSAGE_RECEIVED,MESSAGE_SEND_FAILURE,MESSAGE_RECEIVED_FAILURE,MESSAGE_SEND_SUCCESS,MESSAGE_STATUS_CHANGE"
+            - name: wsplugin.dispatcher.connectionTimeout
+              value: "240000"
+            - name: wsplugin.dispatcher.receiveTimeout
+              value: "240000"
+            - name: wsplugin.dispatcher.allowChunking 
+              value: "false"
+            - name: wsplugin.dispatcher.chunkingThreshold
+              value: "104857600"
+            - name: wsplugin.dispatcher.connection.keepAlive
+              value: "true"
+            - name: wsplugin.dispatcher.worker.cronExpression
+              value: "0 0/1 * * * ?"
+            - name: wsplugin.send.queue.concurrency
+              value: "5-20"
+            - name: wsplugin.push.enabled
+              value: "true"
+            - name: wsplugin.push.rules.ootssubmit 
+              value: "Notification Rule for submiting message to OOTS SOAP Client"
+            - name: wsplugin.push.rules.ootssubmit.endpoint
+              value: "https://ip-oots-service-test.regmo.dev.publicplan.cloud/api/submitMessage"
+            - name: wsplugin.push.rules.ootssubmit.type
+              value: "SUBMIT_MESSAGE"
+            - name: wsplugin.push.rules.ootssubmit.retry
+              value: "60;1;CONSTANT"
+            - name: wsplugin.push.auth.username
+              value: "ip-backend"
+            - name: wsplugin.push.auth.password
+              value: "soapEndpoint!2024"
+            - name: wsplugin.push.markAsDownloaded
+              value: "true"
+          ports:
+            - containerPort: 8080
+              hostPort: 18080
+              name: domibus
+          volumeMounts:
+            - name: domibus
+              mountPath: ./domibus:/data/tomcat/conf/domibus
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 600
+            timeoutSeconds: 5
+            periodSeconds: 10
+      volumes:
+        - name: domibus
+          persistentVolumeClaim:
+            claimName: domibus-pv-claim

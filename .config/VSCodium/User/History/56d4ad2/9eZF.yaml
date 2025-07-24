@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name:  harbor
+stringData:
+   secret: geSAxmEdWziBox7f
+   secretKey: k1RvImF2nbnYPeLM
+   jobserviceSecret: qXn0uhL45HqG3OZu
+   registrySecret: eCyOL6aPyrq77dYg
+   adminPassword: djIfWUUs2yyyCv7CjY54aAnYguOdqyilEvUgsSjS4OOPSkUauNAfxbFLs1eg3yTm
+type: Opaque

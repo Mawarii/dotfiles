@@ -1,0 +1,17 @@
+# Actual Values file. Use this file to set any overrides
+
+controller:
+  config:
+    annotations-risk-level: "Critical"
+    compute-full-forwarded-for: "true"
+    use-forwarded-headers: "true"
+    use-proxy-protocol: "true"
+  allowSnippetAnnotations: true
+  kind: DaemonSet
+  service:
+    type: NodePort
+    # annotations:
+    # load-balancer.hetzner.cloud/name: "kubelb"
+    nodePorts:
+      http: "30080"
+      https: "30443"

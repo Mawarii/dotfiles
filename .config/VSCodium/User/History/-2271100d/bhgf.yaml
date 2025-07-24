@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: efacluster-idmercery
+  namespace: argocd
+spec:
+  clusterResourceWhitelist:
+    - group: ""
+      kind: "Namespace"
+    # - group: '*'
+    #   kind: '*'
+  destinations:
+    - name: in-cluster
+      namespace: "identity-gateway"
+      server: "*"
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  sourceNamespaces:
+    - identity-gateway
+  sourceRepos:
+    - "*"

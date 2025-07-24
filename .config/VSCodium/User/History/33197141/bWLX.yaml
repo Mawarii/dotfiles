@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: govforms2-akeneo-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: "512m"
+    kubernetes.io/proxy-body-size: "512m"
+    nginx.org/client-max-body-size: "512m"
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: "govforms2-akeneo.efa-stage.owl-it.de"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-akeneo-service
+                port:
+                  name: http
+  tls:
+    - hosts:
+        - "govforms2-akeneo.efa-stage.owl-it.de"
+      secretName: "govforms2-akeneo-tls"

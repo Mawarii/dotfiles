@@ -1,0 +1,10 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: dca-backend-orm-service
+spec:
+  selector:
+    k8s-app: dca-backend
+  ports:
+    - port: 8081
+      name: dca-backend-orm-port

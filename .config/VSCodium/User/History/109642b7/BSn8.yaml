@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+  annotations:
+    argocd.argoproj.io/tracking-id: argocd-configuration:/ConfigMap:argocd/argocd-rbac-cm
+  labels:
+    app.kubernetes.io/name: argocd-rbac-cm
+    app.kubernetes.io/part-of: argocd
+data:
+  policy.csv: |
+    p, role:all-projects-read, applications, get, *, allow
+    p, role:all-projects-read, logs, get, *, allow
+    g, all-projects-read, role:all-projects-read
+
+    p, role:empfangsclient-read, logs, get, efacluster-empfangsclient/*, allow
+    p, role:empfangsclient-read, applications, get, efacluster-empfangsclient/*, allow
+    p, role:empfangsclient-read, applications, sync, efacluster-empfangsclient/*, allow
+    p, role:empfangsclient-read, applications, action/apps/Deployment/restart, efacluster-empfangsclient/*, allow
+    p, role:empfangsclient-read, applications, action/apps/StatefulSet/restart, efacluster-empfangsclient/*, allow
+    g, empfangsclient-read, role:empfangsclient-read
+
+    p, role:empfangsclient-plus-read, logs, get, efacluster-empfangsclient-plus/*, allow
+    p, role:empfangsclient-plus-read, applications, get, efacluster-empfangsclient-plus/*, allow
+    p, role:empfangsclient-plus-read, applications, sync, efacluster-empfangsclient-plus/*, allow
+    p, role:empfangsclient-plus-read, applications, action/apps/Deployment/restart, efacluster-empfangsclient-plus/*, allow
+    p, role:empfangsclient-plus-read, applications, action/apps/StatefulSet/restart, efacluster-empfangsclient-plus/*, allow
+    g, empfangsclient-plus-read, role:empfangsclient-plus-read
+
+    p, role:formularbaukasten-read, logs, get, efacluster-formularbaukasten/*, allow
+    p, role:formularbaukasten-read, applications, get, efacluster-formularbaukasten/*, allow
+    p, role:formularbaukasten-read, applications, sync, efacluster-formularbaukasten/*, allow
+    p, role:formularbaukasten-read, applications, action/apps/Deployment/restart, efacluster-formularbaukasten/*, allow
+    p, role:formularbaukasten-read, applications, action/apps/StatefulSet/restart, efacluster-formularbaukasten/*, allow
+    g, formularbaukasten-read, role:formularbaukasten-read
+
+    p, role:intermediaryplatform-read, logs, get, efacluster-intermediaryplatform/*, allow
+    p, role:intermediaryplatform-read, applications, get, efacluster-intermediaryplatform/*, allow
+    p, role:intermediaryplatform-read, applications, sync, efacluster-intermediaryplatform/*, allow
+    p, role:intermediaryplatform-read, applications, action/apps/Deployment/restart, efacluster-intermediaryplatform/*, allow
+    p, role:intermediaryplatform-read, applications, action/apps/StatefulSet/restart, efacluster-intermediaryplatform/*, allow
+    g, intermediaryplatform-read, role:intermediaryplatform-read
+
+    p, role:sdg-read, logs, get, efacluster-sdg/*, allow
+    p, role:sdg-read, applications, get, efacluster-sdg/*, allow
+    p, role:sdg-read, applications, sync, efacluster-sdg/*, allow
+    p, role:sdg-read, applications, action/apps/Deployment/restart, efacluster-sdg/*, allow
+    p, role:sdg-read, applications, action/apps/StatefulSet/restart, efacluster-sdg/*, allow
+    g, sdg-read, role:sdg-read
+
+    p, role:dca-read, logs, get, efacluster-dca/*, allow
+    p, role:dca-read, applications, get, efacluster-dca/*, allow
+    p, role:dca-read, applications, sync, efacluster-dca/*, allow
+    p, role:dca-read, applications, action/apps/Deployment/restart, efacluster-dca/*, allow
+    p, role:dca-read, applications, action/apps/StatefulSet/restart, efacluster-dca/*, allow
+    g, dca-read, role:dca-read
+
+    p, role:edap-read, logs, get, efacluster-edap/*, allow
+    p, role:edap-read, applications, get, efacluster-edap/*, allow
+    p, role:edap-read, applications, sync, efacluster-edap/*, allow
+    p, role:edap-read, applications, action/apps/Deployment/restart, efacluster-edap/*, allow
+    p, role:edap-read, applications, action/apps/StatefulSet/restart, efacluster-edap/*, allow
+    g, edap-read, role:edap-read
+
+    p, role:projectathon-read, logs, get, efacluster-projectathon/*, allow
+    p, role:projectathon-read, applications, get, efacluster-projectathon/*, allow
+    p, role:projectathon-read, applications, sync, efacluster-projectathon/*, allow
+    p, role:projectathon-read, applications, action/apps/Deployment/restart, efacluster-projectathon/*, allow
+    p, role:projectathon-read, applications, action/apps/StatefulSet/restart, efacluster-projectathon/*, allow
+    g, projectathon-read, role:projectathon-read
+
+    p, role:mna-dashboard-read, logs, get, efacluster-mna-dashboard/*, allow
+    p, role:mna-dashboard-read, applications, get, efacluster-mna-dashboard/*, allow
+    p, role:mna-dashboard-read, applications, sync, efacluster-mna-dashboard/*, allow
+    p, role:mna-dashboard-read, applications, action/apps/Deployment/restart, efacluster-mna-dashboard/*, allow
+    p, role:mna-dashboard-read, applications, action/apps/StatefulSet/restart, efacluster-mna-dashboard/*, allow
+    g, mna-dashboard-read, role:mna-dashboard-read
+
+    p, role:govforms2-read, logs, get, efacluster-govforms2/*, allow
+    p, role:govforms2-read, applications, get, efacluster-govforms2/*, allow
+    p, role:govforms2-read, applications, sync, efacluster-govforms2/*, allow
+    p, role:govforms2-read, applications, action/apps/Deployment/restart, efacluster-govforms2/*, allow
+    p, role:govforms2-read, applications, action/apps/StatefulSet/restart, efacluster-govforms2/*, allow
+    g, govforms2-read, role:govforms2-read
+
+    p, role:gruendungsassistent-read, logs, get, efacluster-gruendungsassistent/*, allow
+    p, role:gruendungsassistent-read, applications, get, efacluster-gruendungsassistent/*, allow
+    p, role:gruendungsassistent-read, applications, sync, efacluster-gruendungsassistent/*, allow
+    p, role:gruendungsassistent-read, applications, action/apps/Deployment/restart, efacluster-gruendungsassistent/*, allow
+    p, role:gruendungsassistent-read, applications, action/apps/StatefulSet/restart, efacluster-gruendungsassistent/*, allow
+    g, gruendungsassistent-read, role:gruendungsassistent-read

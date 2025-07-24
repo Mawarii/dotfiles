@@ -1,0 +1,50 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+  - elasticsearch.yaml
+
+patches:
+  - path: govforms2-akeneo.patch.yaml
+    target:
+      kind: Deployment
+      name: govforms2-akeneo
+  - path: govforms2-akeneo-ingress.patch.yaml
+    target:
+      kind: Ingress
+      name: govforms2-akeneo-ingress
+  - path: govforms2-akeneo-secrets.patch.yaml
+    target:
+      kind: Secret
+      name: govforms2-akeneo-secrets
+
+images:
+  - name: DOCKER_IMAGE_1
+    newName: gitlab.publicplan.cloud:5050/themenwelt-formulare/govforms2/form-config/akeneo
+    newTag: "v0.2.2"
+  - name: DOCKER_IMAGE_2
+    newName: docker.io/nginxinc/nginx-unprivileged
+    newTag: "1.27.4"
+  - name: DOCKER_IMAGE_3
+    newName: gitlab.publicplan.cloud:5050/themenwelt-formulare/govforms2/form-config/formio-akeneo-sync
+    newTag: "v0.3.2"
+
+secretGenerator:
+  - name: mysql-auth
+    envs:
+    - ./mixins/mysql-auth.secret.env
+    options:
+      disableNameSuffixHash: true
+  - name: gitlab-registry-govforms2-akeneo
+    type: kubernetes.io/dockerconfigjson
+    files:
+    - .dockerconfigjson=./mixins/govforms2-akeneo-image-pull-secret.json
+    options:
+      disableNameSuffixHash: true
+  - name: gitlab-registry-govforms2-akeneo-sync
+    type: kubernetes.io/dockerconfigjson
+    files:
+    - .dockerconfigjson=./mixins/govforms2-akeneo-sync-image-pull-secret.json
+    options:
+      disableNameSuffixHash: true

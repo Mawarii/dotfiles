@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: efacluster-dca
+  namespace: argocd
+spec:
+  destinations:
+    - name: in-cluster
+      namespace: 'dca-*'
+      server: '*'
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  sourceRepos:
+    - '*'

@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  creationTimestamp: null
+  name: vaultwarden
+  namespace: argocd
+  annotations:
+    k8s.publicplan.cloud/contact: "Team SHIELD"
+spec:
+  destination:
+    namespace: vaultwarden
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+  - path: applications/vaultwarden/resources
+    repoURL: git@gitlab.publicplan.cloud:team-kops/infra-internal/terraform/pp-dev-cluster.git
+    targetRevision: HEAD
+  - chart: vaultwarden
+    helm:
+      valueFiles:
+      - $values/applications/vaultwarden/values.yaml
+    repoURL: https://guerzon.github.io/vaultwarden
+    targetRevision: "0.23.0"
+  - ref: values
+    repoURL: git@gitlab.publicplan.cloud:team-kops/infra-internal/terraform/pp-dev-cluster.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

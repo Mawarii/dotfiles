@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: empfangsclient-plus
+  namespace: argocd
+spec:
+  destination:
+    namespace: empfangsclient-plus
+    server: "https://kubernetes.default.svc"
+  project: efacluster-empfangsclient
+  sources:
+    - path: kustomization/overlays/develop
+      repoURL: "git@gitlab.publicplan.cloud:iac/efa/distributions/empfangsclient/ec.git"
+      targetRevision: main
+    - path: helm/keycloak/develop/resources
+      repoURL: "git@gitlab.publicplan.cloud:iac/efa/distributions/empfangsclient/ec.git"
+      targetRevision: main
+    - chart: mariadb
+      helm:
+        valueFiles:
+          - $values/helm/mariadb/develop/zdi/ecc/default-values.yaml
+          - $values/helm/mariadb/develop/zdi/ecc/values.yaml
+        releaseName: mariadb-ecc
+      repoURL: registry-1.docker.io/bitnamicharts
+      targetRevision: "20.2.1"
+    - chart: mariadb
+      helm:
+        valueFiles:
+          - $values/helm/mariadb/develop/fitko/eco/default-values.yaml
+          - $values/helm/mariadb/develop/fitko/eco/values.yaml
+        releaseName: mariadb-eco
+      repoURL: registry-1.docker.io/bitnamicharts
+      targetRevision: "20.2.1"
+    - chart: keycloak
+      helm:
+        valueFiles:
+          - $values/helm/keycloak/develop/zdi/default-values.yaml
+          - $values/helm/keycloak/develop/zdi/values.yaml
+      repoURL: registry-1.docker.io/bitnamicharts
+      targetRevision: "24.3.1"
+    - ref: values
+      repoURL: "git@gitlab.publicplan.cloud:iac/efa/distributions/empfangsclient/ec.git"
+      targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

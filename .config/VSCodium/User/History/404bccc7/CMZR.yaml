@@ -1,0 +1,24 @@
+endpoints:
+  - name: matomo-service
+    group: wsp-matomo
+    url: "tcp://matomo.matomo-new.svc:8080"
+    interval: 60s
+    conditions:
+      - "[CONNECTED] == true"
+    alerts:
+      - type: slack
+  - name: matomo-new.staging.wsp.owl-it.de
+    group: wsp-matomo
+    url: "https://matomo-new.staging.wsp.owl-it.de/"
+    interval: 60s
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+    alerts:
+      - type: slack
+# - name: mariadb-svc
+#   group: wsp-matomo
+#   url: "tcp://mariadb.wsp-matomo.svc:3306"
+#   interval: 30s
+#   conditions:
+#     - "[CONNECTED] == true"

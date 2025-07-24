@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ip-preview-space
+spec:
+  template:
+    spec:
+      containers:
+        - name: application
+          env:
+            - name: NEXT_PUBLIC_OOTS_BACKEND_URL
+              value: "https://ip-oots-service-test.pre-stage.efa.publicplan.cloud"

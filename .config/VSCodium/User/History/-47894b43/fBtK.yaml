@@ -1,0 +1,49 @@
+---
+- name: Generate Kube Prometheus Stack default values file
+  ansible.builtin.copy:
+    src: "{{ role_path }}/templates/default-values.yaml"
+    dest: /tmp/kube-prom-stack-default-values.yaml
+    mode: '0640'
+
+- name: Generate Kube Prometheus Stack values file
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/values.yaml.j2"
+    dest: /tmp/kube-prom-stack-values.yaml
+    mode: '0640'
+
+- name: Add Jetstack chart repo
+  kubernetes.core.helm_repository:
+    name: jetstack
+    repo_url: "https://charts.jetstack.io"
+
+- name: Install Kube Prometheus Stack via Helm
+  kubernetes.core.helm:
+    atomic: true
+    kubeconfig: /etc/rancher/k3s/k3s.yaml
+    chart_ref: jetstack/cert-manager
+    chart_version: "{{ kube_prometheus_stack.chart_version }}"
+    release_state: present
+    release_name: monitoring
+    release_namespace: "{{ kube_prometheus_stack.namespace }}"
+    create_namespace: true
+    values_files:
+      - /tmp/kube-prom-stack-default-values.yaml
+      - /tmp/kube-prom-stack-values.yaml
+    wait: true
+
+- name: Generate Let's Encrypt issuer manifest
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/letsencrypt-issuer.yaml.j2"
+    dest: /tmp/letsencrypt-issuer.yaml
+    mode: '0640'
+
+- name: Install Kubernetes Python package
+  ansible.builtin.pip:
+    name: kubernetes
+    break_system_packages: true
+
+- name: Apply Let's Encrypt issuer manifest
+  kubernetes.core.k8s:
+    kubeconfig: /etc/rancher/k3s/k3s.yaml
+    src: /tmp/letsencrypt-issuer.yaml
+    state: present

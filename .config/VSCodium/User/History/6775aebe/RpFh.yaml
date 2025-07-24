@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  creationTimestamp: null
+  name: devcluster-temp-vaultwarden
+  namespace: argocd
+spec:
+  destination:
+    name: publicplan-dev
+    namespace: vaultwarden-temp
+  project: devcluster-projects-vaultwarden
+  sources:
+  - path: applications/vaultwarden/resources
+    repoURL: git@gitlab.publicplan.cloud:team-kops/infra-internal/pp-dev-cluster.git
+    targetRevision: HEAD
+  - chart: vaultwarden
+    helm:
+      valueFiles:
+      - $values/applications/vaultwarden/values.yaml
+    repoURL: https://guerzon.github.io/vaultwarden
+    targetRevision: "0.24.0"
+  - ref: values
+    repoURL: git@gitlab.publicplan.cloud:team-kops/infra-internal/pp-dev-cluster.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

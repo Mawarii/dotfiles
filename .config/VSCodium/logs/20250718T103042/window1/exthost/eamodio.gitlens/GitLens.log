@@ -1,0 +1,46 @@
+2025-07-18 10:30:46.255 [info] GitLens v17.3.1 activating in VSCodium (1.102.1) on the desktop; language='en', logLevel='warn', defaultDateLocale='null' (someValue.machineId|someValue.sessionId)
+To enable debug logging, set `"gitlens.outputLevel": "debug"` or run "GitLens: Enable Debug Logging" from the Command Palette
+
+2025-07-18 10:30:55.163 [info] GitLens v17.3.1 activating in VSCodium (1.102.1) on the desktop; language='en', logLevel='warn', defaultDateLocale='null' (someValue.machineId|someValue.sessionId)
+To enable debug logging, set `"gitlens.outputLevel": "debug"` or run "GitLens: Enable Debug Logging" from the Command Palette
+[2025-07-18 08:30:54.816] Warning(/usr/bin/git -c core.quotepath=false -c color.ui=false rev-parse --show-toplevel): fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+
+[2025-07-18 08:30:54.816] [GIT          ] [/home/dmarkovic/git-projects/publicplan/efa] git rev-parse --show-toplevel • not a git repository (or any parent up to mount point /) • Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set). [46ms]
+
+2025-07-18 10:48:17.220 [info] [2025-07-18 08:48:16.719] Warning(/usr/bin/git -c core.quotepath=false -c color.ui=false log --format=%x1E%H%x1D --summary -n1 4eb9897b952436a561f2eefcf010baf50432b636^ -- applications/ingress-nginx/values.yaml): fatal: bad revision '4eb9897b952436a561f2eefcf010baf50432b636^'
+
+
+2025-07-18 10:48:20.221 [info] [2025-07-18 08:48:19.999] Warning(/usr/bin/git -c core.quotepath=false -c color.ui=false log --format=%x1E%H%x1D --summary -n1 4eb9897b952436a561f2eefcf010baf50432b636^ -- applications/ingress-nginx/default-values.yaml): fatal: bad revision '4eb9897b952436a561f2eefcf010baf50432b636^'
+
+
+2025-07-18 10:51:26.181 [info] [2025-07-18 08:51:25.680] Warning(/usr/bin/git -c core.quotepath=false -c color.ui=false log --format=%x1E%H%x1D --summary -n1 4eb9897b952436a561f2eefcf010baf50432b636^ -- applications/ingress-nginx/values.yaml): fatal: bad revision '4eb9897b952436a561f2eefcf010baf50432b636^'
+
+
+2025-07-18 10:51:30.183 [info] [2025-07-18 08:51:29.742] Warning(/usr/bin/git -c core.quotepath=false -c color.ui=false log --format=%x1E%H%x1D --summary -n1 4eb9897b952436a561f2eefcf010baf50432b636^ -- applications/ingress-nginx/default-values.yaml): fatal: bad revision '4eb9897b952436a561f2eefcf010baf50432b636^'
+
+
+2025-07-18 10:58:41.580 [info] [2025-07-18 08:58:41.079] Warning(/usr/bin/git -c core.quotepath=false -c color.ui=false log --format=%x1E%H%x1D --summary -n1 4eb9897b952436a561f2eefcf010baf50432b636^ -- applications/ingress-nginx/default-values.yaml): fatal: bad revision '4eb9897b952436a561f2eefcf010baf50432b636^'
+
+
+2025-07-18 11:44:30.019 [info] GitLens v17.3.1 activating in VSCodium (1.102.1) on the desktop; language='en', logLevel='warn', defaultDateLocale='null' (someValue.machineId|someValue.sessionId)
+To enable debug logging, set `"gitlens.outputLevel": "debug"` or run "GitLens: Enable Debug Logging" from the Command Palette
+
+2025-07-18 12:08:27.530 [info] [2025-07-18 10:08:27.029] Warning(/usr/bin/git -c core.quotepath=false -c color.ui=false -c log.showSignature=false log --format=%x1E%H%x1D -n2 -L1,1:applications/it-tools/ingress.yaml): fatal: There is no path applications/it-tools/ingress.yaml in the commit
+
+[2025-07-18 10:08:27.030] [GIT          ] [/home/dmarkovic/git-projects/publicplan/intern/pp-dev-cluster] git log --format=%x1E%H%x1D -n2 -L1,1:applications/it-tools/ingress.yaml • There is no path applications/it-tools/ingress.yaml in the commit [15ms]
+[2025-07-18 10:08:27.035] Git.exec
+Error: fatal: There is no path applications/it-tools/ingress.yaml in the commit
+
+2025-07-18 12:08:28.531 [info] [2025-07-18 10:08:28.200] Warning(/usr/bin/git -c core.quotepath=false -c color.ui=false -c log.showSignature=false log --format=%x1E%H%x1D -n2 -L1,1:applications/it-tools/deployment.yaml): fatal: There is no path applications/it-tools/deployment.yaml in the commit
+
+[2025-07-18 10:08:28.200] [GIT          ] [/home/dmarkovic/git-projects/publicplan/intern/pp-dev-cluster] git log --format=%x1E%H%x1D -n2 -L1,1:applications/it-tools/deployment.yaml • There is no path applications/it-tools/deployment.yaml in the commit [7ms]
+[2025-07-18 10:08:28.201] Git.exec
+Error: fatal: There is no path applications/it-tools/deployment.yaml in the commit
+
+2025-07-18 12:08:48.992 [info] GitLens v17.3.1 activating in VSCodium (1.102.1) on the desktop; language='en', logLevel='warn', defaultDateLocale='null' (someValue.machineId|someValue.sessionId)
+To enable debug logging, set `"gitlens.outputLevel": "debug"` or run "GitLens: Enable Debug Logging" from the Command Palette
+
+2025-07-18 12:12:04.587 [info] GitLens v17.3.1 activating in VSCodium (1.102.1) on the desktop; language='en', logLevel='warn', defaultDateLocale='null' (someValue.machineId|someValue.sessionId)
+To enable debug logging, set `"gitlens.outputLevel": "debug"` or run "GitLens: Enable Debug Logging" from the Command Palette
+

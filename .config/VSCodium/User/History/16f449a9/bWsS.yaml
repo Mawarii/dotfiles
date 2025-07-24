@@ -1,0 +1,3 @@
+---
+- name: Join new nodes
+  ansible.builtin.include_tasks: "join-node.yaml"

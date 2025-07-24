@@ -1,0 +1,23 @@
+---
+- name: Update all packages to their latest version
+  ansible.builtin.apt:
+    name: "*"
+    state: latest
+    update_cache: yes
+
+- name: Install docker
+  ansible.builtin.apt:  
+    pkg:
+    - ca-certificates
+    - curl
+
+- name: Add Docker repository
+  block:
+    - name: kubernetes | apt key
+      ansible.builtin.shell: "curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --yes --dearmor -o /usr/share/keyrings/kubernetes-key.gpg"
+
+    - name: kubernetes | apt source
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/kubernetes-key.gpg] https://pkgs.k8s.io/core:/stable:/v{{ kubeVersion }}/deb/ /"
+        state: present
+        filename: kubernetes

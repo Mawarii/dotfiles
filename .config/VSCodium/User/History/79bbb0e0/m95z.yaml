@@ -1,0 +1,5 @@
+---
+- name: Set variables for SSH user and port
+  ansible.builtin.set_fact:
+    ansible_user: "{% if hostvars['localhost']['port_check'].failed %}{{ default_ssh_user }}{% else %}{{ ssh_user }}{% endif %}"
+    ansible_port: "{% if hostvars['localhost']['port_check'].failed %}{{ default_ssh_port }}{% else %}{{ ssh_port }}{% endif %}"

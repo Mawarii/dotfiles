@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: efacluster-ip-domibus
+  namespace: argocd
+spec:
+  destination:
+    namespace: ip-domibus
+    name: in-cluster
+  project: efacluster-intermediaryplatform
+  sources:
+    - path: kustomization/overlays/staging
+      repoURL: "git@gitlab.krz.de:customers/publicplan/efa/staging/distributions/intermediaryplatform/intermediaryplatform_domibus.git"
+      targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

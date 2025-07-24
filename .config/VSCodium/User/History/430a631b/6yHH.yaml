@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ip-oots-service
+spec:
+  template:
+    spec:
+      containers:
+        - name: application
+          env:
+            - name: CLEARINGSERVICE_API_URI
+              value: "https://ip-clearing-service-test.pre-stage.efa.publicplan.cloud/api/v1"
+            - name: REGREPSERVICE_API_URI
+              value: "https://ip-regrep-message-service-test.pre-stage.efa.publicplan.cloud/api/v1/regrepmessageservice"
+            - name: FRONTEND_AP_URI
+              value: "https://ip-oots-frontend-test.pre-stage.efa.publicplan.cloud"
+            - name: XNACHWEISSERVICE_API_URI
+              value: "https://ip-xnachweis-test.pre-stage.efa.publicplan.cloud/api/v1/xnachweis"
+            - name: DOMIBUS_AP_URI
+              value: "https://domibus-ip.pre-stage.efa.publicplan.cloud/domibus/services/wsplugin"
+            - name: FRONTEND_PREVIEW_URI
+              value: "https://ip-preview-space-test.pre-stage.efa.publicplan.cloud"
+            - name: DOMIBUS_PARTYID_VALUE
+              value: "AP_DE_IP_TEST"
+            - name: DOMIBUS_PARTYID_TYPE
+              value: "urn:oasis:names:tc:ebcore:partyid-type:unregistered:DE"
+            - name: DOMIBUS_FROM_ROLE
+              value: "http://sdg.europa.eu/edelivery/gateway"
+            - name: DOMIBUS_TO_ROLE
+              value: "http://sdg.europa.eu/edelivery/gateway"
+            - name: DOMIBUS_COLLABINFO_SERVICE_TYPE
+              value: "urn:oasis:names:tc:ebcore:ebrs:ebms:binding:1.0"
+            - name: DOMIBUS_COLLABINFO_SERVICE_VALUE
+              value: "QueryManager"
+            - name: COUCHDB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb
+                  key: adminUsername
+            - name: COUCHDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb
+                  key: adminPassword
+            - name: COUCHDB_URL
+              value: "http://couchdb:5984/"
+            - name: ENV
+              value: "test"
+            - name: BASE_URL
+              value: "https://ip-oots-service-test.pre-stage.efa.publicplan.cloud"
+            - name: EP_MOCK_ENABLED
+              value: "true"
+            - name: OOTSSERVICE_PORT
+              value: "8080"
+            - name: OOTSSERVICE_RESPONSE_TIMEOUT
+              value: "7000"
+            - name: COUCHDB_LEGALLOGGING_DB_NAME
+              value: legallogging
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: couchdb
+spec:
+  template:
+    spec:
+      containers:
+        - name: couchdb
+          env:
+            - name: COUCHDB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb
+                  key: adminUsername
+            - name: COUCHDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb
+                  key: adminPassword

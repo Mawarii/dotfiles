@@ -1,0 +1,11 @@
+architecture: standalone
+
+auth:
+  password: 7oC7mLbEZ8E3nbI41vV4QydNEyKlgo3j
+
+master:
+  persistence:
+    size: 1Gi
+
+volumePermissions:
+  enabled: true

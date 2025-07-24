@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  creationTimestamp: null
+  name: efacluster-loki
+  namespace: argocd
+spec:
+  destination:
+    name: in-cluster
+    namespace: loki
+  project: efacluster-infra
+  sources:
+    - chart: loki
+      helm:
+        valueFiles:
+          - $values/applications/loki/default-values.yaml
+          - $values/applications/loki/values.yaml
+      repoURL: https://grafana.github.io/helm-charts
+      targetRevision: 6.30.0
+    - ref: values
+      repoURL: https://github.com/publicplan-gmbh/iac-monicore-clustermeta-infra-dist.git
+      targetRevision: HEAD
+  syncPolicy:
+    automated: {}
+    syncOptions:
+      - CreateNamespace=true

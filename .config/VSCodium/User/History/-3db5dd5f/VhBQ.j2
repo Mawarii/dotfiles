@@ -1,0 +1,43 @@
+{{ web_url }} {
+	reverse_proxy forms-flow-web-root-config:8080
+}
+
+{{ formio_url }} {
+	reverse_proxy forms-flow-forms:3001
+}
+
+{{ documents_api_url }} {
+	reverse_proxy forms-flow-documents-api:5006
+}
+
+{{ camunda_url }} {
+	reverse_proxy forms-flow-bpm:8080
+}
+
+{{ formsflow_api_url }} {
+	reverse_proxy forms-flow-webapi:5000
+}
+
+{% if enable_data_analysis | bool %}
+{{ data_analysis_api_url }} {
+	reverse_proxy forms-flow-data-analysis-api:5000
+}
+{% endif %}
+
+{% if enable_keycloak | bool %}
+{{ keycloak_url }} {
+	reverse_proxy forms-flow-idm-keycloak:8080
+}
+{% endif %}
+
+{% if enable_redash | bool %}
+{{ redash_url }} {
+	reverse_proxy forms-flow-redash:5000
+}
+{% endif %}
+
+{% if enable_nocodb | bool %}
+{{ nocodb_url }} {
+	reverse_proxy nocodb:8080
+}
+{% endif %}

@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: helpers
+data:
+  file-renamer.sh: |
+    #!/bin/bash
+
+    # Verzeichnisse definieren
+    input_dir="$1"
+    output_dir="$2"
+
+    # Überprüfen, ob die Eingabeverzeichnisse angegeben sind
+    if [ -z "$input_dir" ] || [ -z "$output_dir" ]; then
+      echo "Usage: $0 <input_directory> <output_directory>"
+      exit 1
+    fi
+      
+    # Sicherstellen, dass das Ausgabeverzeichnis existiert
+    mkdir -p "$output_dir"
+      
+    # Durch alle Dateien im Eingabeverzeichnis iterieren
+    for file in "$input_dir"/*; do
+      # Dateinamen in Kleinbuchstaben umwandeln
+      lowercase_name=$(basename "$file" | tr '[:upper:]' '[:lower:]')
+
+      # Base64 dekodieren und in das Ausgabeverzeichnis mit kleingeschriebenem Namen schreiben
+      base64 -d "$file" > "$output_dir/$lowercase_name"
+    done

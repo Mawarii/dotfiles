@@ -1,0 +1,60 @@
+---
+- name: Add firewall rules for public communication
+  hetzner.hcloud.firewall:
+    api_token: "{{ hcloud_token }}"
+    name: "k8s_public"
+    rules:
+      - port: "{{ ssh_port }}"
+        protocol: tcp
+        direction: in
+        source_ips:
+          - 0.0.0.0/0
+    state: present
+
+- name: Apply public firewall to all cluster machines
+  hetzner.hcloud.firewall_resource:
+    api_token: "{{ hcloud_token }}"
+    firewall: "k8s_public"
+    label_selectors:
+      - vm-type=controlplane
+      - vm-type=worker
+    state: present
+
+- name: Add firewall rules for internal communication
+  hetzner.hcloud.firewall:
+    api_token: "{{ hcloud_token }}"
+    name: "k8s_internal"
+    rules:
+      - port: 1-65535
+        protocol: tcp
+        direction: in
+        source_ips:
+          - '172.16.0.0/12'
+      - port: 1-65535
+        protocol: udp
+        direction: in
+        source_ips:
+          - '172.16.0.0/12'
+      - protocol: imcp
+        direction: in
+        source_ips:
+          - '172.16.0.0/12'
+      - protocol: gre
+        direction: in
+        source_ips:
+          - '172.16.0.0/12'
+      - protocol: esp
+        direction: in
+        source_ips:
+          - '172.16.0.0/12'
+    state: present
+  loop: "{{ output.hcloud_server_info | community.general.json_query('[*].ipv4_address') + ['172.16.0.0/12', '10.0.0.0/8'] }}"
+
+- name: Apply internal firewall to all cluster machines
+  hetzner.hcloud.firewall_resource:
+    api_token: "{{ hcloud_token }}"
+    firewall: "k8s_internal"
+    label_selectors:
+      - vm-type=controlplane
+      - vm-type=worker
+    state: present

@@ -1,0 +1,4 @@
+---
+- name: Configure firewall
+  when: hcloud_token != ""
+  ansible.builtin.include_tasks: "configure-hetzner-firewall.yaml"

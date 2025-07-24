@@ -1,0 +1,104 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: govforms2-workflow-core-user-data-deletion-job
+spec:
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          imagePullSecrets:
+            - name: gitlab-registry-govforms2-workflow-core
+          containers:
+            - name: govforms2-workflow-core-user-data-deletion-job
+              image: DOCKER_IMAGE_1
+              imagePullPolicy: IfNotPresent
+              command:
+                - /srv/app/bin/console
+                - govforms:antraege:delete-personal-data
+              env:
+                - name: APP_CONTEXT
+                  value: "admin"
+                - name: DATABASE_PW
+                  valueFrom:
+                    secretKeyRef:
+                      name: mariadb-auth
+                      key: mariadb-password
+                - name: DATABASE_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: mariadb-auth
+                      key: mariadb-user
+                - name: DATABASE_URL_ANTRAG
+                  value: "mysql://mariadb:$(DATABASE_PW)@mariadb.govforms2-workflow-core.svc:3306/antrag?serverVersion=mariadb-10.11.2&charset=utf8"
+                - name: DATABASE_URL_USER
+                  value: "mysql://mariadb:$(DATABASE_PW)@mariadb.govforms2-workflow-core.svc:3306/user?serverVersion=mariadb-10.11.2&charset=utf8"
+                - name: DATABASE_URL_TENANT
+                  value: "mysql://mariadb:$(DATABASE_PW)@mariadb.govforms2-workflow-core.svc:3306/tenant?serverVersion=mariadb-10.11.2&charset=utf8"
+                - name: DATABASE_URL_FORM
+                  value: "mysql://mariadb:$(DATABASE_PW)@mariadb.govforms2-workflow-core.svc:3306/form?serverVersion=mariadb-10.11.2&charset=utf8"
+                - name: REDIS_URL
+                  value: "redis://redis-sentinel-sentinel.govforms2-workflow-core.svc:26379"
+                - name: REDIS_TTL
+                  value: "1800"
+                - name: MINIO_ROOT_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: minio-secrets
+                      key: root-user
+                - name: MINIO_ROOT_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: minio-secrets
+                      key: root-password
+                - name: MINIO_ENDPOINT
+                  value: "http://minio-service.govforms2-workflow-core.svc:9000"
+                - name: CLAMAV_HOST
+                  value: "tcp://clamav-service.clamav.svc:3310"
+                - name: MAILBOX_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: govforms2-workflow-core-secrets
+                      key: MAILBOX_PASSWORD
+                - name: MAILER_DSN
+                  value: "smtp://govforms2%40publicplan.de:$(MAILBOX_PASSWORD)@smtp.office365.com:587?verify_peer=1"
+              envFrom:
+                - secretRef:
+                    name: cluster-stage-vars
+                - secretRef:
+                    name: govforms2-workflow-core-secrets
+                - configMapRef:
+                    name: govforms2-workflow-core-configmap
+              securityContext:
+                runAsUser: 10001
+                runAsGroup: 10001
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                runAsNonRoot: true
+                capabilities:
+                  drop: ["ALL"]
+                seccompProfile:
+                  type: RuntimeDefault
+              volumeMounts:
+                - name: tmp
+                  mountPath: /tmp
+                - name: cache
+                  mountPath: /srv/app/var/cache
+                - name: symfony-logs
+                  mountPath: /srv/app/var/log
+              resources:
+                limits:
+                  cpu: "1"
+                  memory: "512Mi"
+                requests:
+                  cpu: "10m"
+                  memory: "128Mi"
+          restartPolicy: OnFailure
+          volumes:
+            - name: cache
+              emptyDir: {}
+            - name: tmp
+              emptyDir: {}
+            - name: symfony-logs
+              emptyDir: {}

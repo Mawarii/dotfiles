@@ -1,0 +1,69 @@
+[38;5;6mmariadb [38;5;5m13:24:40.55 [0m
+[38;5;6mmariadb [38;5;5m13:24:40.55 [0m[1mWelcome to the Bitnami mariadb container[0m
+[38;5;6mmariadb [38;5;5m13:24:40.55 [0mSubscribe to project updates by watching [1mhttps://github.com/bitnami/containers[0m
+[38;5;6mmariadb [38;5;5m13:24:40.56 [0mSubmit issues and feature requests at [1mhttps://github.com/bitnami/containers/issues[0m
+[38;5;6mmariadb [38;5;5m13:24:40.62 [0m
+[38;5;6mmariadb [38;5;5m13:24:40.62 [0m[38;5;2mINFO [0m ==> ** Starting MariaDB setup **
+[38;5;6mmariadb [38;5;5m13:24:40.63 [0m[38;5;2mINFO [0m ==> Validating settings in MYSQL_*/MARIADB_* env vars
+[38;5;6mmariadb [38;5;5m13:24:40.72 [0m[38;5;2mINFO [0m ==> Initializing mariadb database
+[38;5;6mmariadb [38;5;5m13:24:40.73 [0m[38;5;2mINFO [0m ==> Updating 'my.cnf' with custom configuration
+[38;5;6mmariadb [38;5;5m13:24:40.74 [0m[38;5;2mINFO [0m ==> Setting user option
+[38;5;6mmariadb [38;5;5m13:24:40.84 [0m[38;5;2mINFO [0m ==> Setting slow_query_log option
+[38;5;6mmariadb [38;5;5m13:24:40.87 [0m[38;5;2mINFO [0m ==> Setting long_query_time option
+[38;5;6mmariadb [38;5;5m13:24:40.92 [0m[38;5;2mINFO [0m ==> Using persisted data
+[38;5;6mmariadb [38;5;5m13:24:40.94 [0m[38;5;2mINFO [0m ==> Running mysql_upgrade
+[38;5;6mmariadb [38;5;5m13:24:41.02 [0m[38;5;2mINFO [0m ==> Starting mariadb in background
+2024-07-31 13:24:41 0 [Note] Starting MariaDB 10.11.4-MariaDB source revision 4e2b93dffef2414a11ca5edc8d215f57ee5010e5 as process 68
+2024-07-31 13:24:41 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2024-07-31 13:24:41 0 [Note] InnoDB: Number of transaction pools: 1
+2024-07-31 13:24:41 0 [Note] InnoDB: Using crc32 + pclmulqdq instructions
+2024-07-31 13:24:41 0 [Note] InnoDB: Using Linux native AIO
+2024-07-31 13:24:41 0 [Note] InnoDB: Initializing buffer pool, total size = 128.000MiB, chunk size = 2.000MiB
+2024-07-31 13:24:41 0 [Note] InnoDB: Completed initialization of buffer pool
+2024-07-31 13:24:41 0 [Note] InnoDB: File system buffers for log disabled (block size=512 bytes)
+2024-07-31 13:24:41 0 [Note] InnoDB: 128 rollback segments are active.
+2024-07-31 13:24:41 0 [Note] InnoDB: Setting file './ibtmp1' size to 12.000MiB. Physically writing the file full; Please wait ...
+2024-07-31 13:24:41 0 [Note] InnoDB: File './ibtmp1' size is now 12.000MiB.
+2024-07-31 13:24:41 0 [Note] InnoDB: log sequence number 2476478; transaction id 1879
+2024-07-31 13:24:41 0 [Note] InnoDB: Loading buffer pool(s) from /bitnami/mariadb/data/ib_buffer_pool
+2024-07-31 13:24:41 0 [Note] Plugin 'FEEDBACK' is disabled.
+2024-07-31 13:24:41 0 [Note] Server socket created on IP: '127.0.0.1'.
+2024-07-31 13:24:41 0 [Warning] 'proxies_priv' entry '@% root@mariadb-0' ignored in --skip-name-resolve mode.
+2024-07-31 13:24:41 0 [Note] InnoDB: Buffer pool(s) load completed at 240731 13:24:41
+2024-07-31 13:24:41 0 [Note] /opt/bitnami/mariadb/sbin/mysqld: ready for connections.
+Version: '10.11.4-MariaDB'  socket: '/opt/bitnami/mariadb/tmp/mysql.sock'  port: 3306  Source distribution
+This installation is already upgraded
+find: '/docker-entrypoint-startdb.d/': No such file or directory
+[38;5;6mmariadb [38;5;5m13:24:43.04 [0m[38;5;2mINFO [0m ==> Stopping mariadb
+2024-07-31 13:24:43 0 [Note] /opt/bitnami/mariadb/sbin/mysqld (initiated by: unknown): Normal shutdown
+2024-07-31 13:24:43 0 [Note] InnoDB: FTS optimize thread exiting.
+2024-07-31 13:24:43 0 [Note] InnoDB: Starting shutdown...
+2024-07-31 13:24:43 0 [Note] InnoDB: Dumping buffer pool(s) to /bitnami/mariadb/data/ib_buffer_pool
+2024-07-31 13:24:43 0 [Note] InnoDB: Buffer pool(s) dump completed at 240731 13:24:43
+2024-07-31 13:24:43 0 [Note] InnoDB: Removed temporary tablespace data file: "./ibtmp1"
+2024-07-31 13:24:43 0 [Note] InnoDB: Shutdown completed; log sequence number 2476478; transaction id 1880
+2024-07-31 13:24:43 0 [Note] /opt/bitnami/mariadb/sbin/mysqld: Shutdown complete
+
+[38;5;6mmariadb [38;5;5m13:24:44.07 [0m[38;5;2mINFO [0m ==> ** MariaDB setup finished! **
+
+[38;5;6mmariadb [38;5;5m13:24:44.13 [0m[38;5;2mINFO [0m ==> ** Starting MariaDB **
+2024-07-31 13:24:44 0 [Note] Starting MariaDB 10.11.4-MariaDB source revision 4e2b93dffef2414a11ca5edc8d215f57ee5010e5 as process 1
+2024-07-31 13:24:44 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+2024-07-31 13:24:44 0 [Note] InnoDB: Number of transaction pools: 1
+2024-07-31 13:24:44 0 [Note] InnoDB: Using crc32 + pclmulqdq instructions
+2024-07-31 13:24:44 0 [Note] InnoDB: Using Linux native AIO
+2024-07-31 13:24:44 0 [Note] InnoDB: Initializing buffer pool, total size = 128.000MiB, chunk size = 2.000MiB
+2024-07-31 13:24:44 0 [Note] InnoDB: Completed initialization of buffer pool
+2024-07-31 13:24:44 0 [Note] InnoDB: File system buffers for log disabled (block size=512 bytes)
+2024-07-31 13:24:44 0 [Note] InnoDB: 128 rollback segments are active.
+2024-07-31 13:24:44 0 [Note] InnoDB: Setting file './ibtmp1' size to 12.000MiB. Physically writing the file full; Please wait ...
+2024-07-31 13:24:44 0 [Note] InnoDB: File './ibtmp1' size is now 12.000MiB.
+2024-07-31 13:24:44 0 [Note] InnoDB: log sequence number 2476478; transaction id 1879
+2024-07-31 13:24:44 0 [Note] InnoDB: Loading buffer pool(s) from /bitnami/mariadb/data/ib_buffer_pool
+2024-07-31 13:24:44 0 [Note] Plugin 'FEEDBACK' is disabled.
+2024-07-31 13:24:44 0 [Note] Server socket created on IP: '0.0.0.0'.
+2024-07-31 13:24:44 0 [Warning] 'proxies_priv' entry '@% root@mariadb-0' ignored in --skip-name-resolve mode.
+2024-07-31 13:24:44 0 [Note] /opt/bitnami/mariadb/sbin/mysqld: ready for connections.
+Version: '10.11.4-MariaDB'  socket: '/opt/bitnami/mariadb/tmp/mysql.sock'  port: 3306  Source distribution
+2024-07-31 13:24:44 0 [Note] InnoDB: Buffer pool(s) load completed at 240731 13:24:44
+2024-08-05 13:49:05 88258 [Warning] InnoDB: In ALTER TABLE `antrag`.`antrag` has or is referenced in foreign key constraints which are not compatible with the new table definition.

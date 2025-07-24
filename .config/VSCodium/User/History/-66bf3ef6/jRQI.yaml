@@ -1,0 +1,4 @@
+---
+- name: "Install Forms-flow-ai"
+  ansible.builtin.include_tasks: "./generate-passwords.yaml"
+  ansible.builtin.include_tasks: "./install-forms-flow.yaml"

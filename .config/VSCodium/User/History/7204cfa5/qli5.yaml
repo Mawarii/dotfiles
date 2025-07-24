@@ -1,0 +1,40 @@
+global:
+  domain: "{{ argocd_domain }}"
+
+server:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hostname: "{{ argocd_domain }}"
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    tls: true
+
+configs:
+  ######################################################
+  # Addititional configuration for OIDC with Keycloak
+  ######################################################
+  secret:
+    extra:
+      oidc.keycloak.clientSecret: '<your-client-secret>'
+  rbac:
+    policy.csv: |
+      p, role:my-keycloak-role-read, applications, get, */*, allow
+      p, role:my-keycloak-role-write, projects, *, *,  allow
+      p, role:my-keycloak-role-admin, *, *, *, allow
+      g, my-keycloak-role-read, role:my-keycloak-role-read
+      g, my-keycloak-role-write, role:my-keycloak-role-write
+      g, role:my-keycloak-role-write, role:my-keycloak-role-write
+      g, my-keycloak-role-admin, role:my-keycloak-role-admin
+      g, my-keycloak-role-admin, role:my-keycloak-role-admin
+  cm:
+    exec.enabled: true 
+    oidc.config: |  
+      name: Keycloak
+      issuer: https://keycloak.example.com/auth/realms/argocd
+      clientID: argocd-wsp-pre-stage
+      clientSecret: $oidc.keycloak.clientSecret
+      requestedScopes: ["openid", "profile", "email", "groups"]
+  params:
+    # server.oidc.cache.expiration: "60m0s"
+    server.insecure: true

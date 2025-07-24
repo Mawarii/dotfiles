@@ -1,0 +1,5 @@
+expose:
+  tls:
+    certSource: secret
+    secret:
+      secretName: "harbor.pre-stage.efa.publicplan.cloud-tls"

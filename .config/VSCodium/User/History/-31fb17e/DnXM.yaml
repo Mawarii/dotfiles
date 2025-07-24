@@ -1,0 +1,14 @@
+---
+- name: Change Hetzner firewall SSH port
+  when: hcloud_token != ""
+  hetzner.hcloud.firewall:
+    api_token: "{{ hcloud_token }}"
+    name: "k8s_pub"
+    rules:
+      - description: "SSH"
+        protocol: tcp
+        direction: in
+        port: 22222
+        source_ips:
+          - 0.0.0.0/0
+    state: present

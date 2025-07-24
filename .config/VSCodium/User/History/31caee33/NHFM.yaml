@@ -1,0 +1,158 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drupal
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: drupal
+      layer: hsi-intranet
+  template:
+    metadata:
+      name: drupal
+      labels:
+        app: drupal
+        layer: hsi-intranet
+    spec:
+      imagePullSecrets:
+        - name: pullsecret-drupal
+      containers:
+        - name: drupal
+          image: gitlab.publicplan.cloud:5050/themenwelt-portale/recht.nrw
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/bash
+                  - -c
+                  - export drush=vendor/drush/drush/drush && $drush cr -v && $drush updb -y && $drush cim -y && $drush cr && $drush locale-check && $drush locale-update && $drush cr
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512M
+            limits:
+              cpu: 500m
+              memory: 512M
+          securityContext:
+            runAsUser: 33
+            runAsGroup: 33
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+          volumeMounts:
+            - mountPath: /var/www/html/web/sites/default/files
+              name: files
+            - mountPath: /var/www/html/private
+              name: private
+            - mountPath: /srv
+              name: static
+            - mountPath: /var/run
+              name: varrun
+            - mountPath: /tmp
+              name: tmp
+        - name: cron
+          image: gitlab.publicplan.cloud:5050/themenwelt-portale/recht.nrw
+          imagePullPolicy: IfNotPresent
+          command: ["/docker-cron-entrypoint.sh"]
+          args: ["cron", "-f"]
+          resources:
+            requests:
+              cpu: 500m
+              memory: 512M
+            limits:
+              cpu: 4500m
+              memory: 12Gi
+          volumeMounts:
+            - mountPath: /var/www/html/web/sites/default/files
+              name: files
+            - mountPath: /var/www/html/private
+              name: private
+            - mountPath: /srv
+              name: static
+            - mountPath: /var/run
+              name: varrun
+            - mountPath: /tmp
+              name: tmp
+        - name: rsync-server
+          image: nixery.dev/rsync
+          imagePullPolicy: IfNotPresent
+
+          command:
+            - rsync
+            - --daemon
+            - --no-detach
+          ports:
+            - containerPort: 1873
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128M
+            limits:
+              cpu: 50m
+              memory: 128M
+          securityContext:
+            runAsUser: 33
+            runAsGroup: 33
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+          volumeMounts:
+            - mountPath: /etc/rsyncd.conf
+              name: config
+              subPath: rsyncd.conf
+            - mountPath: /srv
+              name: static
+      initContainers:
+        - command:
+            - sh
+            - -c
+            - |
+              mkdir -p "/srv/files" "/srv/private" "/srv/static"
+              chown -R "33:33" "/srv/files" "/srv/private" "/srv/static"
+          image: docker.io/bitnami/os-shell:11-debian-11-r90
+          imagePullPolicy: IfNotPresent
+          name: volume-permissions
+          resources: {}
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+            - mountPath: /srv/files
+              name: files
+            - mountPath: /srv/private
+              name: private
+            - mountPath: /srv/static
+              name: static
+      restartPolicy: Always
+      volumes:
+        - name: files
+          persistentVolumeClaim:
+            claimName: files
+        - name: private
+          persistentVolumeClaim:
+            claimName: private
+        - name: static
+          persistentVolumeClaim:
+            claimName: static
+        - name: varrun
+          emptyDir: {}
+        - name: tmp
+          emptyDir: {}
+        - name: config
+          configMap:
+            name: configuration-files

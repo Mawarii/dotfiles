@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  creationTimestamp: null
+  name: devcluster-harbor
+  namespace: argocd
+spec:
+  destination:
+    name: publicplan-dev
+    namespace: harbor
+  project: devcluster-infra
+  sources:
+  - path: applications/harbor/resources
+    repoURL: git@gitlab.publicplan.cloud:team-kops/infra-internal/pp-dev-cluster.git
+    targetRevision: HEAD
+  - chart: harbor
+    helm:
+      valueFiles:
+      - $values/applications/harbor/values.yaml
+    repoURL: https://helm.goharbor.io
+    targetRevision: 1.14.2
+  - ref: values
+    repoURL: git@gitlab.publicplan.cloud:team-kops/infra-internal/pp-dev-cluster.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

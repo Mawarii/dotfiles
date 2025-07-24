@@ -1,0 +1,25 @@
+services:
+  caddy:
+    image: harbor.cloudical.net/tools/caddy:2.7.6-alpine
+    restart: unless-stopped
+    container_name: caddy
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+      - ./certs:/etc/ssl/certs
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - caddy-net
+
+volumes:
+  caddy_data:
+    external: true
+  caddy_config:
+
+networks:
+  caddy-net:
+    name: caddy_proxy
+    external: true

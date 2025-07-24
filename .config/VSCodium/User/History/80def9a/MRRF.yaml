@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: frs
+  name: frs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frs
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: frs
+    spec:
+      securityContext:
+        fsGroup: 1001
+        runAsGroup: 1001
+        runAsUser: 1001
+      imagePullSecrets:
+        - name: gitlab-registry
+      initContainers:
+        - name: init-frs
+          image: gitlab.publicplan.cloud:5050/themenwelt-kommunales/poc/forest-nextjs-rebuild/baukasten
+          command: ["sh", "-c", "cp -r /app/.next/server/* /mnt/"]
+          volumeMounts:
+            - name: server
+              mountPath: /mnt
+      containers:
+        - image: gitlab.publicplan.cloud:5050/themenwelt-kommunales/poc/forest-nextjs-rebuild/baukasten
+          imagePullPolicy: IfNotPresent
+          name: frs
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsGroup: 1001
+            runAsUser: 1001
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: "RuntimeDefault"
+          envFrom:
+            - configMapRef:
+                name: frs-config
+          volumeMounts:
+            - name: server
+              mountPath: /app/.next/server
+            - name: cache
+              mountPath: /app/.next/cache
+          resources:
+            limits:
+              memory: 1Gi
+              cpu: 500m
+            requests:
+              memory: 1Gi
+              cpu: 500m
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 3
+            periodSeconds: 30
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 90
+            periodSeconds: 10
+            timeoutSeconds: 5
+      restartPolicy: Always
+      volumes:
+        - name: cache
+          emptyDir: {}
+        - name: server
+          emptyDir: {}

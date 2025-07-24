@@ -1,0 +1,58 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  creationTimestamp: null
+  name: devcluster-nextcloud-voapp
+  namespace: argocd
+spec:
+  destination:
+    name: publicplan-dev
+    namespace: nextcloud-voapp
+  project: devcluster-projects-kommunales
+  sources:
+    - path: helm/keycloak/develop/resources
+      repoURL: "git@gitlab.publicplan.cloud:themenwelt-kommunales/infrastructure/nextcloud-vo_federation-dist.git"
+      targetRevision: main
+    - path: helm/phpmyadmin/develop/resources
+      repoURL: "git@gitlab.publicplan.cloud:themenwelt-kommunales/infrastructure/nextcloud-vo_federation-dist.git"
+      targetRevision: main
+    - path: helm/nextcloud/develop/resources
+      repoURL: "git@gitlab.publicplan.cloud:themenwelt-kommunales/infrastructure/nextcloud-vo_federation-dist.git"
+      targetRevision: main
+    - chart: mariadb
+      helm:
+        valueFiles:
+          - $values/helm/mariadb/develop/default-values.yaml
+          - $values/helm/mariadb/develop/values.yaml
+      repoURL: registry-1.docker.io/bitnamicharts
+      targetRevision: "20.4.3"
+    - chart: keycloak
+      helm:
+        valueFiles:
+          - $values/helm/keycloak/develop/default-values.yaml
+          - $values/helm/keycloak/develop/values.yaml
+      repoURL: registry-1.docker.io/bitnamicharts
+      targetRevision: "24.5.8"
+    - chart: phpmyadmin
+      helm:
+        valueFiles:
+          - $values/helm/phpmyadmin/develop/default-values.yaml
+          - $values/helm/phpmyadmin/develop/values.yaml
+      repoURL: registry-1.docker.io/bitnamicharts
+      targetRevision: "18.1.6"
+    - chart: nextcloud
+      helm:
+        valueFiles:
+          - $values/helm/nextcloud/develop/default-values.yaml
+          - $values/helm/nextcloud/develop/values.yaml
+      repoURL: https://nextcloud.github.io/helm/
+      targetRevision: "6.6.9"
+    - ref: values
+      repoURL: "git@gitlab.publicplan.cloud:themenwelt-kommunales/infrastructure/nextcloud-vo_federation-dist.git"
+      targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

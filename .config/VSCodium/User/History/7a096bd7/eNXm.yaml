@@ -1,0 +1,20 @@
+controller:
+  config:
+    use-proxy-protocol: "true"
+    use-forwarded-headers: "true"
+    # allow-snippet-annotations: "true"
+    ## We need to find a better solution for this.
+    ## if you find this comment and it hasn't been dealt with so far,
+    ## ensure that a ticket exists, to take care of this.
+    ## Either ensuring that it poses no risk to us or finding a different way to make snippet annotations obsolete, so that it can be removed
+    annotations-risk-level: "Critical"
+  allowSnippetAnnotations: true
+  kind: DaemonSet
+  service:
+    annotations:
+      loadbalancer.openstack.org/proxy-protocol: "true"
+      loadbalancer.openstack.org/keep-floatingip: "true"
+      loadbalancer.openstack.org/hostname: "78.138.66.78.nip.io"
+      loadbalancer.openstack.org/load-balancer-address: "78.138.66.78"
+    loadBalancerIP: "78.138.66.78"
+  enableAnnotationValidations: false

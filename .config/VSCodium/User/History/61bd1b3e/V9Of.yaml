@@ -1,0 +1,21 @@
+---
+- name: Machine preparation and hardening
+  hosts: all
+  become: true
+  gather_facts: false
+  roles:
+    - role: prepare-machine
+
+- name: Install K3s
+  ansible.builtin.import_playbook: k3s.orchestration.site
+
+- name: Install applications
+  hosts: server[0]
+  become: true
+  gather_facts: true
+  roles:
+    - role: install-helm
+    - role: install-cert-manager
+    - role: install-ingress-nginx
+    - role: install-kube-prometheus-stack
+    - role: install-wordpress

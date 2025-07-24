@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: domibus-ip-ingress
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: "domibus-ip.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: domibus
+                port:
+                  number: 8080

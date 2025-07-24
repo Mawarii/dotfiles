@@ -1,0 +1,6 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - deploy-docker
+    - deploy-forms-flow

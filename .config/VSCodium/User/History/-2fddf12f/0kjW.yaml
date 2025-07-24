@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    app.kubernetes.io/instance: delme
+  name: delme
+  namespace: argo-cd
+spec:
+  destination:
+    namespace: delme
+    server: 'https://kubernetes.default.svc'
+  project: default
+  sources:
+  - chart: apache
+    helm:
+      passCredentials: true
+    repoURL: http://chartmuseum.chartmuseum.svc:8080
+    targetRevision: "11.0.2"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

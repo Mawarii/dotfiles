@@ -1,0 +1,60 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: govforms2-rabbitmq-consumer-job
+spec:
+  schedule: "* * * * *"
+  suspend: false # temporary disable cronjob
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: govforms2-workflow-core-rabbitmq-consumer-job
+        spec:
+          securityContext:
+            fsGroup: 10001
+            runAsGroup: 10001
+            runAsNonRoot: true
+            runAsUser: 10001
+          imagePullSecrets:
+            - name: gitlab-registry
+          restartPolicy: Never
+          containers:
+            - name: rabbitmq-consumer-job
+              image: DOCKER_IMAGE_1
+              command: 
+                - /bin/sh
+                - -c 
+                - "/usr/local/bin/php /srv/app/bin/console messenger:setup-transports && /usr/local/bin/php /srv/app/bin/console messenger:consume async --time-limit=60"
+              securityContext:
+                runAsGroup: 10001
+                runAsNonRoot: true
+                runAsUser: 10001
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop: ["ALL"]
+                seccompProfile:
+                  type: RuntimeDefault
+                readOnlyRootFilesystem: true
+                privileged: false
+              env:
+                - name: APP_ENV
+                  value: "prod"
+              volumeMounts:
+                - name: tmp
+                  mountPath: /tmp
+                - name: symfony-logs
+                  mountPath: /srv/app/var/log
+                - name: cache
+                  mountPath: /srv/app/var/cache
+                - name: public
+                  mountPath: /srv/app/public
+          volumes:
+            - name: tmp
+              emptyDir: {}
+            - name: symfony-logs
+              emptyDir: {}
+            - name: cache
+              emptyDir: {}
+            - name: public
+              emptyDir: {}

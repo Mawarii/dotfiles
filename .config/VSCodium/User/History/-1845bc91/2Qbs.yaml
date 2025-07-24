@@ -1,0 +1,64 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+commonLabels:
+  env: dev
+
+resources:
+  - ../../base
+  - ../../../../databases/bitnami-mariadb-10.11.4-debian-11-r0/overlays/develop
+  - ../../bitnami-phpmyadmin-5.2.1-debian-12-r20/overlays/develop
+  - ./empfangsclient-ecc-version-ingress.yaml
+  - ./empfangsclient-pma-ingress.yaml
+  - ./empfangsclient-ecc-secrets.yaml
+  - ./empfangsclient-ecc-configmap.yaml
+
+images:
+  - name: DOCKER_IMAGE_1
+    newName: gitlab.publicplan.cloud:5050/themenwelt-portalverbund/empfangs-client/ecc
+    newTag: v1.6.0
+  - name: DOCKER_IMAGE_1_ORIGIN
+    newName: gitlab.publicplan.cloud:5050/themenwelt-portalverbund/empfangs-client/ecc
+    newTag: v1.6.0
+  - name: DOCKER_IMAGE_2
+    newName: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/tools/version-sidecar
+    newTag: v1.3.1
+  - name: DOCKER_IMAGE_2_ORIGIN
+    newName: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/tools/version-sidecar
+    newTag: v1.3.1
+
+patches:
+  - path: mariadb-secret.patch.yaml
+    target:
+      kind: Secret
+      name: mariadb-wsp-secret
+  # - path: phpmyadmin.patch.yaml
+  #   target:
+  #     kind: Deployment
+  #     name: phpmyadmin
+
+replacements: #version sidecar replacements
+  - source:
+      kind: Deployment
+      name: empfangsclient-ecc
+      fieldPath: spec.template.spec.containers.[name=empfangsclient-ecc].image
+    targets:
+    - select:
+        kind: Deployment
+        name: empfangsclient-ecc
+      fieldPaths:
+        - spec.template.spec.containers.[name=version-sidecar].env.[name=DOCKER_IMAGE_1].value
+      options:
+        create: true
+  - source:
+      kind: Deployment
+      name: empfangsclient-ecc
+      fieldPath: spec.template.spec.containers.[name=version-sidecar].image
+    targets:
+    - select:
+        kind: Deployment
+        name: empfangsclient-ecc
+      fieldPaths:
+        - spec.template.spec.containers.[name=version-sidecar].env.[name=DOCKER_IMAGE_2].value
+      options:
+        create: true

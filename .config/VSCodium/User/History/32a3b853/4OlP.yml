@@ -1,0 +1,21 @@
+stages:
+  - no-proxy
+  - proxy
+
+no-proxy:
+  stage: no-proxy
+  image:
+    name: mongo:8.0-rc-jammy
+  script:
+    - echo hi
+  only:
+    - main
+
+proxy:
+  stage: proxy
+  image:
+    name: harbor.dev.publicplan.cloud/docker_proxy/mongo:5.0.27-focal
+  script:
+    - echo hi
+  only:
+    - main

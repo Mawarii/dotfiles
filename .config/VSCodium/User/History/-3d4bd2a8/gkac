@@ -1,0 +1,3 @@
+FROM gcr.io/bitnami-labs/charts-syncer:v0.20.3 as syncer
+FROM alpine:3.19.1
+

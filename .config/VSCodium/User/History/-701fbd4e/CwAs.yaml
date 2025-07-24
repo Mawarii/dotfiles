@@ -1,0 +1,110 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: static
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: static
+      layer: public
+  template:
+    metadata:
+      name: static
+      labels:
+        app: static
+        layer: public
+    spec:
+      containers:
+        - name: static
+          image: httpd:2.4-alpine
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128M
+            limits:
+              cpu: 50m
+              memory: 128M
+          securityContext:
+            runAsUser: 101
+            runAsGroup: 101
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+          volumeMounts:
+            - mountPath: /usr/local/apache2/htdocs
+              name: files
+            - mountPath: /usr/local/apache2/conf/httpd.conf
+              name: config
+              subPath: httpd.conf
+            - mountPath: /usr/local/apache2/logs
+              name: apache-logs
+        - name: rsync-server
+          image: nixery.dev/rsync
+          imagePullPolicy: IfNotPresent
+          command:
+            - rsync
+            - --daemon
+            - --no-detach
+          ports:
+            - containerPort: 1873
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128M
+            limits:
+              cpu: 50m
+              memory: 128M
+          securityContext:
+            runAsUser: 101
+            runAsGroup: 101
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+          volumeMounts:
+            - mountPath: /etc/rsyncd.conf
+              name: config
+              subPath: rsyncd.conf
+            - mountPath: /srv
+              name: files
+      initContainers:
+        - command:
+            - sh
+            - -c
+            - |
+              mkdir -p "/srv/files"
+              chown -R "101:101" "/srv/files"
+          image: docker.io/bitnami/os-shell:11-debian-11-r90
+          imagePullPolicy: IfNotPresent
+          name: volume-permissions
+          resources: {}
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+            - mountPath: /srv/files
+              name: files
+      restartPolicy: Always
+      volumes:
+        - name: files
+          persistentVolumeClaim:
+            claimName: staticfiles
+        - name: config
+          configMap:
+            name: configuration-files
+        - name: apache-logs
+          emptyDir: {}

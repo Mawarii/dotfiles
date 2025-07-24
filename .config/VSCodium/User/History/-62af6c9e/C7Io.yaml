@@ -1,0 +1,4 @@
+---
+- name: Create new non-root user
+  ansible.builtin.user:
+    

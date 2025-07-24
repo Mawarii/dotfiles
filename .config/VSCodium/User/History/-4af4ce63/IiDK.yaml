@@ -1,0 +1,60 @@
+---
+image:
+  keycloak: quay.io/keycloak/keycloak:26.0.6
+  caddy: caddy:2.8.4-alpine
+  nocodb: nocodb/nocodb:0.258.2
+
+  mongodb: mongo:7.0.9-rc0-jammy
+  postgresql: bitnami/postgresql:16.2.0-debian-12-r15
+  redis: redis:7.2.3-alpine3.19
+  
+  formio: formsflow/forms-flow-forms:v6.0.2
+  camunda: formsflow/forms-flow-bpm:v6.0.2
+  web: formsflow/forms-flow-web:v6.0.2
+  formsflow_api: formsflow/forms-flow-webapi:v6.0.2
+  documents_api: formsflow/forms-flow-documents-api:v6.0.2
+  data_analysis: formsflow/forms-flow-data-analysis-api:v6.0.2
+  redash: formsflow/redash:10.1.6
+
+folder:
+  caddy: caddy
+  keycloak: keycloak
+  formsflow: forms-flow-ai
+  data_analysis: data_analysis
+  redash: redash
+  backups: backups
+  nocodb: nocodb
+
+keycloak:
+  realm: forms-flow-ai
+  bpm_client_id: forms-flow-bpm
+  web_client_id: forms-flow-web
+  admin_username: admin
+  database:
+    username: keycloak
+    database: keycloak
+
+formio:
+  database:
+    username: admin
+    database: formio
+
+camunda:
+  database:
+    username: camunda
+    database: formsflow-bpm
+
+formsflow_api:
+  database:
+    username: form-flow-api
+    database: webapi
+
+redash:
+  database:
+    username: redash
+    database: analytics
+
+dataanalysis:
+  database:
+    username: analysis
+    database: dataanalysis

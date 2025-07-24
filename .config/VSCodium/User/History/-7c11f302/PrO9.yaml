@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    k8s.publicplan.cloud/contact: "shield@publicplan.de"
+  labels:
+    app.kubernetes.io/instance: formio
+  name: formio
+  namespace: argocd
+spec:
+  destination:
+    namespace: formio
+    server: https://kubernetes.default.svc
+  project: efacluster-formio
+  sources:
+    - path: helm/mongodb/pre-stage/resources
+      repoURL: "git@gitlab.publicplan.cloud:iac/efa/distributions/formio/formio-dist.git"
+      targetRevision: HEAD
+    - path: kustomization/overlays/pre-stage
+      repoURL: "git@gitlab.publicplan.cloud:iac/efa/distributions/formio/formio-dist.git"
+      targetRevision: HEAD
+    - chart: mongodb
+      helm:
+        releaseName: formio-mongodb
+        valueFiles:
+          - $values/helm/mongodb/pre-stage/default-values.yaml
+          - $values/helm/mongodb/pre-stage/values.yaml
+      repoURL: registry-1.docker.io/bitnamicharts
+      targetRevision: 16.4.12
+    - ref: values
+      repoURL: "git@gitlab.publicplan.cloud:iac/efa/distributions/formio/formio-dist.git"
+      targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

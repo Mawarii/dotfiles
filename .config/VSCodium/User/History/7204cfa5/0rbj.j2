@@ -1,0 +1,33 @@
+global:
+  domain: "{{ argocd.domain }}"
+
+server:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hostname: "{{ argocd.domain }}"
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    tls: true
+
+configs:
+  cm:
+    exec.enabled: true 
+    oidc.config: |  
+      name: Keycloak
+      issuer: "{{ argocd.keycloak.url }}"
+      clientID: "{{ argocd.keycloak.client_id }}"
+      clientSecret: $oidc.keycloak.clientSecret
+      requestedScopes: ["openid", "profile", "email", "groups"]
+  params:
+    server.oidc.cache.expiration: "60m0s"
+    server.insecure: true
+  rbac:
+    create: false
+  secret:
+    extra:
+      oidc.keycloak.clientSecret: "{{ argocd.keycloak.client_secret }}"
+  credentialTemplates:
+    ssh-creds:
+      url: "git@gitlab.publicplan.cloud:"
+      sshPrivateKey: |

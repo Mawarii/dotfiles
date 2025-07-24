@@ -1,0 +1,61 @@
+2025-07-22 14:43:29.482 [info] [main] Log level: Info
+2025-07-22 14:43:29.482 [info] [main] Validating found git in: "git"
+2025-07-22 14:43:29.482 [info] [main] Using git "2.50.1" from "git"
+2025-07-22 14:43:29.482 [info] [Model][doInitialScan] Initial repository scan started
+2025-07-22 14:43:29.482 [info] > git rev-parse --show-toplevel [13ms]
+2025-07-22 14:43:29.482 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 14:43:29.498 [info] > git rev-parse --show-toplevel [10ms]
+2025-07-22 14:43:29.498 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 14:43:29.510 [info] > git rev-parse --show-toplevel [5ms]
+2025-07-22 14:43:29.510 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 14:43:29.517 [info] > git rev-parse --show-toplevel [2ms]
+2025-07-22 14:43:29.517 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 14:43:29.524 [info] > git rev-parse --show-toplevel [2ms]
+2025-07-22 14:43:29.531 [info] > git rev-parse --git-dir --git-common-dir [2ms]
+2025-07-22 14:43:29.539 [info] [Model][openRepository] Opened repository (path): /home/dmarkovic/git-projects/publicplan/efa/rbac
+2025-07-22 14:43:29.539 [info] [Model][openRepository] Opened repository (real path): /home/dmarkovic/git-projects/publicplan/efa/rbac
+2025-07-22 14:43:29.541 [info] [Model][doInitialScan] Initial repository scan completed - repositories (1), closed repositories (0), parent repositories (0), unsafe repositories (0)
+2025-07-22 14:43:29.742 [info] > git config --get commit.template [196ms]
+2025-07-22 14:43:29.887 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/master refs/remotes/master [23ms]
+2025-07-22 14:43:29.911 [info] > git status -z -uall [15ms]
+2025-07-22 14:43:29.911 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [8ms]
+2025-07-22 14:43:29.930 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/master refs/remotes/master [10ms]
+2025-07-22 14:43:29.955 [info] > git config --get --local branch.master.vscode-merge-base [20ms]
+2025-07-22 14:43:29.962 [info] > git config --get commit.template [33ms]
+2025-07-22 14:43:29.964 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/origin/master refs/remotes/origin/master [2ms]
+2025-07-22 14:43:29.981 [info] > git merge-base refs/heads/master refs/remotes/origin/master [10ms]
+2025-07-22 14:43:30.003 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/master refs/remotes/master [24ms]
+2025-07-22 14:43:30.020 [info] > git diff --name-status -z --diff-filter=ADMR bc1b0d5cf25787ffaf7851560b48b3fa98108e31...refs/remotes/origin/master [34ms]
+2025-07-22 14:43:30.027 [info] > git rev-parse --show-toplevel [11ms]
+2025-07-22 14:43:30.027 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 14:43:30.052 [info] > git status -z -uall [9ms]
+2025-07-22 14:43:30.052 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [5ms]
+2025-07-22 14:43:30.085 [info] > git rev-parse --show-toplevel [2ms]
+2025-07-22 14:43:30.097 [info] > git rev-parse --git-dir --git-common-dir [7ms]
+2025-07-22 14:43:30.100 [info] [Model][openRepository] Opened repository (path): /home/dmarkovic/git-projects/publicplan/efa/distributions/DPA/hr-dpa-dist
+2025-07-22 14:43:30.100 [info] [Model][openRepository] Opened repository (real path): /home/dmarkovic/git-projects/publicplan/efa/distributions/DPA/hr-dpa-dist
+2025-07-22 14:43:30.116 [info] > git config --get commit.template [8ms]
+2025-07-22 14:43:30.128 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [4ms]
+2025-07-22 14:43:30.140 [info] > git status -z -uall [6ms]
+2025-07-22 14:43:30.140 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [1ms]
+2025-07-22 14:43:30.162 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [12ms]
+2025-07-22 14:43:30.173 [info] > git config --get --local branch.main.vscode-merge-base [3ms]
+2025-07-22 14:43:30.178 [info] > git config --get commit.template [17ms]
+2025-07-22 14:43:30.185 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/origin/main refs/remotes/origin/main [7ms]
+2025-07-22 14:43:30.191 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [7ms]
+2025-07-22 14:43:30.191 [info] > git merge-base refs/heads/main refs/remotes/origin/main [1ms]
+2025-07-22 14:43:30.220 [info] > git status -z -uall [11ms]
+2025-07-22 14:43:30.220 [info] > git diff --name-status -z --diff-filter=ADMR 297e15048cfe1e5edab676a1deb55a8f4607c65f...refs/remotes/origin/main [22ms]
+2025-07-22 14:43:30.223 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [4ms]
+2025-07-22 14:43:30.629 [info] > git check-ignore -v -z --stdin [5ms]
+2025-07-22 14:43:30.630 [info] > git check-ignore -v -z --stdin [1ms]
+2025-07-22 14:43:39.095 [info] > git show --textconv :helm/noots-sak-dp-server/develop/values.yaml [7ms]
+2025-07-22 14:43:39.096 [info] > git ls-files --stage -- helm/noots-sak-dp-server/develop/values.yaml [2ms]
+2025-07-22 14:43:39.103 [info] > git cat-file -s dd36ccc91b37d61b0f38d7d6e97a805ab48c48a9 [1ms]
+2025-07-22 14:43:39.127 [info] > git blame --root --incremental 297e15048cfe1e5edab676a1deb55a8f4607c65f -- helm/noots-sak-dp-server/develop/values.yaml [3ms]
+2025-07-22 14:43:39.458 [info] > git check-ignore -v -z --stdin [2ms]

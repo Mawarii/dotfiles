@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: govforms2-workflow-core
+  namespace: argocd
+spec:
+  destination:
+    namespace: govforms2-workflow-core
+    server: "https://kubernetes.default.svc"
+  project: efacluster-govforms2
+  sources:
+    - path: kustomization/overlays/develop/
+      repoURL: "git@gitlab.publicplan.cloud:iac/efa/distributions/govforms2/govforms2-workflow-core.git"
+      targetRevision: master
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

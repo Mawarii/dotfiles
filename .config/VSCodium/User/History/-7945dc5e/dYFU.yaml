@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: govforms2-akeneo-consumer
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      k8s-app: govforms2-akeneo
+  template:
+    metadata:
+      labels:
+        k8s-app: govforms2-akeneo
+    spec:
+      restartPolicy: Always
+      initContainers:
+        - name: copy-public-files
+          image: DOCKER_IMAGE_1
+          command: ["sh", "-c", "cp -r /srv/pim/public/* /copydata"]
+          volumeMounts:
+            - name: public
+              mountPath: /copydata
+          securityContext:
+            runAsUser: 10001
+            runAsGroup: 10001
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+      containers:
+        - name: consumer
+          image: DOCKER_IMAGE_1
+          env:
+            - name: APP_DATABASE_HOST
+              value: "mysql"
+            - name: APP_DATABASE_NAME
+              value: "akeneo_pim"
+            - name: APP_DATABASE_USER
+              value: "akeneo_pim"
+            - name: APP_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: mysql-password
+                  name: mysql-auth
+          securityContext:
+            runAsUser: 10001
+            runAsGroup: 10001
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+          volumeMounts:
+            - name: public
+              mountPath: /srv/pim/public
+            - name: tmp
+              mountPath: /tmp
+            - name: symfony-logs
+              mountPath: /srv/pim/var/logs
+            - name: symfony-file-storage
+              mountPath: /srv/pim/var/file_storage
+            - name: cache
+              mountPath: /srv/pim/var/cache
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+      securityContext:
+        fsGroup: 10001
+        runAsGroup: 10001
+        runAsUser: 10001
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: public
+          emptyDir: {}
+        - name: symfony-logs
+          emptyDir: {}
+        - name: symfony-file-storage
+          emptyDir: {}
+        - name: cache
+          emptyDir: {}

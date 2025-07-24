@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-generic-oauth
+data:
+  custom.ini: |-
+    [auth.generic_oauth]
+    enabled = true
+    name = Keycloak
+    allow_sign_up = true
+    client_id = grafana-wsp
+    client_secret = K1lukk599gGZqpJfkXnJCY2Jr6PWSKOb
+    scopes = openid email profile offline_access roles
+    email_attribute_path = email
+    login_attribute_path = username
+    name_attribute_path = full_name
+    auth_url = https://keycloak.live.publicplan.cloud/auth/realms/master/protocol/openid-connect/auth
+    token_url = https://keycloak.live.publicplan.cloud/auth/realms/master/protocol/openid-connect/token
+    api_url = https://keycloak.live.publicplan.cloud/auth/realms/master/protocol/openid-connect/userinfo
+    role_attribute_path: contains(resource_access."grafana-clops".roles[*], 'admin') && 'Admin' || contains(resource_access."grafana-clops".roles[*], 'editor') && 'Editor' || 'Viewer'
+    allow_assign_grafana_admin = true

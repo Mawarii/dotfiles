@@ -1,0 +1,149 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sdg-backend
+spec:
+  revisionHistoryLimit: 1
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: sdg-backend
+  template:
+    metadata:
+      labels:
+        k8s-app: sdg-backend
+    spec:
+      containers:
+        - name: application
+          image: DOCKER_IMAGE_1
+          command:
+            - "/bin/sh"
+            - "-c"
+            - |
+              chown www-data:www-data -R /var/www/project/var/log && chown www-data:www-data -R /var/log && chown www-data:www-data -R /var/lib/nginx/logs && /
+              setfacl -R -m u:www-data:rwx /var/www/project/var/log && setfacl -R -m u:www-data:rwx /var/log && setfacl -R -m u:www-data:rwx /var/lib/nginx/logs && / 
+              /var/www/project/bin/console doctrine:migrations:migrate -n && \
+              crond && php-fpm -D && nginx -g 'daemon off;'
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: "mariadb"
+                  key: database-dsn
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: "mariadb"
+                  key: db-host
+            - name: DB_VERSION
+              valueFrom:
+                secretKeyRef:
+                  name: "mariadb"
+                  key: db-version
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: "mariadb"
+                  key: db-name
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: "mariadb"
+                  key: db-user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: "mariadb"
+                  key: db-password
+            - name: API_JWT_SECRET
+              value: "NotReallyImportantSecretButShouldBeMovedToSomeSecretPlace"
+            - name: APP_ENV
+              value: "dev"
+            - name: REDIS_HOST
+              value: "redis-master"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis-secret
+                  key: password
+            - name: FETCHER_CONFIG_BASE_URI
+              value: "aHR0cHM6Ly90ZXN0NC5yZWdpc3RlcnBvcnRhbC5kZS9ycF92c3MvYXBpL3Zzcw=="
+            - name: PREVIEW_URL_TEMPLATE
+              value: "https://sdg-frontend.regmo.dev.publicplan.cloud/evidence-provider/preview-space/{conversationId}"
+            - name: DOMIBUS_PARTY_ID
+              value: "AP_DE_01"
+            - name: DOMIBUS_PARTY_TYPE
+              value: "urn:oasis:names:tc:ebcore:partyid-type:unregistered:DE"
+            - name: DOMIBUS_PROJECTATHON_ENDPOINT
+              value: ""
+            - name: DOMIBUS_PROVIDER_ENDPOINT
+              value: "https://domibus.pre-stage.wspdev.de/domibus/services/wsplugin"
+            - name: DOMIBUS_ENDPOINT
+              value: "https://domibus.pre-stage.wspdev.de/domibus/services/wsplugin"
+            - name: DOMIBUS_FORCED_TARGET_PARTY
+              value: ""
+            - name: DATA_DELETION_SECONDS
+              value: "3600"
+            - name: LOOKUP_EB_URI
+              value: "https://query.cs.acc.oots.tech.ec.europa.eu/eb/rest/search"
+            - name: LOOKUP_DSD_URI
+              value: "https://query.cs.acc.oots.tech.ec.europa.eu/dsd/rest/search"
+            - name: LOOKUP_CONFIG_CLASSIFICATION
+              value: "https://sr.oots.tech.ec.europa.eu/evidencetypeclassifications/EU/238b362b-8158-48d7-a13b-370cdd0836ec"
+            - name: LOOKUP_CONFIG_TITLE
+              value: "EU-Wide Company Registration Evidence"
+            - name: NEZO_BACKEND_URL
+              value: "https://sdg-backend.regmo.dev.publicplan.cloud/evidence-provider/authentication"
+            - name: NEZO_SSO
+              value: "https://e4k-portal.een.elster.de/ekona/sso"
+            - name: NEZO_FRONTEND_URL
+              value: "https://sdg-frontend.regmo.dev.publicplan.cloud/api/v1/authenticate"
+            - name: NEZO_ISSUER
+              value: "https://test.service.wirtschaft.nrw"
+            - name: NEZO_CERT_ENV
+              value: "dev"
+            - name: SENTRY_DSN
+              value: "https://7a5fb7aa9c67fe43b96a8142d7ee83fa@sentry.live.publicplan.cloud/21"
+            - name: SENTRY_ENVIRONMENT
+              value: "dev"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+            periodSeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 15
+            timeoutSeconds: 1
+            periodSeconds: 15
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: sdg-backend-log
+              mountPath: /var/www/project/var/log
+            - name: log
+              mountPath: /var/log
+            - name: nginx-logs
+              mountPath: /var/lib/nginx/logs
+            # - name: project-cache
+            #   mountPath: /var/www/project/var/cache
+            # - name: tmp
+            #   mountPath: /tmp
+      imagePullSecrets:
+        - name: gitlab-registry
+      volumes:
+        - name: sdg-backend-log
+          persistentVolumeClaim:
+            claimName: sdg-backend-log-pvc
+        - name: log
+          persistentVolumeClaim:
+            claimName: backend-log-pvc
+        - name: nginx-logs
+          persistentVolumeClaim:
+            claimName: nginx-log-pvc

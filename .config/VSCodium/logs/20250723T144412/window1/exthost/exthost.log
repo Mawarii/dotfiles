@@ -1,0 +1,141 @@
+2025-07-23 14:44:14.312 [info] Extension host with pid 327393 started
+2025-07-23 14:44:14.312 [info] Skipping acquiring lock for /home/dmarkovic/.config/VSCodium/User/workspaceStorage/e178318e37f6f00f120e3ece903d7e62.
+2025-07-23 14:44:14.445 [info] ExtensionService#_doActivateExtension vscode.emmet, startup: false, activationEvent: 'onLanguage'
+2025-07-23 14:44:14.465 [info] ExtensionService#_doActivateExtension ms-python.python, startup: false, activationEvent: 'onLanguage:yaml', root cause: redhat.ansible
+2025-07-23 14:44:14.653 [info] ExtensionService#_doActivateExtension redhat.vscode-yaml, startup: false, activationEvent: 'onLanguage:yaml', root cause: redhat.ansible
+2025-07-23 14:44:14.916 [info] ExtensionService#_doActivateExtension redhat.ansible, startup: false, activationEvent: 'onLanguage:yaml'
+2025-07-23 14:44:15.105 [info] ExtensionService#_doActivateExtension ms-python.vscode-pylance, startup: false, activationEvent: 'api', root cause: ms-python.python
+2025-07-23 14:44:15.531 [info] ExtensionService#_doActivateExtension vscode.git-base, startup: true, activationEvent: '*', root cause: vscode.git
+2025-07-23 14:44:15.533 [warning] [redhat.vscode-yaml] Accessing a resource scoped configuration without providing a resource is not expected. To get the effective value for '[yaml]', provide the URI of a resource or 'null' for any resource.
+2025-07-23 14:44:15.549 [warning] [redhat.vscode-yaml] Accessing a resource scoped configuration without providing a resource is not expected. To get the effective value for '[yaml]', provide the URI of a resource or 'null' for any resource.
+2025-07-23 14:44:15.551 [info] ExtensionService#_doActivateExtension vscode.git, startup: true, activationEvent: '*'
+2025-07-23 14:44:15.591 [info] ExtensionService#_doActivateExtension vscode.github, startup: true, activationEvent: '*'
+2025-07-23 14:44:15.608 [info] ExtensionService#_doActivateExtension gamunu.opentofu, startup: true, activationEvent: 'workspaceContains:**/*.tf,**/*.tfvars'
+2025-07-23 14:44:15.747 [info] Eager extensions activated
+2025-07-23 14:44:15.848 [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch, startup: false, activationEvent: 'onStartupFinished'
+2025-07-23 14:44:15.850 [info] ExtensionService#_doActivateExtension vscode.merge-conflict, startup: false, activationEvent: 'onStartupFinished'
+2025-07-23 14:44:15.867 [info] ExtensionService#_doActivateExtension aaron-bond.better-comments, startup: false, activationEvent: 'onStartupFinished'
+2025-07-23 14:44:15.870 [info] ExtensionService#_doActivateExtension dbaeumer.vscode-eslint, startup: false, activationEvent: 'onStartupFinished'
+2025-07-23 14:44:15.900 [info] ExtensionService#_doActivateExtension eamodio.gitlens, startup: false, activationEvent: 'onStartupFinished'
+2025-07-23 14:44:16.042 [info] ExtensionService#_doActivateExtension felipecaputo.git-project-manager, startup: false, activationEvent: 'onStartupFinished'
+2025-07-23 14:44:16.246 [info] ExtensionService#_doActivateExtension vscode.github-authentication, startup: false, activationEvent: 'onAuthenticationRequest:github'
+2025-07-23 14:44:16.359 [warning] [redhat.vscode-yaml] Accessing a resource scoped configuration without providing a resource is not expected. To get the effective value for '[yaml]', provide the URI of a resource or 'null' for any resource.
+2025-07-23 14:44:52.782 [warning] TextEditor is closed/disposed
+2025-07-23 14:44:57.656 [warning] TextEditor is closed/disposed
+2025-07-23 14:44:58.835 [warning] TextEditor is closed/disposed
+2025-07-23 14:44:59.847 [warning] TextEditor is closed/disposed
+2025-07-23 14:45:01.848 [warning] TextEditor is closed/disposed
+2025-07-23 14:45:04.317 [warning] TextEditor is closed/disposed
+2025-07-23 14:45:04.705 [warning] TextEditor is closed/disposed
+2025-07-23 14:45:05.173 [warning] TextEditor is closed/disposed
+2025-07-23 14:45:05.924 [warning] TextEditor is closed/disposed
+2025-07-23 14:45:24.188 [warning] TextEditor is closed/disposed
+2025-07-23 14:45:30.610 [warning] TextEditor is closed/disposed
+2025-07-23 14:45:31.502 [warning] TextEditor is closed/disposed
+2025-07-23 14:46:19.143 [info] ExtensionService#_doActivateExtension vscode.npm, startup: false, activationEvent: 'onTerminalQuickFixRequest:ms-vscode.npm-command'
+2025-07-23 14:46:27.540 [warning] TextEditor is closed/disposed
+2025-07-23 14:47:30.380 [warning] TextEditor is closed/disposed
+2025-07-23 14:47:33.761 [warning] TextEditor is closed/disposed
+2025-07-23 14:47:36.484 [warning] TextEditor is closed/disposed
+2025-07-23 14:48:02.014 [warning] TextEditor is closed/disposed
+2025-07-23 14:48:27.394 [warning] TextEditor is closed/disposed
+2025-07-23 14:48:28.890 [warning] TextEditor is closed/disposed
+2025-07-23 14:48:41.858 [warning] TextEditor is closed/disposed
+2025-07-23 14:48:49.980 [warning] TextEditor is closed/disposed
+2025-07-23 14:48:51.903 [warning] TextEditor is closed/disposed
+2025-07-23 14:49:03.118 [warning] [redhat.vscode-yaml] Accessing a resource scoped configuration without providing a resource is not expected. To get the effective value for '[yaml]', provide the URI of a resource or 'null' for any resource.
+2025-07-23 14:49:03.180 [warning] [redhat.vscode-yaml] Accessing a resource scoped configuration without providing a resource is not expected. To get the effective value for '[yaml]', provide the URI of a resource or 'null' for any resource.
+2025-07-23 14:49:03.182 [warning] [redhat.vscode-yaml] Accessing a resource scoped configuration without providing a resource is not expected. To get the effective value for '[yaml]', provide the URI of a resource or 'null' for any resource.
+2025-07-23 14:50:44.772 [warning] TextEditor is closed/disposed
+2025-07-23 14:50:46.745 [warning] TextEditor is closed/disposed
+2025-07-23 14:50:50.519 [warning] TextEditor is closed/disposed
+2025-07-23 14:51:06.285 [warning] TextEditor is closed/disposed
+2025-07-23 14:51:07.978 [warning] TextEditor is closed/disposed
+2025-07-23 14:51:30.034 [warning] TextEditor is closed/disposed
+2025-07-23 14:51:36.388 [warning] TextEditor is closed/disposed
+2025-07-23 14:55:42.935 [warning] TextEditor is closed/disposed
+2025-07-23 14:55:44.301 [warning] TextEditor is closed/disposed
+2025-07-23 14:55:45.511 [warning] TextEditor is closed/disposed
+2025-07-23 14:55:47.803 [warning] TextEditor is closed/disposed
+2025-07-23 14:55:48.380 [warning] TextEditor is closed/disposed
+2025-07-23 14:55:49.435 [warning] TextEditor is closed/disposed
+2025-07-23 14:55:56.523 [warning] TextEditor is closed/disposed
+2025-07-23 14:55:57.242 [warning] TextEditor is closed/disposed
+2025-07-23 14:55:58.677 [warning] TextEditor is closed/disposed
+2025-07-23 14:56:00.835 [warning] TextEditor is closed/disposed
+2025-07-23 14:56:01.345 [warning] TextEditor is closed/disposed
+2025-07-23 14:56:02.282 [warning] TextEditor is closed/disposed
+2025-07-23 14:56:04.518 [warning] TextEditor is closed/disposed
+2025-07-23 14:56:05.346 [warning] TextEditor is closed/disposed
+2025-07-23 14:56:05.957 [warning] TextEditor is closed/disposed
+2025-07-23 14:56:07.076 [warning] TextEditor is closed/disposed
+2025-07-23 14:56:08.373 [warning] TextEditor is closed/disposed
+2025-07-23 14:56:09.113 [warning] TextEditor is closed/disposed
+2025-07-23 14:56:09.795 [warning] TextEditor is closed/disposed
+2025-07-23 14:56:10.543 [warning] TextEditor is closed/disposed
+2025-07-23 14:56:11.927 [warning] TextEditor is closed/disposed
+2025-07-23 14:56:15.875 [warning] TextEditor is closed/disposed
+2025-07-23 14:56:18.978 [warning] TextEditor is closed/disposed
+2025-07-23 14:56:51.397 [warning] TextEditor is closed/disposed
+2025-07-23 14:57:07.643 [warning] TextEditor is closed/disposed
+2025-07-23 14:57:15.171 [warning] TextEditor is closed/disposed
+2025-07-23 15:03:32.772 [warning] TextEditor is closed/disposed
+2025-07-23 15:03:53.754 [warning] TextEditor is closed/disposed
+2025-07-23 15:03:57.359 [warning] TextEditor is closed/disposed
+2025-07-23 15:04:00.508 [warning] TextEditor is closed/disposed
+2025-07-23 15:04:04.864 [warning] TextEditor is closed/disposed
+2025-07-23 15:04:05.898 [warning] TextEditor is closed/disposed
+2025-07-23 15:04:08.443 [warning] TextEditor is closed/disposed
+2025-07-23 15:04:08.939 [warning] TextEditor is closed/disposed
+2025-07-23 15:04:09.549 [warning] TextEditor is closed/disposed
+2025-07-23 15:04:10.413 [warning] TextEditor is closed/disposed
+2025-07-23 15:04:12.956 [warning] TextEditor is closed/disposed
+2025-07-23 15:07:27.994 [warning] TextEditor is closed/disposed
+2025-07-23 15:07:29.309 [warning] TextEditor is closed/disposed
+2025-07-23 15:07:30.012 [warning] TextEditor is closed/disposed
+2025-07-23 15:07:44.195 [warning] TextEditor is closed/disposed
+2025-07-23 15:07:45.773 [warning] TextEditor is closed/disposed
+2025-07-23 15:07:46.851 [warning] TextEditor is closed/disposed
+2025-07-23 15:16:13.579 [warning] TextEditor is closed/disposed
+2025-07-23 15:16:29.752 [warning] TextEditor is closed/disposed
+2025-07-23 15:16:32.539 [warning] TextEditor is closed/disposed
+2025-07-23 15:16:47.712 [warning] TextEditor is closed/disposed
+2025-07-23 15:17:01.496 [warning] TextEditor is closed/disposed
+2025-07-23 15:17:02.630 [warning] TextEditor is closed/disposed
+2025-07-23 15:17:03.994 [warning] TextEditor is closed/disposed
+2025-07-23 15:17:08.443 [warning] TextEditor is closed/disposed
+2025-07-23 15:17:14.978 [warning] TextEditor is closed/disposed
+2025-07-23 15:17:52.239 [warning] TextEditor is closed/disposed
+2025-07-23 15:17:53.265 [warning] TextEditor is closed/disposed
+2025-07-23 15:21:19.979 [warning] TextEditor is closed/disposed
+2025-07-23 15:21:43.149 [warning] TextEditor is closed/disposed
+2025-07-23 15:23:49.433 [warning] TextEditor is closed/disposed
+2025-07-23 15:23:51.474 [warning] TextEditor is closed/disposed
+2025-07-23 15:25:52.458 [warning] TextEditor is closed/disposed
+2025-07-23 15:25:53.951 [warning] TextEditor is closed/disposed
+2025-07-23 15:28:55.410 [warning] TextEditor is closed/disposed
+2025-07-23 15:52:45.875 [info] Extension host terminating: renderer closed the MessagePort
+2025-07-23 15:52:45.889 [error] An error occurred when disposing the subscriptions for extension 'eamodio.gitlens':
+2025-07-23 15:52:45.892 [error] TypeError: Cannot read properties of undefined (reading 'dispose')
+	at Object.dispose (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:140:134235)
+	at Y1.<anonymous> (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:107:9946)
+	at Y1.dispose (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:107:10042)
+	at Object.dispose (/home/dmarkovic/.vscode-oss/extensions/eamodio.gitlens-17.3.2/dist/gitlens.js:536:29282)
+	at /home/dmarkovic/.vscode-oss/extensions/eamodio.gitlens-17.3.2/dist/gitlens.js:813:16179
+	at Array.forEach (<anonymous>)
+	at Object.dispose (/home/dmarkovic/.vscode-oss/extensions/eamodio.gitlens-17.3.2/dist/gitlens.js:813:16161)
+	at wi (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:25:748)
+	at file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:117:18464
+	at file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:25:1058
+	at Object.dispose (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:8:705)
+	at JG._deactivate (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:117:14729)
+	at file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:117:12015
+	at Array.map (<anonymous>)
+	at JG._deactivateAll (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:117:12003)
+	at JG.terminate (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:117:12356)
+	at Y7.terminate (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:119:1082)
+	at hs (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:356:10566)
+	at MessagePortMain.<anonymous> (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:356:7013)
+	at MessagePortMain.emit (node:events:518:28)
+	at MessagePortMain._internalPort.emit (node:electron/js2c/utility_init:2:3073)
+2025-07-23 15:52:45.902 [info] Extension host with pid 327393 exiting with code 0

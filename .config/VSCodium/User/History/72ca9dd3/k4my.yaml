@@ -1,0 +1,3 @@
+---
+- name: Install required packages
+  ansible.builtin.include_tasks: "install-kubernetes-apt-packages.yaml"

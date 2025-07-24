@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dca-backend
+  namespace: argocd
+spec:
+  destination:
+    namespace: dca-backend
+    server: "https://kubernetes.default.svc"
+  project: efacluster-dca
+  sources:
+    - path: kustomization/overlays/develop
+      repoURL: "git@gitlab.publicplan.cloud:iac/efa/distributions/dca/dca-backend-dist.git"
+      targetRevision: HEAD
+    - chart: keycloak
+      helm:
+        releaseName: redis
+        valueFiles:
+          - $values/helm/keycloak/develop/default-values.yaml
+          - $values/helm/keycloak/develop/values.yaml
+      repoURL: https://charts.bitnami.com/bitnami
+      targetRevision: 17.15.2
+    - ref: values
+      repoURL: "git@gitlab.publicplan.cloud:iac/efa/distributions/dca/dca-backend-dist.git"
+      targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

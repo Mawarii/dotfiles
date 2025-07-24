@@ -1,0 +1,71 @@
+# Allows us to start the stack without touching too much of our local system
+#
+# note: the application initialization will download/unpack/configure files
+#       in the local directory...
+#
+# ##### Usage:
+# *0. Create a broken symlink: `ln -sf "/.npm-packages/node_modules/" node_modules`
+# 1. Start the database: `docker-compose up -d mongo`
+# 2. Start the application:  `docker-compose run formio`
+# [3]. Stop the database: `docker-compose down` (add --volumes to clear data)
+# [4]. Remove lingering docker images: `docker-compose down -v --rmi all`
+#
+# *TODO: Step 0 is for the bcrypt binary compiled on alpine, which is required...
+#        but this step feels like an anti-pattern and a better approach should be found
+
+services:
+  forms-flow-forms-db:
+    container_name: forms-flow-forms-db
+    image: mongo:7.0.9-rc0-jammy
+    restart: always
+    hostname: forms-flow-forms-db
+    ports:
+      - '27018:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${FORMIO_DB_USERNAME:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${FORMIO_DB_PASSWORD:-changeme}
+      MONGO_INITDB_DATABASE: ${FORMIO_DB_NAME:-formio}
+    volumes:
+      - ./001_custom_user.js:/docker-entrypoint-initdb.d/001_user.js:ro
+      - forms-flow-forms-mongodb-data:/data/db/
+      - /storage/main-instance/docker-data/deployment-docker/forms-flow-forms/mongodb/logs:/var/log/mongodb/
+      - /storage/main-instance/docker-data/deployment-docker/forms-flow-forms/mongodb/mongod.conf:/etc/mongod.conf
+    networks:
+      - forms-flow-forms-network
+      - caddy-net
+
+  forms-flow-forms:
+    container_name: forms-flow-forms
+    image: formsflow/forms-flow-forms:v5.3.1
+    # The app will restart until Mongo is listening
+    restart: always
+    links:
+      - forms-flow-forms-db
+    ports:
+      - '3001:3001'
+    # The application wants to download things to the local directory
+    environment:
+      DEBUG: formio:*
+      NODE_CONFIG: "{\"mongo\":\"mongodb://${FORMIO_DB_USERNAME:-admin}:${FORMIO_DB_PASSWORD:-changeme}@forms-flow-forms-db:27017/${FORMIO_DB_NAME:-formio}?authSource=admin\"}"
+      ROOT_EMAIL: ${FORMIO_ROOT_EMAIL:-admin@example.com}
+      ROOT_PASSWORD: ${FORMIO_ROOT_PASSWORD:-changeme}
+      FORMIO_DOMAIN: ${FORMIO_DEFAULT_PROJECT_URL}
+      FORMIO_JWT_SECRET: ${FORMIO_JWT_SECRET:---- change me now ---}
+      FORMIO_JWT_EXPIRE: ${FORMIO_JWT_EXPIRE:-240}
+      NO_INSTALL: ${NO_INSTALL:-1}
+      MULTI_TENANCY_ENABLED: ${MULTI_TENANCY_ENABLED:-false}
+    stdin_open: true # -i
+    tty: true # -t
+    networks:
+      - forms-flow-forms-network
+      - caddy-net
+
+networks:
+  forms-flow-forms-network:
+    driver: 'bridge'
+  caddy-net:
+    name: caddy_proxy
+    external: true
+
+volumes:
+  forms-flow-forms-mongodb-data:

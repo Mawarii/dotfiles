@@ -1,0 +1,77 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-pvc-cronjob
+spec:
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: backup-pvc-cronjob
+        spec:
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/component: server
+                    app.kubernetes.io/instance: empfangsclient-fitko
+                    app.kubernetes.io/name: vault
+                topologyKey: kubernetes.io/hostname
+          securityContext:
+            fsGroup: 10001
+            runAsGroup: 10001
+            runAsNonRoot: true
+            runAsUser: 10001
+          imagePullSecrets:
+            - name: gitlab-registry
+          restartPolicy: OnFailure
+          containers:
+            - name: backup
+              image: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/tools/backup-jobs:v2.1.0-sid
+              securityContext:
+                runAsGroup: 10001
+                runAsNonRoot: true
+                runAsUser: 10001
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop: ["ALL"]
+                seccompProfile:
+                  type: RuntimeDefault
+                readOnlyRootFilesystem: true
+                privileged: false
+              envFrom:
+                - secretRef:
+                    name: cluster-stage-vars
+              env:
+                #? possible values postgres / mariadb / mysql / mongodb / pvc
+                - name: DB_TYPE
+                  value: "pvc"
+                - name: SUBDIR
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: "metadata.namespace"
+                - name: PVC_DATA_LOCATION
+                  value: "/bitnami/vault/data"
+                - name: RETENTION_DAYS
+                  value: "14"
+              volumeMounts:
+                - mountPath: "/.mcli"
+                  name: mcli
+                - mountPath: "/tmp"
+                  name: tmp
+                - mountPath: "/home/tools"
+                  name: home
+                - mountPath: "/bitnami/vault/data"
+                  name: empfangsclient-vault-data
+          volumes:
+            - name: mcli
+              emptyDir: {}
+            - name: tmp 
+              emptyDir: {}
+            - name: home
+              emptyDir: {}
+            - name: empfangsclient-vault-data
+              persistentVolumeClaim:
+                claimName: data-empfangsclient-fitko-vault-server-0

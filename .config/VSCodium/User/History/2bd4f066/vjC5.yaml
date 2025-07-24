@@ -1,0 +1,22 @@
+apiVersion: acid.zalan.do/v1
+kind: postgresql
+metadata:
+  name: vaultwarden-postgresql
+spec:
+  teamId: "vaultwarden"
+  volume:
+    size: 25Gi
+  numberOfInstances: 2
+  users:
+    postgres:
+      - superuser
+      - createdb
+    vaultwarden: []
+  databases:
+    vaultwarden: vaultwarden
+  postgresql:
+    version: "15"
+    parameters:
+      max_connections: "250"
+  enableLogicalBackup: true
+  logicalBackupSchedule: "0 */1 * * *"

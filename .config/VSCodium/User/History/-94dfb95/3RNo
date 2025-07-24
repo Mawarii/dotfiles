@@ -1,0 +1,47 @@
+#!/bin/env bash
+
+fail() {
+    printf "Error %s\n" "$@"
+    exit 1
+}
+
+pre_flight() {
+    # set shell debug info
+    if [ $DEBUG != "false"  ]; then
+        set -x
+    fi
+
+    # generic information
+    printf "Version %s of backup job.\n" $VERSION
+    printf "Generating Time in Format \n\tYYYY-MM-DD--hh-mm\n\t%s\n" $DATE_TIME
+
+    # check if skip backup is enabled
+    if [ "$YES_I_DONT_NEED_BACKUPS_AND_DOCUMENTED_THIS_SOMEWHERE" == "UNDERSTOOD" ]; then
+        printf "Skipping backup. Bailing out.\n"
+        exit 0
+    fi
+}
+
+dump_psql() {
+    printf "Dumping Postgres DB...\n"
+    PGPASSWORD=$DB_PASSWORD $PGDUMP --clean --username="$DB_USER" --host="$DB_HOST" --port="$DB_PORT" | gzip -c - > "$DUMP_DEST" || fail "could not dump db"
+    printf "Done.\n"
+}
+
+dump_mariadb() {
+    printf "Dumping MariaDB/Mysql DB...\n"
+    $MYSQLDUMP --user="$DB_USER" --password="$DB_PASSWORD" --host="$DB_HOST" --port="$DB_PORT" --lock-tables --all-databases | gzip -c - > "$DUMP_DEST" || fail "could not dump db"
+    printf "Done.\n"
+}
+
+dump_mongodb() {
+    printf "Dumping MongoDB..."
+    $MONGO --username "$DB_USER" --password "$DB_PASSWORD" --host "$DB_HOST:${DB_PORT:-27017}" --archive="$DUMP_DEST" --gzip --authenticationDatabase admin || fail "could not dump db"
+    printf "Done.\n"
+}
+
+compress_pvc() {
+    printf "Compressing PVC...\n"
+    $TAR cfvz "$DUMP_DEST" --exclude="lost\+found" "$PVC_DATA_LOCATION" || fail "could not compress pvc"
+    printf "Done.\n"
+}

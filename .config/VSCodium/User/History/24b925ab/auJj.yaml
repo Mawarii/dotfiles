@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: matomo-version-ingress
+  labels:
+    k8s-env: "staging"
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: "version.staging.wsp.owl-it.de"
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/matomo-new"
+            backend:
+              service:
+                name: matomo
+                port:
+                  name: version

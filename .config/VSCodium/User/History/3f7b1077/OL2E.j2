@@ -1,0 +1,26 @@
+prometheus-windows-exporter:
+  prometheus:
+    monitor:
+      enabled: false
+
+alertmanager:
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    hosts:
+      - alertmanager.demo.mawari.eu
+    tls:
+    - secretName: alertmanager-general-tls
+      hosts:
+      - alertmanager.demo.mawari.eu
+  alertmanagerSpec:
+    externalUrl: alertmanager.demo.mawari.eu
+
+grafana:
+  adminUser: admin
+  adminPassword: 
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod

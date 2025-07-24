@@ -1,0 +1,22 @@
+---
+- name: Create new non-root user
+  ansible.builtin.user:
+    name: "{{ ssh_user }}"
+    shell: /bin/bash
+    groups: sudo,wheel
+    create_home: true
+    append: true
+
+- name: Create 'wheel' group
+  ansible.builtin.group:
+    name: wheel
+    state: present
+
+- name: Enable passwordless sudo for 'wheel' group
+  community.general.sudoers:
+    name: passwordless-wheel
+    group: wheel
+    commands:
+      - ALL
+    state: present
+    validation: required

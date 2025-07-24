@@ -1,0 +1,13 @@
+source:
+  repo:
+    kind: HELM
+    url: https://charts.bitnami.com/bitnami
+
+target:
+  repo:
+    kind: CHARTMUSEUM
+    url: https://charts.develop.wspdev.de
+
+charts:
+  - keycloak
+  - vault

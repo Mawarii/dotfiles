@@ -1,0 +1,7 @@
+image:
+  repository: gitlab.publicplan.cloud:5050/themenwelt-kommunales/nextcloud-server
+  flavor:
+  tag: dcf5ef2f
+  pullPolicy: IfNotPresent
+  pullSecrets:
+    - gitlab-registry-nextcloud-server

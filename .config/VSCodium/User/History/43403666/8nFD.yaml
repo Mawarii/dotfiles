@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJnaXRsYWIucHVibGljcGxhbi5jbG91ZDo1MDUwIjp7InVzZXJuYW1lIjoidHAwMy1iYXVrYXN0ZW4tZGVwbG95bWVudC10b2tlbiIsInBhc3N3b3JkIjoiMUJ6WjlUUktpaUx5MXJ3WG1NWXgiLCJhdXRoIjoiZEhBd015MWlZWFZyWVhOMFpXNHRaR1Z3Ykc5NWJXVnVkQzEwYjJ0bGJqb3hRbnBhT1ZSU1MybHBUSGt4Y25kWWJVMVplQT09In19fQ==
+kind: Secret
+metadata:
+  name: gitlab-registry-api-gateway
+type: kubernetes.io/dockerconfigjson

@@ -1,0 +1,56 @@
+http://*.thlvhlc1.zv.thlv.de {
+	redir https://{host}{uri}
+}
+
+https://*.thlvhlc1.zv.thlv.de {
+	tls /etc/ssl/certs/cert.pem /etc/ssl/certs/key.pem
+
+	@keycloak host forms-flow-idm-keycloak.thlvhlc1.zv.thlv.de
+	handle @keycloak {
+		reverse_proxy forms-flow-idm-keycloak:8080
+	}
+
+	@forms host forms-flow-forms.THLVHLC1.zv.thlv.de
+	handle @forms {
+		reverse_proxy forms-flow-forms:3001
+	}
+
+	@documents-api host forms-flow-documents-api.THLVHLC1.zv.thlv.de
+	handle @documents-api {
+		reverse_proxy forms-flow-documents-api:5006
+	}
+
+	@data-analysis host forms-flow-data-analysis.THLVHLC1.zv.thlv.de
+	handle @data-analysis {
+		reverse_proxy localhost:6001
+	}
+
+	@bpm host forms-flow-bpm.THLVHLC1.zv.thlv.de
+	handle @bpm {
+		reverse_proxy forms-flow-bpm:8080
+	}
+
+	@api host forms-flow-api.THLVHLC1.zv.thlv.de
+	handle @api {
+		reverse_proxy forms-flow-webapi:5000
+	}
+
+	@analytics host forms-flow-analytics.THLVHLC1.zv.thlv.de
+	handle @analytics {
+		reverse_proxy forms-flow-analytics-server-1:5000
+	}
+
+	@web host forms-flow-web.THLVHLC1.zv.thlv.de
+	handle @web {
+		reverse_proxy forms-flow-web-root-config:8080
+	}
+
+	@micro-frontend host forms-flow-micro-frontend.THLVHLC1.zv.thlv.de
+	handle @micro-frontend {
+		reverse_proxy localhost:3003
+	}
+
+	handle {
+		respond "Domain not defined." 404
+	}
+}

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pdfreactor-basic-auth
+data:
+  auth: cGRmcmVhY3RvcjokMnkkMDUkeHV0SnFzc3ptRjhXWTUwNlJZTi9WLnZRZVpMM2cuSGVPZUcybFYvQ3BOcnZTZi84UmYuS20K
+type: Opaque

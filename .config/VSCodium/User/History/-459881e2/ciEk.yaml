@@ -1,0 +1,73 @@
+resources:
+  requests:
+    cpu: 500m
+    memory: 128Mi
+  limits:
+    cpu: 1000m
+    memory: 2048Mi
+
+initContainers:
+  -   name: velero-plugin-for-aws
+      image: velero/velero-plugin-for-aws:v1.10.0
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        -   mountPath: /target
+            name: plugins
+
+configuration:
+  backupStorageLocation:
+    - name: my-backup-storage
+      default: true
+      provider: velero.io/aws
+      bucket: efa-develop-velero
+      prefix: backup
+      accessMode: ReadWrite
+      credential:
+        name: velero-credentials
+        key: cloud
+      config:
+        s3ForcePathStyle: "true"
+        region: 'hel1'
+        s3Url: https://hel1.your-objectstorage.com
+        # Remove this to use the default. Dependending on the target, it might need to be changed to an appropriate one.
+        # Using "" disables the usage of any algorithm and should only be used if the target s3 server cannot handle any
+        checksumAlgorithm: ""
+
+  volumeSnapshotLocation: []
+  uploaderType: restic
+  defaultBackupStorageLocation: psv2
+  defaultVolumesToFsBackup: true
+
+credentials:
+  name: velero-credentials
+  secretContents:
+    cloud: |
+      [default]
+      aws_access_key_id=s3AccessKey
+      aws_secret_access_key=s3SecretAccessKey
+
+deployNodeAgent: true
+
+nodeAgent:
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 2048Mi
+
+schedules:
+  midnight-daily-backup:
+    disabled: false
+    labels: { }
+    annotations:
+      argocd.argoproj.io/sync-options: Prune=false
+    schedule: "0 0 * * *"
+    useOwnerReferencesInBackup: false
+    template:
+      ttl: "192h"
+      storageLocation: my-backup-storage
+      excludedNamespaces:
+        - velero
+        - kube-system

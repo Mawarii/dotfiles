@@ -1,0 +1,21 @@
+---
+- name: Ensure forms-flow {{ item }} directory exists
+  ansible.builtin.file:
+    path: "{{ formsflow_install_path }}/{{ item }}"
+    state: directory
+
+- name: Check whether .env already exists so that the passwords are not overwritten
+  ansible.builtin.stat:
+    path: "{{ formsflow_install_path }}/{{ item }}/.env"
+  register: stat_res
+
+- name: Generate {{ item }} .env file if it not already exists
+  ansible.builtin.template:
+    src: "./{{ item }}/{{ item }}.env.j2"
+    dest: "{{ formsflow_install_path }}/{{ item }}/.env"
+  when: not stat_res.stat.exists
+
+- name: Generate {{ item }} compose file
+  ansible.builtin.template:
+    src: "./{{ item }}/{{ item }}-compose.yaml.j2"
+    dest: "{{ formsflow_install_path }}/{{ item }}/compose.yml"

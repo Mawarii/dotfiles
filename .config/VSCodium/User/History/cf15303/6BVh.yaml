@@ -1,0 +1,10 @@
+formio:
+  email: admin@example.com
+  database:
+    username: admin
+    database: formio
+
+bpm:
+  database:
+    username: admin
+    database: formsflow-bpm

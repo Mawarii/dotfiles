@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+images:
+  - name: DATABASE_DOCKER_IMAGE_1
+    newName: bitnami/mysql
+    newTag: "5.7-debian-11"
+  - name: DATABASE_DOCKER_IMAGE_1_ORIGIN
+    newName: bitnami/mysql
+    newTag: "5.7-debian-11"
+  - name: DATABASE_DOCKER_IMAGE_2
+    newName: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/tools/backup-jobs
+    newTag: "v1.3.0"
+  - name: DATABASE_DOCKER_IMAGE_2_ORIGIN
+    newName: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/tools/backup-jobs
+    newTag: "v1.3.0"

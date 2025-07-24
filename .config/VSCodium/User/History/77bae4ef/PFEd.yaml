@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mariadb
+stringData:
+  mariadb-password: "superGeheim"
+  mariadb-root-password: "superGeheim2"
+  mariadb-replication-password: "cNK6Gk9IxBb1a1IDXq7g7YRUXUmzfo07Sjn6SavgIvwzjRy7"
+  database-dsn: "mysql://user:superGeheim@mariadb:3306/dca?serverVersion=mariadb-11.4.4"
+  db-version: "11.4.4"
+  db-host: "mariadb"
+  db-name: "dca"
+  db-user: "user"
+  db-password: "superGeheim"

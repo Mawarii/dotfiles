@@ -1,0 +1,62 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+  - govforms2-admin-client-version-ingress.yaml
+
+patches:
+  - path: govforms2-admin-client.patch.yaml
+    target:
+      kind: Deployment
+      name: govforms2-admin-client
+  - path: govforms2-admin-client-ingress.patch.yaml
+    target:
+      kind: Ingress
+      name: govforms2-admin-client-ingress
+  - path: govforms2-admin-client-configmap.patch.yaml
+    target:
+      kind: ConfigMap
+      name: govforms2-admin-client-configmap
+
+images:
+  - name: DOCKER_IMAGE_1
+    newName: gitlab.publicplan.cloud:5050/themenwelt-formulare/govforms2/govforms2_admin_client
+    newTag: "ci-e29b916f"
+  - name: DOCKER_IMAGE_2
+    newName: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/tools/version-sidecar
+    newTag: v1.3.2
+
+replacements: #version sidecar replacements
+  - source:
+      kind: Deployment
+      name: govforms2-admin-client
+      fieldPath: spec.template.spec.containers.[name=application].image
+    targets:
+      - select:
+          kind: Deployment
+          name: govforms2-admin-client
+        fieldPaths:
+          - spec.template.spec.containers.[name=version-sidecar].env.[name=DOCKER_IMAGE_1].value
+        options:
+          create: true
+  - source:
+      kind: Deployment
+      name: govforms2-admin-client
+      fieldPath: spec.template.spec.containers.[name=version-sidecar].image
+    targets:
+      - select:
+          kind: Deployment
+          name: govforms2-admin-client
+        fieldPaths:
+          - spec.template.spec.containers.[name=version-sidecar].env.[name=DOCKER_IMAGE_2].value
+        options:
+          create: true
+
+secretGenerator:
+  - name: gitlab-registry-govforms2-admin-client
+    type: kubernetes.io/dockerconfigjson
+    files:
+    - .dockerconfigjson=./mixins/govforms2-admin-client-image-pull-secret.json
+    options:
+      disableNameSuffixHash: true

@@ -1,0 +1,90 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+  annotations:
+    argocd.argoproj.io/tracking-id: argocd-configuration:/ConfigMap:argocd/argocd-rbac-cm
+  labels:
+    app.kubernetes.io/name: argocd-rbac-cm
+    app.kubernetes.io/part-of: argocd
+data:
+  policy.csv: |
+    p, role:all-projects-read, applications, get, *, allow
+    p, role:all-projects-read, logs, get, *, allow
+    g, all-projects-read, role:all-projects-read
+
+    p, role:empfangsclient-read, applications, get, devcluster-projects-empfangsclient/*, allow
+    p, role:empfangsclient-read, logs, get, devcluster-projects-empfangsclient/*, allow
+    p, role:empfangsclient-read, applications, get, customercluster-projects-empfangsclient/*, allow
+    p, role:empfangsclient-read, logs, get, customercluster-projects-empfangsclient/*, allow
+    g, empfangsclient-read, role:empfangsclient-read
+
+    p, role:formulare-read, applications, get, devcluster-projects-formulare/*, allow
+    p, role:formulare-read, logs, get, devcluster-projects-formulare/*, allow
+    g, formulare-read, role:formulare-read
+
+    p, role:forest-baukasten-tp03-read, applications, get, devcluster-projects-baukasten-tp03/*, allow
+    p, role:forest-baukasten-tp03-read, logs, get, devcluster-projects-baukasten-tp03/*, allow
+    g, kommunales-read, role:forest-baukasten-tp03-read
+
+    p, role:portalverbund-read, applications, get, customercluster-portalverbund/*, allow
+    p, role:portalverbund-read, logs, get, customercluster-portalverbund/*, allow
+    g, portalverbund-read, role:portalverbund-read
+
+    p, role:regmo-read, applications, get, regmocluster-projects-regmo/*, allow
+    p, role:regmo-read, logs, get, regmocluster-projects-regmo/*, allow
+    g, regmo-read, role:regmo-read
+
+    p, role:termine-read, applications, get, customercluster-termine/*, allow
+    p, role:termine-read, logs, get, customercluster-termine/*, allow
+    p, role:termine-read, applications, get, terminecluster-otb/*, allow
+    p, role:termine-read, logs, get, terminecluster-otb/*, allow
+    g, termine-read, role:termine-read
+
+    p, role:wwo-read, applications, get, wwocluster-projects-stage/*, allow
+    p, role:wwo-read, logs, get, wwocluster-projects-stage/*, allow
+    g, wwo-read, role:wwo-read
+
+    p, role:wwo-read, applications, get, wwocluster-projects-prod/*, allow
+    p, role:wwo-read, logs, get, wwocluster-projects-prod/*, allow
+    g, wwo-read, role:wwo-read
+
+    p, role:pflegewegweiser-read, applications, get, customercluster-pflegewegweiser/*, allow
+    p, role:pflegewegweiser-read, logs, get, customercluster-pflegewegweiser/*, allow
+    g, pflegewegweiser-read, role:pflegewegweiser-read
+
+    p, role:rechtnrw-read, applications, get, customercluster-rechtnrw/*, allow
+    p, role:rechtnrw-read, logs, get, customercluster-rechtnrw/*, allow
+    g, rechtnrw-read, role:rechtnrw-read
+
+    p, role:wsp-read, applications, get, customercluster-wsp/*, allow
+    p, role:wsp-read, logs, get, customercluster-wsp/*, allow
+    g, wsp-read, role:wsp-read
+
+    p, role:wsp-storybook-read, applications, get, customercluster-wsp/customercluster-wsp-storybook, allow
+    p, role:wsp-storybook-read, logs, get, customercluster-wsp/customercluster-wsp-storybook, allow
+    g, wsp-storybook-read, role:wsp-storybook-read
+
+    p, role:wz-read, applications, get, wzcluster-projects/*, allow
+    p, role:wz-read, logs, get, wzcluster-projects/*, allow
+    g, wz-read, role:wz-read
+
+    p, role:govai-read, applications, get, internalcluster-projects-govai/*, allow
+    p, role:govai-read, logs, get, internalcluster-projects-govai/*, allow
+    g, govai-read, role:govai-read
+
+    p, role:infrademo-read, applications, get, infrademocluster-infra/*, allow
+    p, role:infrademo-read, logs, get, infrademocluster-infra/*, allow
+    g, infrademo-read, role:infrademo-read
+
+    p, role:govforms2-read, applications, get, devcluster-infra-twf-govforms2-project/*, allow
+    p, role:govforms2-read, logs, get, devcluster-infra-twf-govforms2-project/*, allow
+    g, govforms2-read, role:govforms2-read
+
+    p, role:application-saas-read, applications, get, internalcluster-projects-shift-saas/*, allow
+    p, role:application-saas-read, logs, get, internalcluster-projects-shift-saas/*, allow
+    p, role:application-saas-read, applications, get, internalcluster-cal-com/*, allow
+    p, role:application-saas-read, logs, get, internalcluster-cal-com/*, allow
+    p, role:application-saas-read, applications, get, customercluster-projects-shift-saas/*, allow
+    p, role:application-saas-read, logs, get, customercluster-projects-shift-saas/*, allow
+    g, application-saas-read, role:application-saas-read

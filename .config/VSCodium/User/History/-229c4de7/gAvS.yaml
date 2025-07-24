@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  creationTimestamp: null
+  name: monicore-grafana
+  namespace: argocd
+spec:
+  destination:
+    name: in-cluster
+    namespace: grafana
+  project: monicore-infra
+  sources:
+    - chart: grafana
+      helm:
+        valueFiles:
+          - $values/applications/grafana/default-values.yaml
+          - $values/applications/grafana/values.yaml
+      repoURL: https://grafana.github.io/helm-charts
+      targetRevision: 8.8.2
+    - ref: values
+      repoURL: git@gitlab.publicplan.cloud:iac/efa/cluster-meta/develop/infrastructure/distributions.git
+      targetRevision: HEAD
+  syncPolicy:
+    automated: {}
+    syncOptions:
+      - CreateNamespace=true

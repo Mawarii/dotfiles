@@ -1,0 +1,13 @@
+source:
+  repo:
+    kind: HELM
+    url: https://charts.bitnami.com/bitnami
+
+target:
+  containers:
+    path: ./containers
+  repo:
+    kind: LOCAL
+    path: ./charts
+charts:
+  - nginx

@@ -1,0 +1,407 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: govforms2-client-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+#    # type of authentication
+#    nginx.ingress.kubernetes.io/auth-type: basic
+#    # name of the secret that contains the user/password definitions
+#    nginx.ingress.kubernetes.io/auth-secret: basic-auth
+#    # message to display with an appropriate context why the authentication is required
+#    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required'
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-headers: 'DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-jwt-token'
+  labels:
+    k8s-env: "develop"
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: "govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "efa.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "baden-wuerttemberg.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "bayern.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "berlin.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "brandenburg.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "bremen.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "hamburg.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "hessen.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "mecklenburg-vorpommern.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "niedersachsen.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "nordrhein-westfalen.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "rheinland-pfalz.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "saarland.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "sachsen-anhalt.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "sachsen.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "schleswig-holstein.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "thueringen.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "bw.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "by.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "be.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "bb.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "hb.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "hh.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "he.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "mv.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "ni.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "nw.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "nrw.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "rp.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "sl.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "sn.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "st.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "sh.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+    - host: "th.govforms2-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-client-service
+                port:
+                  name: http
+  tls:
+    - hosts:
+        - "govforms2-client.dev.efa.publicplan.cloud"
+        - "efa.govforms2-client.dev.efa.publicplan.cloud"
+        - "baden-wuerttemberg.govforms2-client.dev.efa.publicplan.cloud"
+        - "bayern.govforms2-client.dev.efa.publicplan.cloud"
+        - "berlin.govforms2-client.dev.efa.publicplan.cloud"
+        - "brandenburg.govforms2-client.dev.efa.publicplan.cloud"
+        - "bremen.govforms2-client.dev.efa.publicplan.cloud"
+        - "hamburg.govforms2-client.dev.efa.publicplan.cloud"
+        - "hessen.govforms2-client.dev.efa.publicplan.cloud"
+        - "mecklenburg-vorpommern.govforms2-client.dev.efa.publicplan.cloud"
+        - "niedersachsen.govforms2-client.dev.efa.publicplan.cloud"
+        - "nordrhein-westfalen.govforms2-client.dev.efa.publicplan.cloud"
+        - "rheinland-pfalz.govforms2-client.dev.efa.publicplan.cloud"
+        - "saarland.govforms2-client.dev.efa.publicplan.cloud"
+        - "sachsen-anhalt.govforms2-client.dev.efa.publicplan.cloud"
+        - "sachsen.govforms2-client.dev.efa.publicplan.cloud"
+        - "schleswig-holstein.govforms2-client.dev.efa.publicplan.cloud"
+        - "thueringen.govforms2-client.dev.efa.publicplan.cloud"
+        - "bw.govforms2-client.dev.efa.publicplan.cloud"
+        - "by.govforms2-client.dev.efa.publicplan.cloud"
+        - "be.govforms2-client.dev.efa.publicplan.cloud"
+        - "bb.govforms2-client.dev.efa.publicplan.cloud"
+        - "hb.govforms2-client.dev.efa.publicplan.cloud"
+        - "hh.govforms2-client.dev.efa.publicplan.cloud"
+        - "he.govforms2-client.dev.efa.publicplan.cloud"
+        - "mv.govforms2-client.dev.efa.publicplan.cloud"
+        - "ni.govforms2-client.dev.efa.publicplan.cloud"
+        - "nw.govforms2-client.dev.efa.publicplan.cloud"
+        - "nrw.govforms2-client.dev.efa.publicplan.cloud"
+        - "rp.govforms2-client.dev.efa.publicplan.cloud"
+        - "sl.govforms2-client.dev.efa.publicplan.cloud"
+        - "sn.govforms2-client.dev.efa.publicplan.cloud"
+        - "st.govforms2-client.dev.efa.publicplan.cloud"
+        - "sh.govforms2-client.dev.efa.publicplan.cloud"
+        - "th.govforms2-client.dev.efa.publicplan.cloud"
+      secretName: govforms2-client-tls

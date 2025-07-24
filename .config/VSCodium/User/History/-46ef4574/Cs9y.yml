@@ -1,0 +1,96 @@
+stages:
+  - "scheduled_jobs"
+
+# regarding the sleep commands:
+#   executing the k8s-permission update immediately seems to cause an issue where iteither runs into rate limiting issues
+#   or overloads the keycloak to the point of triggering some kind of restart
+#   it could probably be reduced but for now we should stick with 30 just to be on the safe site
+
+update-permissions:
+  stage: scheduled_jobs
+  image: "publicplan/k8s-permission-updater:v0.3.4"
+  variables:
+    K8S_PERMISSION_FILES: /tmp/rbac-mirror
+  script:
+    # setup ssh and rbac repository
+    - "ssh-keyscan gitlab.publicplan.cloud > ~/.ssh/known_hosts"
+    # - 'echo $SSH_PRIVATE_KEY > /tmp/sshkey'
+    # - 'base64 -d /tmp/sshkey > ~/.ssh/id_ed25519'
+    - "eval $(ssh-agent -s)"
+    - 'ssh-add "$SSH_PRIVATE_KEY"'
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - 'git config --global user.email "${GITLAB_USER_EMAIL}"'
+    - 'git config --global user.name "${GITLAB_USER_NAME} via Gitlab CI"'
+    - "git clone git@${CI_SERVER_FQDN}:${CI_PROJECT_PATH}.git $K8S_PERMISSION_FILES"
+    - 'find $K8S_PERMISSION_FILES -mindepth 1 -not -path "$K8S_PERMISSION_FILES/.git*" -not -name "README.md" -exec rm -rf {} +'
+    # cluster-admin-permissions
+    - "git clone git@gitlab.publicplan.cloud:iac/efa/cluster-meta/develop/infrastructure/applications.git /tmp/efa-infrastructure-applications-develop"
+    - "git clone git@gitlab.publicplan.cloud:iac/efa/cluster-meta/pre-stage/infrastructure/applications.git /tmp/efa-infrastructure-applications-pre-stage"
+    - "mkdir -p $K8S_PERMISSION_FILES/efa-develop-admins"
+    - "mkdir -p $K8S_PERMISSION_FILES/efa-pre-stage-admins"
+    - "/var/www/html/bin/console -vvv app:permission /tmp/efa-infrastructure-applications-develop/argo-files $K8S_PERMISSION_FILES/efa-develop-admins"
+    - "sleep 30"
+    - "/var/www/html/bin/console -vvv app:permission /tmp/efa-infrastructure-applications-pre-stage/argo-files $K8S_PERMISSION_FILES/efa-pre-stage-admins"
+    - "sleep 30"
+    # dca-permissions
+    - "git clone git@gitlab.publicplan.cloud:iac/efa/applications/dca/develop.git /tmp/efa-dca-applications-develop"
+    - "git clone git@gitlab.publicplan.cloud:iac/efa/applications/dca/pre-stage.git /tmp/efa-dca-applications-pre-stage"
+    - "mkdir -p $K8S_PERMISSION_FILES/efa-develop/dca"
+    - "mkdir -p $K8S_PERMISSION_FILES/efa-pre-stage/dca"
+    - "/var/www/html/bin/console -vvv app:permission /tmp/efa-dca-applications-develop/argo-files $K8S_PERMISSION_FILES/efa-develop/dca"
+    - "sleep 30"
+    - "/var/www/html/bin/console -vvv app:permission /tmp/efa-dca-applications-pre-stage/argo-files $K8S_PERMISSION_FILES/efa-pre-stage/dca"
+    - "sleep 30"
+    # dpa-permissions // develop only at the moment
+    - "git clone git@gitlab.publicplan.cloud:iac/efa/applications/dpa/develop.git /tmp/efa-dpa-applications-develop"
+    # - 'git clone git@gitlab.publicplan.cloud:iac/efa/applications/dpa/pre-stage.git /tmp/efa-dpa-applications-pre-stage'
+    - "mkdir -p $K8S_PERMISSION_FILES/efa-develop/dpa"
+    # - 'mkdir -p $K8S_PERMISSION_FILES/efa-pre-stage/dpa'
+    - "/var/www/html/bin/console -vvv app:permission /tmp/efa-dpa-applications-develop/argo-files $K8S_PERMISSION_FILES/efa-develop/dpa"
+    # - '/var/www/html/bin/console -vvv app:permission /tmp/efa-dpa-applications-pre-stage/argo-files $K8S_PERMISSION_FILES/efa-pre-stage/dpa'
+    # sdg-permissions
+    - "git clone git@gitlab.publicplan.cloud:iac/efa/applications/sdg/develop.git /tmp/efa-sdg-applications-develop"
+    - "git clone git@gitlab.publicplan.cloud:iac/efa/applications/sdg/pre-stage.git /tmp/efa-sdg-applications-pre-stage"
+    - "mkdir -p $K8S_PERMISSION_FILES/efa-develop/sdg"
+    - "mkdir -p $K8S_PERMISSION_FILES/efa-pre-stage/sdg"
+    - "/var/www/html/bin/console -vvv app:permission /tmp/efa-dca-applications-develop/argo-files $K8S_PERMISSION_FILES/efa-develop/sdg"
+    - "sleep 30"
+    - "/var/www/html/bin/console -vvv app:permission /tmp/efa-dca-applications-pre-stage/argo-files $K8S_PERMISSION_FILES/efa-pre-stage/sdg"
+    - "sleep 30"
+    # projectathon-permissions
+    - "git clone git@gitlab.publicplan.cloud:iac/efa/applications/projectathon/develop.git /tmp/efa-projectathon-applications-develop"
+    - "git clone git@gitlab.publicplan.cloud:iac/efa/applications/projectathon/pre-stage.git /tmp/efa-projectathon-applications-pre-stage"
+    - "mkdir -p $K8S_PERMISSION_FILES/efa-develop/projectathon"
+    - "mkdir -p $K8S_PERMISSION_FILES/efa-pre-stage/projectathon"
+    - "/var/www/html/bin/console -vvv app:permission /tmp/efa-dca-applications-develop/argo-files $K8S_PERMISSION_FILES/efa-develop/projectathon"
+    - "sleep 30"
+    - "/var/www/html/bin/console -vvv app:permission /tmp/efa-dca-applications-pre-stage/argo-files $K8S_PERMISSION_FILES/efa-pre-stage/projectathon"
+    - "sleep 30"
+    # empfangsclient-permissions
+    - "git clone git@gitlab.publicplan.cloud:iac/efa/applications/empfangsclient/develop.git /tmp/efa-empfangsclient-applications-develop"
+    - "git clone git@gitlab.publicplan.cloud:iac/efa/applications/empfangsclient/pre-stage.git /tmp/efa-empfangsclient-applications-pre-stage"
+    - "mkdir -p $K8S_PERMISSION_FILES/efa-develop/empfangsclient"
+    - "mkdir -p $K8S_PERMISSION_FILES/efa-pre-stage/empfangsclient"
+    - "/var/www/html/bin/console -vvv app:permission /tmp/efa-empfangsclient-applications-develop/argo-files $K8S_PERMISSION_FILES/efa-develop/empfangsclient"
+    - "sleep 30"
+    - "/var/www/html/bin/console -vvv app:permission /tmp/efa-empfangsclient-applications-pre-stage/argo-files $K8S_PERMISSION_FILES/efa-pre-stage/empfangsclient"
+    - "sleep 30"
+    # govforms2-permissions
+    - "git clone git@gitlab.publicplan.cloud:iac/efa/applications/govforms2/develop.git /tmp/efa-govforms2-applications-develop"
+    - "git clone git@gitlab.publicplan.cloud:iac/efa/applications/govforms2/pre-stage.git /tmp/efa-govforms2-applications-pre-stage"
+    - "mkdir -p $K8S_PERMISSION_FILES/efa-develop/govforms2"
+    - "mkdir -p $K8S_PERMISSION_FILES/efa-pre-stage/govforms2"
+    - "/var/www/html/bin/console -vvv app:permission /tmp/efa-govforms2-applications-develop/argo-files $K8S_PERMISSION_FILES/efa-develop/govforms2"
+    - "sleep 30"
+    - "/var/www/html/bin/console -vvv app:permission /tmp/efa-govforms2-applications-pre-stage/argo-files $K8S_PERMISSION_FILES/efa-pre-stage/govforms2"
+    - "sleep 30"
+    # finalizing
+    - "cd $K8S_PERMISSION_FILES"
+    - whoami
+    - ls -alh
+    - "git add -A"
+    - 'git commit -m "ci: update k8s permissions" || true'
+    - "git push || true"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule"

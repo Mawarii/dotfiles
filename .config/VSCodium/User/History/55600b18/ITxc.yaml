@@ -1,0 +1,15 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+labels:
+  - pairs:
+      app: static
+
+resources:
+  - configmap.yaml
+  - cronjob.yaml
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+  - persistentvolumeclaim.yaml
+  - persistentvolumeclaim-cronjob.yaml

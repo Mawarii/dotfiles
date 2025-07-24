@@ -1,0 +1,17 @@
+2025-07-23 11:46:48.853 [info] [2025-07-23 09:46:48.781] [         37ms] [/home/dmarkovic/git-projects/publicplan/efa] git rev-parse --show-toplevel • FAILED
+2025-07-23 11:46:48.854 [info] 
+Error: fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+
+2025-07-23 11:52:40.437 [info] [2025-07-23 09:52:40.437] [          7ms] [/home/dmarkovic/git-projects/publicplan/efa/distributions/DPA/hr-dpa-dist] git log --format=%x1E%H%x1D -n2 -L1,1:helm/noots-sak-dp-server/develop/ingress.patch.yaml • FAILED
+2025-07-23 11:52:40.437 [info] 
+Error: fatal: There is no path helm/noots-sak-dp-server/develop/ingress.patch.yaml in the commit
+
+2025-07-23 11:52:55.641 [info] [2025-07-23 09:52:55.641] [          9ms] [/home/dmarkovic/git-projects/publicplan/efa/distributions/DPA/hr-dpa-dist] git log --format=%x1E%H%x1D -n2 -L1,1:helm/noots-sak-dp-server/develop/ingress.patch.yaml • FAILED
+2025-07-23 11:52:55.641 [info] 
+Error: fatal: There is no path helm/noots-sak-dp-server/develop/ingress.patch.yaml in the commit
+
+2025-07-23 11:53:02.572 [info] [2025-07-23 09:53:02.571] [         17ms] [/home/dmarkovic/git-projects/publicplan/efa/distributions/DPA/hr-dpa-dist] git log --format=%x1E%H%x1D -n2 -L12,12:kustomization/overlays/develop/kustomization.yaml • FAILED
+2025-07-23 11:53:02.572 [info] 
+Error: fatal: file kustomization/overlays/develop/kustomization.yaml has only 10 lines
+

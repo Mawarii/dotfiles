@@ -1,0 +1,51 @@
+# Backup Scripts for WSP databases
+
+## Supported DBs
+
+* Postgres
+* MariaDB
+* MySQL
+* MongoDB
+* PVC (Yeah, we know. This is no DB.)
+
+## Disabling backups in your Cronjob with kustomize
+*⚠ This is only available in versions **>=v1.3.0**. So update your images if needed. ⚠*
+
+If you want to disable the backups, you need to set the variable **`YES_I_DONT_NEED_BACKUPS_AND_DOCUMENTED_THIS_SOMEWHERE`** to the value  *UNDERSTOOD*
+
+You can do this with kustomize and add this snippet to the patches section. Example patch files can be found inside [here](./examples/patches/).
+```yaml
+patches:
+  [...]
+  - path: mariadb-stateful-set.patch.yaml # this should be the name of the *.patch.yaml file
+    target:
+      kind: StatefulSet # this should be identical to the content of the *.patch.yaml file
+      name: mariadb # this should be identical to the content of the *.patch.yaml file
+```
+
+## How to use
+
+Following Variables can or have to be set in order for the backup scripts to work
+
+```sh
+## Declaring ENV
+# Database
+DB_TYPE=${DB_TYPE:-"postgres"} # postgres / mariadb / mysql / mongodb / pvc
+DB_USER=${DB_USER:-"postgres"}
+DB_PASSWORD=${DB_PASSWORD:-"password"}
+DB_PORT=${DB_PORT:-"5432"}
+DB_HOST=${DB_HOST:-"localhost"}
+# DB_DATABASE=${DB_DATABASE:-"postgres"}
+
+# PVC
+PVC_DATA_LOCATION=${PVC_DATA_LOCATION:-"/data"}
+
+# S3 params
+BUILD_URL="${CLUSTER_STAGE_S3_URL_PROTOCOL}://${CLUSTER_STAGE_S3_URL}"
+S3_URL=${BUILD_URL:-"http://s3.local"} #this is unecessary, leaving this for now
+S3_KEY_ID=${CLUSTER_STAGE_S3_ACCESS_KEY:-"backupkey"}
+S3_KEY_SECRET=${CLUSTER_STAGE_S3_SECRET_KEY:-"supersecret"}
+S3_BUCKET_NAME=${CLUSTER_STAGE_S3_BUCKET_NAME_BACKUP:-"backup"}
+# folder in which to put the dump on S3 backend
+S3_BUCKET_SUBDIR=${BUCKET_SUBDIR:-"default"}
+```

@@ -1,0 +1,12 @@
+auth:
+  existingSecret: "minio-auth"
+  rootUserSecretKey: "root-user"
+  rootPasswordSecretKey: "root-password"
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 256Mi
+  limits:
+    cpu: 375m
+    memory: 384Mi

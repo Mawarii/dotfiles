@@ -1,0 +1,29 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+resources:
+- ../../base
+- configmap.yaml
+- pull-secret.yaml
+
+images:
+- name: gitlab.publicplan.cloud:5050/themenwelt-portale/pflegewegweiser-nrw-redesign
+  newName: gitlab.publicplan.cloud:5050/themenwelt-portale/pflegewegweiser-nrw-redesign
+  newTag: ci-1d7f2ae5
+
+secretGenerator:
+- envs:
+  - drupal-solr-secret.env
+  name: drupal-solr
+  options:
+    disableNameSuffixHash: true
+
+patches:
+- path: deployment.patch.yaml
+  target:
+    kind: Deployment
+    name: drupal
+- path: ingress-patch.yaml
+  target:
+    kind: Ingress
+    name: drupal

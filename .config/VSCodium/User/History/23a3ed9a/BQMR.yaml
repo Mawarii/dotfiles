@@ -1,0 +1,13 @@
+---
+
+- name: Get forms-flow-bpm Keycloak client secret
+  community.general.keycloak_clientsecret_info:
+    client_id: 'forms-flow-bpm'
+    realm: "{{ keycloak.realm }}"
+    auth_client_id: "{{ keycloak.admin_username }}"
+    auth_keycloak_url: "{{ keycloak_url }}/auth"
+    auth_realm: master
+    auth_username: "{{ keycloak.admin_username }}"
+    auth_password: "{{ keycloak_admin_password }}"
+  no_log: true
+  register: bpm_client_secret

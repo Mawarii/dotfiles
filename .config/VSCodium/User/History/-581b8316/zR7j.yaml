@@ -1,0 +1,25 @@
+upgradeCompatibility: "1.16"
+encryption:
+  enabled: true
+  type: wireguard
+  nodeEncryption: true
+  strictMode:
+    enabled: true
+    cidr: "192.168.128.0/17"
+externalIPs:
+  enabled: true
+hubble:
+  enabled: true
+  metrics:
+    enabled:
+      - dns:query;ignoreAAAA
+      - drop
+      - tcp
+      - flow
+      - icmp
+      - http
+  relay:
+    enabled: true
+    rollOutPods: true
+nodePort:
+  enabled: true

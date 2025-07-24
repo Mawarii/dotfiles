@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: efacluster-ip-xnachweis-service
+  namespace: argocd
+spec:
+  destination:
+    namespace: ip-xnachweis-service
+    name: in-cluster
+  project: efacluster-intermediaryplatform
+  sources:
+  - path: env/dev
+    repoURL: 'git@gitlab.publicplan.cloud:iac/efa/distributions/intermediaryplatform/xnachweis-message-service-dist.git'
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

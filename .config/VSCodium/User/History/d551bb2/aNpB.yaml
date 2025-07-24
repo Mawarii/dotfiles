@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: oots-preview-space-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: "oots-preview-space.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: oots-preview-space-service
+                port:
+                  number: 3000
+  tls:
+    - hosts:
+        - "oots-preview-space.dev.efa.publicplan.cloud"
+      secretName: "oots-preview-space-tls"

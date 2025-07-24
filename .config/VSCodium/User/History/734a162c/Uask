@@ -1,0 +1,4 @@
+.vscode
+inventory
+debug.yaml
+group_vars

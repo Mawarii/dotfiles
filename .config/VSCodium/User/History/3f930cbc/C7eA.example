@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Current S3 Credentials: PSONO -> KOPS -> Infrastruktur -> MoniCore -> Hetzner Cloud S3 Credentials (Terraform State)
+export AWS_ACCESS_KEY_ID=""
+export AWS_SECRET_ACCESS_KEY=""

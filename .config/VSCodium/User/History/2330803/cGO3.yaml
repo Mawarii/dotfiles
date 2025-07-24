@@ -1,0 +1,13 @@
+---
+- name: Install required packages
+  ansible.builtin.apt:
+    pkg:
+      - vim
+      - fail2ban
+      - rsyslog
+      - kubelet
+      - kubeadm
+      - kubectl
+      - cri-o
+    state: present
+    update_cache: true

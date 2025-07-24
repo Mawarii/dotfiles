@@ -1,0 +1,20 @@
+keycloak:
+  realm: forms-flow-ai
+  bpm_client_id: forms-flow-bpm
+  web_client_id: forms-flow-web
+
+formio:
+  root_email: admin@example.com
+  database:
+    username: admin
+    database: formio
+
+bpm:
+  database:
+    username: admin
+    database: formsflow-bpm
+
+formsflow_api:
+  database:
+    username: postgres
+    database: webapi

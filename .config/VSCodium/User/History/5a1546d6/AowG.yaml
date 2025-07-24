@@ -1,0 +1,15 @@
+adminPassword: "wmryyLsgX7gOCxfaQv8h9GjpaJWqIk9oiFE99zIRBSSG8ihjzb4oRGKvsvjz653m"
+externalURL: https://harbor.dev.efa.publicplan.cloud
+exposureType: ingress
+service:
+  type: ClusterIP
+ingress:
+  core:
+    ingressClassName: "nginx"
+    hostname: harbor.dev.efa.publicplan.cloud
+    annotations:
+      ingress.kubernetes.io/ssl-redirect: "true"
+      ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    tls: true

@@ -1,0 +1,9 @@
+.terraform
+.terraform*
+!.terraform.lock.hcl
+.gl-env
+variables.tfvars
+local/
+terraform.tfstate
+terraform.tfstate.*
+efacluster

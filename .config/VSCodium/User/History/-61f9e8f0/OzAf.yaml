@@ -1,0 +1,3 @@
+---
+- name: Install CNI
+  ansible.builtin.include_tasks: "install-cilium.yaml"

@@ -1,0 +1,16 @@
+---
+- name: Add non-root user
+  ansible.builtin.include_tasks: "add-non-root-user.yaml"
+
+- name: Configure packages
+  ansible.builtin.include_tasks: "configure-packages.yaml"
+
+- name: Configure fail2ban service
+  ansible.builtin.include_tasks: "configure-fail2ban.yaml"
+
+- name: Configure sshd
+  ansible.builtin.include_tasks: "configure-sshd.yaml"
+
+- name: Configure Hetzner firewall
+  when: hcloud_token != ""
+  ansible.builtin.include_tasks: "configure-hetzner-firewall.yaml"

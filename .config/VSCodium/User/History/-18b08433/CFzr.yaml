@@ -1,0 +1,33 @@
+---
+# - name: Configure firewall
+#   hosts: localhost
+#   become: false
+#   gather_facts: false
+#   roles:
+#     - role: configure-firewall
+
+- name: Machine hardening and preparation
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - role: prepare-machines
+  vars:
+    ansible_port: 22
+    ansible_user: root
+
+# - name: Close default SSH port
+#   hosts: localhost
+#   become: false
+#   gather_facts: false
+#   tasks:
+#     - name: Close default SSH port
+#       ansible.builtin.import_tasks:
+#         file: roles/configure-firewall/tasks/close-default-ssh-port.yaml
+
+- name: Add Kubernetes apt packages
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - role: common

@@ -1,0 +1,66 @@
+---
+- name: Configure firewall
+  hosts: localhost
+  become: false
+  gather_facts: false
+  roles:
+    - role: configure-firewall
+
+- name: Machine preparation and hardening
+  hosts: all
+  become: true
+  gather_facts: false
+  roles:
+    - role: prepare-machine
+    - role: reboot-machine
+
+- name: Delete default SSH firewall
+  hosts: localhost
+  become: false
+  gather_facts: false
+  roles:
+    - role: delete-default-ssh-firewall
+
+- name: Bootstrap first controlplane
+  hosts: controlplanes[0]
+  become: true
+  gather_facts: true
+  roles:
+    - role: bootstrap-first-controlplane
+
+- name: Join new controlplane
+  hosts: controlplanes[1:]
+  become: true
+  gather_facts: true
+  roles:
+    - role: join-node
+
+- name: Join new worker
+  hosts: worker
+  become: true
+  gather_facts: true
+  roles:
+    - role: join-node
+
+- name: Cleanup sensitive data
+  hosts: controlplanes[0]
+  become: true
+  gather_facts: true
+  roles:
+    - role: cleanup-sensitive-data
+
+- name: Install base Kubernetes applications
+  hosts: controlplanes[0]
+  become: true
+  gather_facts: true
+  roles:
+    - role: install-cni
+    - role: install-storage
+    - role: install-argocd
+
+- name: Upgrade Kubernetes
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - role: upgrade-kubernetes

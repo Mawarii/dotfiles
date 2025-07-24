@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  creationTimestamp: null
+  name: devcluster-it-tools
+  namespace: argocd
+spec:
+  destination:
+    name: publicplan-dev
+    namespace: kube-system
+  project: devcluster-infra
+  sources:
+    - path: applications/it-tools
+      repoURL: git@gitlab.publicplan.cloud:team-kops/infra-internal/pp-dev-cluster.git
+      targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

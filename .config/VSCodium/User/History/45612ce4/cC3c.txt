@@ -1,0 +1,898 @@
+-------------- Domibus entry point
+-------------- CATALINA_HOME: /data/tomcat
+-------------- DOMIBUS_CONFIG_LOCATION: /data/tomcat/conf/domibus
+-------------- DOCKER_DOMINSTALL: /data/domInstall
+-------------- DOCKER_DOMIBUS_DISTRIBUTION: /data/domInstall/domibus
+-------------- DB_TYPE: MySQL
+-------------- DB_HOST: domibus-mysql
+-------------- DB_PORT: 3306
+-------------- DB_NAME: domibus
+-------------- DB_USER: domibus
+-------------- DB_PASS: xxx
+-------------- DOMIBUS_VERSION: 5.1
+-------------- JACOCO_AGENT: -javaagent:/data/jacoco/org.jacoco.agent-0.8.5-runtime.jar=output=tcpserver,address=*,port=6400
+-------------- ENABLE_JACOCO:
+-------------- DOCKER_JDBC_DRIVERS: /data/domInstall/jdbcDrivers
+-------------- MYSQL_JDBC_DRIVER_NAME: mysql-connector-java-8.0.19-bin.jar
+-------------- ORACLE_JDBC_DRIVER_NAME: ojdbc8-21.1.0.0.jar
+-------------- SERVER_DEBUG:
+-------------- JDK11_RUNTIME: true
+-------------- LOGGER_LEVEL_ORG_APACHE_CXF: DEBUG
+-------------- LOGGER_LEVEL_EU_DOMIBUS: DEBUG
+-------------- CHECK_DEFAULT_PASSWD:
+-------------- DOMAINS_COUNT: 1
+-------------- DOMAIN_ALIASES: blue_gw
+-------------- DOMIBUS_GENERAL_SCHEMA: domibus_general
+-------------- DOMIBUS_DOMAIN_SCHEMA_PREFIX: domibus_domain
+-------------- DOMIBUS_INIT_PROPERTIES:
+-------------- DOMIBUS_CONFIG_PROPERTY_FILE: false
+-------------- SETUP_MINDER:
+-------------- DATE_MANIPULATION:
+-------------- MAXIMUM_WAIT_TIME_IN_SECONDS: 900
+-------------- SLEEP_TIME_IN_SECONDS: 10
+-------------- DEFAULT_USER_AUTOGENERATE_PASSWORD: false
+-------------- TLS_DAYS_OF_VALIDITY:
+-------------- MEMORY_SETTING_MIN: -Xms128m
+-------------- MEMORY_SETTING_MAX: -Xmx1024m
+-------------- MEMORY_SETTINGS: -Xms128m -Xmx1024m
+Updating the database environment variables
+Reset ownership recursively to edelivery:edelivery for /data/tomcat/conf/domibus
+sudo: effective uid is not 0, is /usr/bin/sudo on a file system with the 'nosuid' option set or an NFS file system without root privileges?
+buildDomibusStartupParams
+   DB_TYPE                 : MySQL
+   DB_HOST                 : domibus-mysql
+   DB_PORT                 : 3306
+   DB_NAME                 : domibus
+   DB_USER                 : domibus
+   DB_PASS                 : xxx
+Initializing...
+[INFO] starting squid configuration
+---------------------------< suquid conf >---------------------------
+PROXY_CONFIG_FILE=/data/proxy/squid.conf
+PROXY_FOLDER=/data/proxy
+PROXY_USERS_FILE=/etc/squid/passwd
+PROXY_AUTHENTICATION=true
+PROXY_USERS=proxyuser1:test123,proxyuser2:test123
+------------------------------[ suquid conf ]-------------------------------
+
+Adding password for user proxyuser1
+Adding password for user proxyuser2
+Created proxy users: proxyuser1 proxyuser2
+Start squid proxy server
+Domibus is currently being or has already been configured (e.g. by another server instance/tenant)
+/home/edelivery
+Deploying Domibus War...
+Archive:  /data/domInstall/domibus/domibus-msh-distribution-5.1-tomcat-war.zip
+ extracting: /data/tomcat/webapps/domibus-MSH-tomcat-5.1.war
+Wait for MySQL Database to be ready dbHost=domibus-mysql, dbUser=domibus, dbPassword=wOw7xXoLRbvWfFkfuXAPMlc3WyVVADMO, dbName=domibus, tbUserRoleToCheck=ROLE_ADMIN
+Waiting for resource with timeout: resource=MySQL Database, condition=mysqlTablesCreatedCondition, parameters=, sleepTime=10, timeout=900
+1. MySQL Database is not available... retrying in 10 seconds...
+2. MySQL Database is not available... retrying in 10 seconds...
+3. MySQL Database is not available... retrying in 10 seconds...
+4. MySQL Database is not available... retrying in 10 seconds...
+5. MySQL Database is not available... retrying in 10 seconds...
+MySQL Database is ready to use
+MySQL Database is ready to use
+Starting Tomcat with: -Ddomibus.config.location=/data/tomcat/conf/domibus  -Ddomibus.database.serverName=domibus-mysql -Ddomibus.database.port=3306 -Ddomibus.datasource.user=domibus -Ddomibus.datasource.password=wOw7xXoLRbvWfFkfuXAPMlc3WyVVADMO -Ddomibus.work.location=/data/tomcat -Ddomibus.passwordPolicy.defaultUser.autogeneratePassword=false -DactiveMQ.broker.host=0.0.0.0 -DactiveMQ.brokerName=domibusActiveMQBroker -DactiveMQ.connectorPort=1199 -DactiveMQ.username=domibus -DactiveMQ.password=changeit -DactiveMQ.transportConnector.uri=tcp://0.0.0.0:61616 -DactiveMQ.JMXURL=service:jmx:rmi:///jndi/rmi://0.0.0.0:1199/jmxrmi -Ddomibus.datasource.driverClassName=com.mysql.cj.jdbc.Driver -Ddomibus.datasource.url="jdbc:mysql://domibus-mysql:3306/domibus?useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC" -Xms128m -Xmx1024m /
+NOTE: Picked up JDK_JAVA_OPTIONS:  --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+usage: java org.apache.catalina.startup.Catalina [ -config {pathname} ] [ -nonaming ] [ -generateCode [ {pathname} ] ] [ -useGeneratedCode ] { -help | start | stop }
+11-Apr-2024 14:22:38.536 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version name:   Apache Tomcat/9.0.59
+11-Apr-2024 14:22:38.541 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server built:          Feb 21 2022 21:01:10 UTC
+11-Apr-2024 14:22:38.541 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Server version number: 9.0.59.0
+11-Apr-2024 14:22:38.541 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Name:               Linux
+11-Apr-2024 14:22:38.541 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log OS Version:            6.8.1-1-default
+11-Apr-2024 14:22:38.541 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Architecture:          amd64
+11-Apr-2024 14:22:38.541 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Java Home:             /usr/local/java/openjdk-11.0.12_7
+11-Apr-2024 14:22:38.541 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Version:           11.0.12+7
+11-Apr-2024 14:22:38.542 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log JVM Vendor:            Oracle Corporation
+11-Apr-2024 14:22:38.542 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:         /data/tomcat
+11-Apr-2024 14:22:38.542 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:         /data/tomcat
+11-Apr-2024 14:22:38.569 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.lang=ALL-UNNAMED
+11-Apr-2024 14:22:38.570 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.io=ALL-UNNAMED
+11-Apr-2024 14:22:38.570 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.util=ALL-UNNAMED
+11-Apr-2024 14:22:38.571 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+11-Apr-2024 14:22:38.571 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+11-Apr-2024 14:22:38.571 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.config.file=/data/tomcat/conf/logging.properties
+11-Apr-2024 14:22:38.571 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+11-Apr-2024 14:22:38.572 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djdk.tls.ephemeralDHKeySize=2048
+11-Apr-2024 14:22:38.572 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.protocol.handler.pkgs=org.apache.catalina.webresources
+11-Apr-2024 14:22:38.572 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dorg.apache.catalina.security.SecurityListener.UMASK=0027
+11-Apr-2024 14:22:38.572 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Ddomibus.config.location=/data/tomcat/conf/domibus
+11-Apr-2024 14:22:38.573 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Ddomibus.database.serverName=domibus-mysql
+11-Apr-2024 14:22:38.573 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Ddomibus.database.port=3306
+11-Apr-2024 14:22:38.573 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Ddomibus.datasource.user=domibus
+11-Apr-2024 14:22:38.573 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Ddomibus.datasource.password=wOw7xXoLRbvWfFkfuXAPMlc3WyVVADMO
+11-Apr-2024 14:22:38.574 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Ddomibus.work.location=/data/tomcat
+11-Apr-2024 14:22:38.574 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Ddomibus.passwordPolicy.defaultUser.autogeneratePassword=false
+11-Apr-2024 14:22:38.574 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -DactiveMQ.broker.host=0.0.0.0
+11-Apr-2024 14:22:38.574 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -DactiveMQ.brokerName=domibusActiveMQBroker
+11-Apr-2024 14:22:38.575 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -DactiveMQ.connectorPort=1199
+11-Apr-2024 14:22:38.575 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -DactiveMQ.username=domibus
+11-Apr-2024 14:22:38.575 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -DactiveMQ.password=changeit
+11-Apr-2024 14:22:38.575 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -DactiveMQ.transportConnector.uri=tcp://0.0.0.0:61616
+11-Apr-2024 14:22:38.575 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -DactiveMQ.JMXURL=service:jmx:rmi:///jndi/rmi://0.0.0.0:1199/jmxrmi
+11-Apr-2024 14:22:38.576 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Ddomibus.datasource.driverClassName=com.mysql.cj.jdbc.Driver
+11-Apr-2024 14:22:38.576 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Ddomibus.datasource.url=jdbc:mysql://domibus-mysql:3306/domibus?useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC
+11-Apr-2024 14:22:38.576 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Xms128m
+11-Apr-2024 14:22:38.576 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Xmx1024m
+11-Apr-2024 14:22:38.577 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dignore.endorsed.dirs=
+11-Apr-2024 14:22:38.577 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.base=/data/tomcat
+11-Apr-2024 14:22:38.577 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Dcatalina.home=/data/tomcat
+11-Apr-2024 14:22:38.577 INFO [main] org.apache.catalina.startup.VersionLoggerListener.log Command line argument: -Djava.io.tmpdir=/data/tomcat/temp
+11-Apr-2024 14:22:38.630 INFO [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent The Apache Tomcat Native library which allows using OpenSSL was not found on the java.library.path: [/usr/local/Oracle/SQLPlus:/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib]
+11-Apr-2024 14:22:40.536 INFO [main] org.apache.coyote.AbstractProtocol.init Initializing ProtocolHandler ["http-nio-8080"]
+11-Apr-2024 14:22:40.646 INFO [main] org.apache.catalina.startup.Catalina.load Server initialization in [2903] milliseconds
+11-Apr-2024 14:22:41.052 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]
+11-Apr-2024 14:22:41.052 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet engine: [Apache Tomcat/9.0.59]
+11-Apr-2024 14:22:41.150 INFO [main] org.apache.catalina.startup.HostConfig.deployWAR Deploying web application archive [/data/tomcat/webapps/domibus.war]
+11-Apr-2024 14:23:01.750 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2024-04-11 14:23:03,445 [main] INFO  e.d.c.p.DomibusConfigLocationProvider - Property [domibus.config.location] is configured as a system property with [/data/tomcat/conf/domibus]
+2024-04-11 14:23:03,450 [main] INFO  e.d.c.spring.BouncyCastleInitializer - Registering the Bouncy Castle provider as the third highest preferred security provider
+2024-04-11 14:23:04,434 [main] INFO  e.d.c.spring.BouncyCastleInitializer - Using Unlimited strength jurisdiction policy: maxKeyLen=[2147483647]
+2024-04-11 14:23:04,437 [main] INFO  e.d.c.l.LogbackLoggingConfigurator - Using the logback configuration file from [/data/tomcat/conf/domibus/logback.xml]
+2024-04-11 14:23:04,440 [main] INFO  e.d.core.property.PropertyUtils - Looking for the value of a property having the name of [domibus.database.general.schema]
+2024-04-11 14:23:04,442 [main] INFO  e.d.core.property.PropertyUtils - Searching inside the properties file at [/data/tomcat/conf/domibus/domibus.properties]
+2024-04-11 14:23:04,446 [main] INFO  e.d.c.l.LogbackLoggingConfigurator - Preparing the logging system for single tenancy or multitenancy by inspecting the general schema property: []
+2024-04-11 14:23:04,832 [] [] [] [] [main]  INFO e.d.c.s.DomibusApplicationInitializer:122 - Using plugins location [/data/tomcat/conf/domibus/plugins/lib]
+2024-04-11 14:23:04,848 [] [] [] [] [main]  INFO e.d.c.s.DomibusApplicationInitializer:126 - Using extension location [/data/tomcat/conf/domibus/extensions/lib]
+2024-04-11 14:23:04,853 [] [] [] [] [main] DEBUG e.d.c.p.c.PluginClassLoader:42 - Extracting plugin and extension jar files from directory:[/data/tomcat/conf/domibus/plugins/lib]
+2024-04-11 14:23:04,859 [] [] [] [] [main] DEBUG e.d.c.p.c.PluginClassLoader:42 - Extracting plugin and extension jar files from directory:[/data/tomcat/conf/domibus/extensions/lib]
+2024-04-11 14:23:04,939 [] [] [] [] [main] DEBUG e.d.c.p.DomibusPropertyConfiguration:73 - Adding the super properties file [URL [file:////data/tomcat/conf/domibus/domains/super-domibus.properties]]
+2024-04-11 14:23:04,947 [] [] [] [] [main] DEBUG e.d.c.p.DomibusPropertyConfiguration:78 - Adding the following domain properties files [file [/data/tomcat/conf/domibus/domains/default/default-domibus.properties], file [/data/tomcat/conf/domibus/domains/domain_name/domain_name-domibus.properties]]
+2024-04-11 14:23:04,950 [] [] [] [] [main] DEBUG e.d.c.p.DomibusPropertyConfiguration:82 - Adding the following plugin default properties files []
+2024-04-11 14:23:04,953 [] [] [] [] [main] DEBUG e.d.c.p.DomibusPropertyConfiguration:94 - Adding the following  plugin properties files for tomcat []
+2024-04-11 14:23:04,955 [] [] [] [] [main] DEBUG e.d.c.p.DomibusPropertyConfiguration:112 - Adding the following plugin properties files [file [/data/tomcat/conf/domibus/plugins/config/fs-plugin.properties]]
+2024-04-11 14:23:04,956 [] [] [] [] [main] DEBUG e.d.c.p.DomibusPropertyConfiguration:117 - Adding the following domain plugin properties files []
+2024-04-11 14:23:04,957 [] [] [] [] [main] DEBUG e.d.c.p.DomibusPropertyConfiguration:121 - Adding the following extension properties files []
+2024-04-11 14:23:04,957 [] [] [] [] [main] DEBUG e.d.c.p.DomibusPropertyConfiguration:126 - Adding the following domain extension properties files []
+2024-04-11 14:23:04,973 [] [] [] [] [main] DEBUG e.d.c.s.DomibusApplicationInitializer:167 - Removing Jndi property source: [jndiProperties]
+2024-04-11 14:23:10,440 [] [] [] [] [main] DEBUG e.d.t.a.c.DummyEmbeddedActiveMQCondition:22 - Condition result is [false]
+2024-04-11 14:23:10,443 [] [] [] [] [main] DEBUG e.d.t.a.c.EmbeddedActiveMQCondition:22 - Condition result is [true]
+2024-04-11 14:23:23,448 [] [] [] [] [main] DEBUG e.d.c.c.DomibusCacheConfiguration:93 - External ehCache file exists [/data/tomcat/conf/domibus/internal/ehcache.xml]. Overriding the default ehCache configuration
+2024-04-11 14:23:23,946 [] [] [] [] [main] DEBUG e.d.c.c.DomibusCacheConfiguration:113 - no ehcache config files found for plugins
+2024-04-11 14:23:24,240 [] [] [] [] [main] DEBUG e.d.c.p.DomibusPropertyConfiguration:51 - Adding the following plugin default properties files [{}]
+2024-04-11 14:23:25,646 [] [] [] [] [main] DEBUG e.d.c.p.PrefixedProperties:21 - The following property names found with prefix [domibus.entityManagerFactory.jpaProperty.]: [[domibus.entityManagerFactory.jpaProperty.hibernate.connection.driver_class, domibus.entityManagerFactory.jpaProperty.hibernate.order_updates, domibus.entityManagerFactory.jpaProperty.hibernate.javax.cache.missing_cache_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.connection.provider_disables_autocommit, domibus.entityManagerFactory.jpaProperty.hibernate.jdbc.batch_size, domibus.entityManagerFactory.jpaProperty.hibernate.id.new_generator_mappings, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_query_cache, domibus.entityManagerFactory.jpaProperty.hibernate.order_inserts, domibus.entityManagerFactory.jpaProperty.hibernate.cache.region.factory_class, domibus.entityManagerFactory.jpaProperty.hibernate.cache.generate_statistics, domibus.entityManagerFactory.jpaProperty.hibernate.dialect, domibus.entityManagerFactory.jpaProperty.hibernate.cache.default_cache_concurrency_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_second_level_cache, domibus.entityManagerFactory.jpaProperty.hibernate.format_sql]]
+2024-04-11 14:23:25,649 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:68 - Calculated the property prefix as [domibus.entityManagerFactory.jpaProperty.] for domain [null] and property [domibus.entityManagerFactory.jpaProperty].
+2024-04-11 14:23:25,650 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:44 - Getting nested properties for prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,731 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:52 - Found properties [[domibus.entityManagerFactory.jpaProperty.hibernate.connection.driver_class, domibus.entityManagerFactory.jpaProperty.hibernate.order_updates, domibus.entityManagerFactory.jpaProperty.hibernate.javax.cache.missing_cache_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.connection.provider_disables_autocommit, domibus.entityManagerFactory.jpaProperty.hibernate.jdbc.batch_size, domibus.entityManagerFactory.jpaProperty.hibernate.id.new_generator_mappings, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_query_cache, domibus.entityManagerFactory.jpaProperty.hibernate.order_inserts, domibus.entityManagerFactory.jpaProperty.hibernate.cache.region.factory_class, domibus.entityManagerFactory.jpaProperty.hibernate.cache.generate_statistics, domibus.entityManagerFactory.jpaProperty.hibernate.dialect, domibus.entityManagerFactory.jpaProperty.hibernate.cache.default_cache_concurrency_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_second_level_cache, domibus.entityManagerFactory.jpaProperty.hibernate.format_sql]] starting with prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,733 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:60 - Found properties [[hibernate.connection.driver_class, hibernate.order_updates, hibernate.javax.cache.missing_cache_strategy, hibernate.connection.provider_disables_autocommit, hibernate.jdbc.batch_size, hibernate.id.new_generator_mappings, hibernate.cache.use_query_cache, hibernate.order_inserts, hibernate.cache.region.factory_class, hibernate.cache.generate_statistics, hibernate.dialect, hibernate.cache.default_cache_concurrency_strategy, hibernate.cache.use_second_level_cache, hibernate.format_sql]] starting with prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,746 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:68 - Calculated the property prefix as [domibus.entityManagerFactory.jpaProperty.] for domain [null] and property [domibus.entityManagerFactory.jpaProperty].
+2024-04-11 14:23:25,747 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:44 - Getting nested properties for prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,748 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:52 - Found properties [[domibus.entityManagerFactory.jpaProperty.hibernate.connection.driver_class, domibus.entityManagerFactory.jpaProperty.hibernate.order_updates, domibus.entityManagerFactory.jpaProperty.hibernate.javax.cache.missing_cache_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.connection.provider_disables_autocommit, domibus.entityManagerFactory.jpaProperty.hibernate.jdbc.batch_size, domibus.entityManagerFactory.jpaProperty.hibernate.id.new_generator_mappings, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_query_cache, domibus.entityManagerFactory.jpaProperty.hibernate.order_inserts, domibus.entityManagerFactory.jpaProperty.hibernate.cache.region.factory_class, domibus.entityManagerFactory.jpaProperty.hibernate.cache.generate_statistics, domibus.entityManagerFactory.jpaProperty.hibernate.dialect, domibus.entityManagerFactory.jpaProperty.hibernate.cache.default_cache_concurrency_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_second_level_cache, domibus.entityManagerFactory.jpaProperty.hibernate.format_sql]] starting with prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,749 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:60 - Found properties [[hibernate.connection.driver_class, hibernate.order_updates, hibernate.javax.cache.missing_cache_strategy, hibernate.connection.provider_disables_autocommit, hibernate.jdbc.batch_size, hibernate.id.new_generator_mappings, hibernate.cache.use_query_cache, hibernate.order_inserts, hibernate.cache.region.factory_class, hibernate.cache.generate_statistics, hibernate.dialect, hibernate.cache.default_cache_concurrency_strategy, hibernate.cache.use_second_level_cache, hibernate.format_sql]] starting with prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,750 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:68 - Calculated the property prefix as [domibus.entityManagerFactory.jpaProperty.] for domain [null] and property [domibus.entityManagerFactory.jpaProperty].
+2024-04-11 14:23:25,750 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:44 - Getting nested properties for prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,828 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:52 - Found properties [[domibus.entityManagerFactory.jpaProperty.hibernate.connection.driver_class, domibus.entityManagerFactory.jpaProperty.hibernate.order_updates, domibus.entityManagerFactory.jpaProperty.hibernate.javax.cache.missing_cache_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.connection.provider_disables_autocommit, domibus.entityManagerFactory.jpaProperty.hibernate.jdbc.batch_size, domibus.entityManagerFactory.jpaProperty.hibernate.id.new_generator_mappings, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_query_cache, domibus.entityManagerFactory.jpaProperty.hibernate.order_inserts, domibus.entityManagerFactory.jpaProperty.hibernate.cache.region.factory_class, domibus.entityManagerFactory.jpaProperty.hibernate.cache.generate_statistics, domibus.entityManagerFactory.jpaProperty.hibernate.dialect, domibus.entityManagerFactory.jpaProperty.hibernate.cache.default_cache_concurrency_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_second_level_cache, domibus.entityManagerFactory.jpaProperty.hibernate.format_sql]] starting with prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,829 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:60 - Found properties [[hibernate.connection.driver_class, hibernate.order_updates, hibernate.javax.cache.missing_cache_strategy, hibernate.connection.provider_disables_autocommit, hibernate.jdbc.batch_size, hibernate.id.new_generator_mappings, hibernate.cache.use_query_cache, hibernate.order_inserts, hibernate.cache.region.factory_class, hibernate.cache.generate_statistics, hibernate.dialect, hibernate.cache.default_cache_concurrency_strategy, hibernate.cache.use_second_level_cache, hibernate.format_sql]] starting with prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,830 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:68 - Calculated the property prefix as [domibus.entityManagerFactory.jpaProperty.] for domain [null] and property [domibus.entityManagerFactory.jpaProperty].
+2024-04-11 14:23:25,831 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:44 - Getting nested properties for prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,832 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:52 - Found properties [[domibus.entityManagerFactory.jpaProperty.hibernate.connection.driver_class, domibus.entityManagerFactory.jpaProperty.hibernate.order_updates, domibus.entityManagerFactory.jpaProperty.hibernate.javax.cache.missing_cache_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.connection.provider_disables_autocommit, domibus.entityManagerFactory.jpaProperty.hibernate.jdbc.batch_size, domibus.entityManagerFactory.jpaProperty.hibernate.id.new_generator_mappings, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_query_cache, domibus.entityManagerFactory.jpaProperty.hibernate.order_inserts, domibus.entityManagerFactory.jpaProperty.hibernate.cache.region.factory_class, domibus.entityManagerFactory.jpaProperty.hibernate.cache.generate_statistics, domibus.entityManagerFactory.jpaProperty.hibernate.dialect, domibus.entityManagerFactory.jpaProperty.hibernate.cache.default_cache_concurrency_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_second_level_cache, domibus.entityManagerFactory.jpaProperty.hibernate.format_sql]] starting with prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,833 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:60 - Found properties [[hibernate.connection.driver_class, hibernate.order_updates, hibernate.javax.cache.missing_cache_strategy, hibernate.connection.provider_disables_autocommit, hibernate.jdbc.batch_size, hibernate.id.new_generator_mappings, hibernate.cache.use_query_cache, hibernate.order_inserts, hibernate.cache.region.factory_class, hibernate.cache.generate_statistics, hibernate.dialect, hibernate.cache.default_cache_concurrency_strategy, hibernate.cache.use_second_level_cache, hibernate.format_sql]] starting with prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,834 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:68 - Calculated the property prefix as [domibus.entityManagerFactory.jpaProperty.] for domain [null] and property [domibus.entityManagerFactory.jpaProperty].
+2024-04-11 14:23:25,834 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:44 - Getting nested properties for prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,835 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:52 - Found properties [[domibus.entityManagerFactory.jpaProperty.hibernate.connection.driver_class, domibus.entityManagerFactory.jpaProperty.hibernate.order_updates, domibus.entityManagerFactory.jpaProperty.hibernate.javax.cache.missing_cache_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.connection.provider_disables_autocommit, domibus.entityManagerFactory.jpaProperty.hibernate.jdbc.batch_size, domibus.entityManagerFactory.jpaProperty.hibernate.id.new_generator_mappings, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_query_cache, domibus.entityManagerFactory.jpaProperty.hibernate.order_inserts, domibus.entityManagerFactory.jpaProperty.hibernate.cache.region.factory_class, domibus.entityManagerFactory.jpaProperty.hibernate.cache.generate_statistics, domibus.entityManagerFactory.jpaProperty.hibernate.dialect, domibus.entityManagerFactory.jpaProperty.hibernate.cache.default_cache_concurrency_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_second_level_cache, domibus.entityManagerFactory.jpaProperty.hibernate.format_sql]] starting with prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,836 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:60 - Found properties [[hibernate.connection.driver_class, hibernate.order_updates, hibernate.javax.cache.missing_cache_strategy, hibernate.connection.provider_disables_autocommit, hibernate.jdbc.batch_size, hibernate.id.new_generator_mappings, hibernate.cache.use_query_cache, hibernate.order_inserts, hibernate.cache.region.factory_class, hibernate.cache.generate_statistics, hibernate.dialect, hibernate.cache.default_cache_concurrency_strategy, hibernate.cache.use_second_level_cache, hibernate.format_sql]] starting with prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,837 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:68 - Calculated the property prefix as [domibus.entityManagerFactory.jpaProperty.] for domain [null] and property [domibus.entityManagerFactory.jpaProperty].
+2024-04-11 14:23:25,837 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:44 - Getting nested properties for prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,838 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:52 - Found properties [[domibus.entityManagerFactory.jpaProperty.hibernate.connection.driver_class, domibus.entityManagerFactory.jpaProperty.hibernate.order_updates, domibus.entityManagerFactory.jpaProperty.hibernate.javax.cache.missing_cache_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.connection.provider_disables_autocommit, domibus.entityManagerFactory.jpaProperty.hibernate.jdbc.batch_size, domibus.entityManagerFactory.jpaProperty.hibernate.id.new_generator_mappings, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_query_cache, domibus.entityManagerFactory.jpaProperty.hibernate.order_inserts, domibus.entityManagerFactory.jpaProperty.hibernate.cache.region.factory_class, domibus.entityManagerFactory.jpaProperty.hibernate.cache.generate_statistics, domibus.entityManagerFactory.jpaProperty.hibernate.dialect, domibus.entityManagerFactory.jpaProperty.hibernate.cache.default_cache_concurrency_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_second_level_cache, domibus.entityManagerFactory.jpaProperty.hibernate.format_sql]] starting with prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,838 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:60 - Found properties [[hibernate.connection.driver_class, hibernate.order_updates, hibernate.javax.cache.missing_cache_strategy, hibernate.connection.provider_disables_autocommit, hibernate.jdbc.batch_size, hibernate.id.new_generator_mappings, hibernate.cache.use_query_cache, hibernate.order_inserts, hibernate.cache.region.factory_class, hibernate.cache.generate_statistics, hibernate.dialect, hibernate.cache.default_cache_concurrency_strategy, hibernate.cache.use_second_level_cache, hibernate.format_sql]] starting with prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,839 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:68 - Calculated the property prefix as [domibus.entityManagerFactory.jpaProperty.] for domain [null] and property [domibus.entityManagerFactory.jpaProperty].
+2024-04-11 14:23:25,840 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:44 - Getting nested properties for prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,840 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:52 - Found properties [[domibus.entityManagerFactory.jpaProperty.hibernate.connection.driver_class, domibus.entityManagerFactory.jpaProperty.hibernate.order_updates, domibus.entityManagerFactory.jpaProperty.hibernate.javax.cache.missing_cache_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.connection.provider_disables_autocommit, domibus.entityManagerFactory.jpaProperty.hibernate.jdbc.batch_size, domibus.entityManagerFactory.jpaProperty.hibernate.id.new_generator_mappings, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_query_cache, domibus.entityManagerFactory.jpaProperty.hibernate.order_inserts, domibus.entityManagerFactory.jpaProperty.hibernate.cache.region.factory_class, domibus.entityManagerFactory.jpaProperty.hibernate.cache.generate_statistics, domibus.entityManagerFactory.jpaProperty.hibernate.dialect, domibus.entityManagerFactory.jpaProperty.hibernate.cache.default_cache_concurrency_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_second_level_cache, domibus.entityManagerFactory.jpaProperty.hibernate.format_sql]] starting with prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,841 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:60 - Found properties [[hibernate.connection.driver_class, hibernate.order_updates, hibernate.javax.cache.missing_cache_strategy, hibernate.connection.provider_disables_autocommit, hibernate.jdbc.batch_size, hibernate.id.new_generator_mappings, hibernate.cache.use_query_cache, hibernate.order_inserts, hibernate.cache.region.factory_class, hibernate.cache.generate_statistics, hibernate.dialect, hibernate.cache.default_cache_concurrency_strategy, hibernate.cache.use_second_level_cache, hibernate.format_sql]] starting with prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,842 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:68 - Calculated the property prefix as [domibus.entityManagerFactory.jpaProperty.] for domain [null] and property [domibus.entityManagerFactory.jpaProperty].
+2024-04-11 14:23:25,843 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:44 - Getting nested properties for prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,844 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:52 - Found properties [[domibus.entityManagerFactory.jpaProperty.hibernate.connection.driver_class, domibus.entityManagerFactory.jpaProperty.hibernate.order_updates, domibus.entityManagerFactory.jpaProperty.hibernate.javax.cache.missing_cache_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.connection.provider_disables_autocommit, domibus.entityManagerFactory.jpaProperty.hibernate.jdbc.batch_size, domibus.entityManagerFactory.jpaProperty.hibernate.id.new_generator_mappings, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_query_cache, domibus.entityManagerFactory.jpaProperty.hibernate.order_inserts, domibus.entityManagerFactory.jpaProperty.hibernate.cache.region.factory_class, domibus.entityManagerFactory.jpaProperty.hibernate.cache.generate_statistics, domibus.entityManagerFactory.jpaProperty.hibernate.dialect, domibus.entityManagerFactory.jpaProperty.hibernate.cache.default_cache_concurrency_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_second_level_cache, domibus.entityManagerFactory.jpaProperty.hibernate.format_sql]] starting with prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,845 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:60 - Found properties [[hibernate.connection.driver_class, hibernate.order_updates, hibernate.javax.cache.missing_cache_strategy, hibernate.connection.provider_disables_autocommit, hibernate.jdbc.batch_size, hibernate.id.new_generator_mappings, hibernate.cache.use_query_cache, hibernate.order_inserts, hibernate.cache.region.factory_class, hibernate.cache.generate_statistics, hibernate.dialect, hibernate.cache.default_cache_concurrency_strategy, hibernate.cache.use_second_level_cache, hibernate.format_sql]] starting with prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,846 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:68 - Calculated the property prefix as [domibus.entityManagerFactory.jpaProperty.] for domain [null] and property [domibus.entityManagerFactory.jpaProperty].
+2024-04-11 14:23:25,846 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:44 - Getting nested properties for prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,847 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:52 - Found properties [[domibus.entityManagerFactory.jpaProperty.hibernate.connection.driver_class, domibus.entityManagerFactory.jpaProperty.hibernate.order_updates, domibus.entityManagerFactory.jpaProperty.hibernate.javax.cache.missing_cache_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.connection.provider_disables_autocommit, domibus.entityManagerFactory.jpaProperty.hibernate.jdbc.batch_size, domibus.entityManagerFactory.jpaProperty.hibernate.id.new_generator_mappings, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_query_cache, domibus.entityManagerFactory.jpaProperty.hibernate.order_inserts, domibus.entityManagerFactory.jpaProperty.hibernate.cache.region.factory_class, domibus.entityManagerFactory.jpaProperty.hibernate.cache.generate_statistics, domibus.entityManagerFactory.jpaProperty.hibernate.dialect, domibus.entityManagerFactory.jpaProperty.hibernate.cache.default_cache_concurrency_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_second_level_cache, domibus.entityManagerFactory.jpaProperty.hibernate.format_sql]] starting with prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,848 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:60 - Found properties [[hibernate.connection.driver_class, hibernate.order_updates, hibernate.javax.cache.missing_cache_strategy, hibernate.connection.provider_disables_autocommit, hibernate.jdbc.batch_size, hibernate.id.new_generator_mappings, hibernate.cache.use_query_cache, hibernate.order_inserts, hibernate.cache.region.factory_class, hibernate.cache.generate_statistics, hibernate.dialect, hibernate.cache.default_cache_concurrency_strategy, hibernate.cache.use_second_level_cache, hibernate.format_sql]] starting with prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,848 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:68 - Calculated the property prefix as [domibus.entityManagerFactory.jpaProperty.] for domain [null] and property [domibus.entityManagerFactory.jpaProperty].
+2024-04-11 14:23:25,849 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:44 - Getting nested properties for prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,850 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:52 - Found properties [[domibus.entityManagerFactory.jpaProperty.hibernate.connection.driver_class, domibus.entityManagerFactory.jpaProperty.hibernate.order_updates, domibus.entityManagerFactory.jpaProperty.hibernate.javax.cache.missing_cache_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.connection.provider_disables_autocommit, domibus.entityManagerFactory.jpaProperty.hibernate.jdbc.batch_size, domibus.entityManagerFactory.jpaProperty.hibernate.id.new_generator_mappings, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_query_cache, domibus.entityManagerFactory.jpaProperty.hibernate.order_inserts, domibus.entityManagerFactory.jpaProperty.hibernate.cache.region.factory_class, domibus.entityManagerFactory.jpaProperty.hibernate.cache.generate_statistics, domibus.entityManagerFactory.jpaProperty.hibernate.dialect, domibus.entityManagerFactory.jpaProperty.hibernate.cache.default_cache_concurrency_strategy, domibus.entityManagerFactory.jpaProperty.hibernate.cache.use_second_level_cache, domibus.entityManagerFactory.jpaProperty.hibernate.format_sql]] starting with prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:25,850 [] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:60 - Found properties [[hibernate.connection.driver_class, hibernate.order_updates, hibernate.javax.cache.missing_cache_strategy, hibernate.connection.provider_disables_autocommit, hibernate.jdbc.batch_size, hibernate.id.new_generator_mappings, hibernate.cache.use_query_cache, hibernate.order_inserts, hibernate.cache.region.factory_class, hibernate.cache.generate_statistics, hibernate.dialect, hibernate.cache.default_cache_concurrency_strategy, hibernate.cache.use_second_level_cache, hibernate.format_sql]] starting with prefix [domibus.entityManagerFactory.jpaProperty.]
+2024-04-11 14:23:27,255 [] [] [] [] [main]  INFO e.d.c.u.DatabaseUtilImpl:39 - Found database username [domibus@10.42.9.169]
+2024-04-11 14:23:27,733 [] [] [] [] [main]  INFO e.d.c.j.DomibusJPAConfiguration:75 - Configuring jpaProperties for single-tenancy
+2024-04-11 14:23:50,141 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.t.a.DomibusActiveMQConfiguration:47 - Creating the embedded Active MQ broker from [URL [file:////data/tomcat/conf/domibus/internal/activemq.xml]]
+2024-04-11 14:23:50,230 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.j.a.DomibusJMSActiveMQConnectionManager:60 - Configured serviceUrls [service:jmx:rmi:///jndi/rmi://0.0.0.0:1199/jmxrmi]
+2024-04-11 14:23:50,230 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.j.a.DomibusJMSActiveMQConnectionManager:63 - Configured brokerNames [domibusActiveMQBroker]
+2024-04-11 14:23:50,241 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.DomibusJMSActiveMQBroker:90 - Refreshing broker [domibusActiveMQBroker@service:jmx:rmi:///jndi/rmi://0.0.0.0:1199/jmxrmi]
+2024-04-11 14:23:55,538 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.internal.dispatch.queue]
+2024-04-11 14:23:55,539 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.internal.largeMessage.queue]
+2024-04-11 14:23:55,539 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.internal.splitAndJoin.queue]
+2024-04-11 14:23:55,539 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.internal.pull.queue]
+2024-04-11 14:23:55,540 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.internal.retentionMessage.queue]
+2024-04-11 14:23:55,540 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.internal.pull.receipt.queue]
+2024-04-11 14:23:55,541 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.internal.alert.queue]
+2024-04-11 14:23:55,541 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.internal.earchive.queue]
+2024-04-11 14:23:55,541 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.internal.earchive.notification.queue]
+2024-04-11 14:23:55,542 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.internal.earchive.notification.dlq]
+2024-04-11 14:23:55,542 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.internal.notification.unknown]
+2024-04-11 14:23:55,542 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.notification.webservice]
+2024-04-11 14:23:55,543 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.notification.jms]
+2024-04-11 14:23:55,543 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.notification.filesystem]
+2024-04-11 14:23:55,543 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.notification.kerkovi]
+2024-04-11 14:23:55,544 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.fsplugin.send.queue]
+2024-04-11 14:23:55,544 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.wsplugin.send.queue]
+2024-04-11 14:23:55,545 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.backend.jms.replyQueue]
+2024-04-11 14:23:55,545 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.backend.jms.outQueue]
+2024-04-11 14:23:55,545 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.backend.jms.inQueue]
+2024-04-11 14:23:55,546 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.backend.jms.errorNotifyConsumer]
+2024-04-11 14:23:55,546 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.backend.jms.errorNotifyProducer]
+2024-04-11 14:23:55,547 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [queue://domibus.DLQ]
+2024-04-11 14:23:55,547 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.EmbeddedDomibusBrokerFactoryBean:48 - MaxBrowsePageSize was set to [10000] in [topic://domibus.internal.command]
+2024-04-11 14:23:55,837 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.t.a.DomibusActiveMQConfiguration:57 - Using ActiveMQ brokerURL [tcp://0.0.0.0:61616]
+2024-04-11 14:23:55,837 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.t.a.DomibusActiveMQConfiguration:61 - Using ActiveMQ userName [domibus]
+2024-04-11 14:23:55,838 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.t.a.DomibusActiveMQConfiguration:68 - Using ActiveMQ closeTimeout [15000]
+2024-04-11 14:23:55,838 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.t.a.DomibusActiveMQConfiguration:72 - Using ActiveMQ responseTimeout [0]
+2024-04-11 14:23:55,932 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.DomibusJMSActiveMQConfiguration:63 - Configured property [domibus.jms.connectionFactory.maxPoolSize] with [100]
+2024-04-11 14:23:55,937 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.j.a.DomibusJMSActiveMQConfiguration:50 - Using session cache size for connection factory [1]
+2024-04-11 14:23:57,646 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.e.t.TomcatTaskExecutorConfiguration:27 - Configured property [domibus.taskExecutor.threadCount] with [200]
+2024-04-11 14:24:01,850 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.e.d.s.s.DomibusSchedulerServiceDelegate:29 - creating DomibusSchedulerServiceDelegate
+2024-04-11 14:24:02,132 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.m.DomainServiceImpl:66 - Getting all potential domains that have a valid database schema.
+2024-04-11 14:24:02,138 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.u.DbSchemaUtilImpl:123 - Domain's database schema validity check is not needed in single tenancy
+2024-04-11 14:24:02,139 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.j.MessageListenerContainerInitializer:230 - Creating SendMessageListenerContainers
+2024-04-11 14:24:02,140 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:68 - Calculated the property prefix as [domibus.dispatcher.priority.] for domain [default] and property [domibus.dispatcher.priority].
+2024-04-11 14:24:02,140 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:44 - Getting nested properties for prefix [domibus.dispatcher.priority.]
+2024-04-11 14:24:02,140 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.p.NestedPropertiesManager:49 - No properties found starting with prefix [domibus.dispatcher.priority.]
+2024-04-11 14:24:02,141 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.m.UserMessagePriorityServiceImpl:100 - No dispatcher priority rules were defined
+2024-04-11 14:24:02,141 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.j.MessageListenerContainerInitializer:140 - Creating the SendMessageListenerContainer for domain [default]
+2024-04-11 14:24:02,141 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerFactoryImpl:28 - Creating the SendMessageListenerContainer for domain [default] with selector [null] and concurrency [domibus.dispatcher.concurency]
+2024-04-11 14:24:02,450 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.s.ReprogrammableServiceImpl:34 - Default zone for rescheduling future attempts [Europe/Brussels]
+2024-04-11 14:24:06,530 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.c.CXFCacheConfiguration:28 - Loading the CXF EHCacheTokenStore from [jar:file:/data/tomcat/webapps/domibus/WEB-INF/lib/cxf-rt-ws-security-3.5.5.jar!/cxf-ehcache.xml]
+2024-04-11 14:24:06,941 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.e.s.c.DispatchClientDefaultProvider:98 - Pre-instantiate cxf dispatcher
+2024-04-11 14:24:11,447 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.p.DomibusVersionService:35 - =========================================================================================================
+2024-04-11 14:24:11,448 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.p.DomibusVersionService:36 - |         domibus-MSH Version [5.1] Build-Time [2023-04-07 11:33|Coordinated Universal Time]        |
+2024-04-11 14:24:11,449 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.p.DomibusVersionService:37 - =========================================================================================================
+2024-04-11 14:24:11,748 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.e.r.MSHWebserviceConfiguration:116 - Print payload activated [false] ?
+2024-04-11 14:24:11,748 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.e.r.MSHWebserviceConfiguration:118 - Print metadata activated [true] ?
+2024-04-11 14:24:11,843 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.e.r.MSHWebserviceConfiguration:107 - CXF logging limit set to [18000]
+2024-04-11 14:24:12,036 [domibus@10.42.9.169] [] [] [] [main]  INFO o.a.c.w.s.f.ReflectionServiceFactoryBean:436 - Creating Service {http://domibus.eu}msh-dispatch-service from class org.apache.cxf.jaxws.support.DummyImpl
+2024-04-11 14:24:14,729 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.p.p.f.PayloadFileStorageFactoryImpl:24 - Creating the StorageFactory for domain [default]
+2024-04-11 14:24:14,737 [domibus@10.42.9.169] [] [] [] [main]  WARN e.d.c.p.p.f.PayloadFileStorage:55 - No file system storage defined. This is fine for small attachments but might lead to database issues when processing large payloads
+2024-04-11 14:24:14,745 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.p.p.f.PayloadFileStorageProviderImpl:62 - Storage initialized for domain [default]
+2024-04-11 14:24:16,428 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.e.s.EArchiveFileStorageFactoryImpl:36 - Creating the eArchiveStorageFactory for domain [default]
+2024-04-11 14:24:16,436 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.e.s.EArchiveFileStorage:47 - eArchiving is not activated for domain [default]
+2024-04-11 14:24:16,438 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.e.s.EArchiveFileStorageProviderImpl:75 - eArchiving Storage initialized for domain [default]
+2024-04-11 14:24:17,149 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:155 - Instantiating the DefaultMessageListenerContainer for domain [default] with selector [null] and concurrency property [domibus.dispatcher.concurency]
+2024-04-11 14:24:17,233 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.j.m.MessageListenerContainerConfiguration:285 - Using message selector [DOMAIN='default']
+2024-04-11 14:24:17,235 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.j.m.MessageListenerContainerConfiguration:337 - The timeout [300] was set for the queue [queue://domibus.internal.dispatch.queue].
+2024-04-11 14:24:17,237 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:311 - DefaultMessageListenerContainer initialized for domain [default] with concurrency=[5-20]
+2024-04-11 14:24:17,634 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:381 - Established shared JMS Connection
+2024-04-11 14:24:17,634 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@593ff2e2
+2024-04-11 14:24:17,635 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@20e1613e
+2024-04-11 14:24:17,635 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@c35803a
+2024-04-11 14:24:17,635 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@146af185
+2024-04-11 14:24:17,635 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@3264b908
+2024-04-11 14:24:17,635 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@446e9c01
+2024-04-11 14:24:17,636 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@7d2b33a7
+2024-04-11 14:24:17,636 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@41b3282a
+2024-04-11 14:24:17,636 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@6c9f1e7a
+2024-04-11 14:24:17,636 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@5c21197c
+2024-04-11 14:24:17,946 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.j.MessageListenerContainerInitializer:145 - MessageListenerContainer initialized for domain [default]
+2024-04-11 14:24:17,948 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerFactoryImpl:34 - Creating the SendLargeMessageListenerContainer for domain [default]
+2024-04-11 14:24:17,948 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:170 - Instantiating the createSendLargeMessageListenerContainer for domain [default]
+2024-04-11 14:24:17,949 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.j.m.MessageListenerContainerConfiguration:285 - Using message selector [DOMAIN='default']
+2024-04-11 14:24:17,950 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:327 - The timeout property [domibus.dispatcher.largeFiles.timeout] for the queue [queue://domibus.internal.largeMessage.queue] is not defined.
+2024-04-11 14:24:17,950 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:311 - DefaultMessageListenerContainer initialized for domain [default] with concurrency=[1]
+2024-04-11 14:24:18,031 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:381 - Established shared JMS Connection
+2024-04-11 14:24:18,032 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@617402ff
+2024-04-11 14:24:18,033 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@42a235b
+2024-04-11 14:24:18,136 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.j.MessageListenerContainerInitializer:293 - LargeMessageListenerContainer initialized for domain [default]
+2024-04-11 14:24:18,136 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerFactoryImpl:40 - Creating the SplitAndJoinListenerContainer for domain [default]
+2024-04-11 14:24:18,137 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:185 - Instantiating the createSplitAndJoinListener for domain [default]
+2024-04-11 14:24:18,137 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.j.m.MessageListenerContainerConfiguration:285 - Using message selector [DOMAIN='default']
+2024-04-11 14:24:18,138 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:327 - The timeout property [domibus.dispatcher.splitAndJoin.timeout] for the queue [queue://domibus.internal.splitAndJoin.queue] is not defined.
+2024-04-11 14:24:18,138 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:311 - DefaultMessageListenerContainer initialized for domain [default] with concurrency=[1]
+2024-04-11 14:24:18,230 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:381 - Established shared JMS Connection
+2024-04-11 14:24:18,231 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@1c902e2d
+2024-04-11 14:24:18,231 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@4975e61f
+2024-04-11 14:24:18,239 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.j.MessageListenerContainerInitializer:307 - SplitAndJoinListenerContainer initialized for domain [default]
+2024-04-11 14:24:18,241 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerFactoryImpl:46 - Creating the PullReceiptListenerContainer for domain [default]
+2024-04-11 14:24:18,242 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:195 - Instantiating the createPullReceiptListener for domain [default]
+2024-04-11 14:24:18,242 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.j.m.MessageListenerContainerConfiguration:285 - Using message selector [DOMAIN='default']
+2024-04-11 14:24:18,243 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:327 - The timeout property [domibus.pull.receipt.queue.timeout] for the queue [queue://domibus.internal.pull.receipt.queue] is not defined.
+2024-04-11 14:24:18,243 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:311 - DefaultMessageListenerContainer initialized for domain [default] with concurrency=[5-20]
+2024-04-11 14:24:18,247 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:381 - Established shared JMS Connection
+2024-04-11 14:24:18,248 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@4ce091fe
+2024-04-11 14:24:18,330 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@4fe1230
+2024-04-11 14:24:18,330 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@1982b5c4
+2024-04-11 14:24:18,330 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@7fa1fdf5
+2024-04-11 14:24:18,330 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@3786ec9e
+2024-04-11 14:24:18,330 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@431d07cc
+2024-04-11 14:24:18,330 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@4fbdb6fe
+2024-04-11 14:24:18,332 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@3f03b4a9
+2024-04-11 14:24:18,333 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@3f614dcb
+2024-04-11 14:24:18,333 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@14e91e8c
+2024-04-11 14:24:18,344 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.j.MessageListenerContainerInitializer:300 - PullReceiptListenerContainer initialized for domain [default]
+2024-04-11 14:24:18,429 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerFactoryImpl:58 - Creating the PullMessageListenerContainer for domain [default]
+2024-04-11 14:24:18,430 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:249 - Instantiating the pullMessageListener for domain [default]
+2024-04-11 14:24:18,430 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.j.m.MessageListenerContainerConfiguration:285 - Using message selector [DOMAIN='default']
+2024-04-11 14:24:18,431 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:327 - The timeout property [domibus.pull.receipt.queue.timeout] for the queue [queue://domibus.internal.pull.queue] is not defined.
+2024-04-11 14:24:18,431 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:311 - DefaultMessageListenerContainer initialized for domain [default] with concurrency=[5-20]
+2024-04-11 14:24:18,440 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:381 - Established shared JMS Connection
+2024-04-11 14:24:18,440 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@14450c24
+2024-04-11 14:24:18,441 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@21ff1472
+2024-04-11 14:24:18,441 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@7dbe63bf
+2024-04-11 14:24:18,441 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@41c620b9
+2024-04-11 14:24:18,443 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@7dde3089
+2024-04-11 14:24:18,530 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@24dbf7c4
+2024-04-11 14:24:18,530 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@2a76db7b
+2024-04-11 14:24:18,530 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@5a45e564
+2024-04-11 14:24:18,530 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@5613ccdd
+2024-04-11 14:24:18,531 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@2d0d740c
+2024-04-11 14:24:18,633 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.j.MessageListenerContainerInitializer:321 - PullListenerContainer initialized for domain [default]
+2024-04-11 14:24:18,635 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerFactoryImpl:64 - Creating the EArchiveMessageListenerContainer for domain [default]
+2024-04-11 14:24:18,636 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:205 - Instantiating the createEArchiveListener for domain [default]
+2024-04-11 14:24:18,636 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.j.m.MessageListenerContainerConfiguration:285 - Using message selector [DOMAIN='default']
+2024-04-11 14:24:18,637 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:327 - The timeout property [domibus.earchive.queue.timeout] for the queue [queue://domibus.internal.earchive.queue] is not defined.
+2024-04-11 14:24:18,637 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:311 - DefaultMessageListenerContainer initialized for domain [default] with concurrency=[1-1]
+2024-04-11 14:24:18,733 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:381 - Established shared JMS Connection
+2024-04-11 14:24:18,733 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@31bcdfd5
+2024-04-11 14:24:18,734 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@44a77243
+2024-04-11 14:24:18,834 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerFactoryImpl:69 - Creating the EArchiveNotificationListenerContainer for domain [default]
+2024-04-11 14:24:18,837 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:216 - Instantiating the createEArchiveNotificationListener for domain [default]
+2024-04-11 14:24:18,837 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.j.m.MessageListenerContainerConfiguration:285 - Using message selector [DOMAIN='default']
+2024-04-11 14:24:18,839 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:327 - The timeout property [domibus.earchive.notification.queue.timeout] for the queue [queue://domibus.internal.earchive.notification.queue] is not defined.
+2024-04-11 14:24:18,839 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:311 - DefaultMessageListenerContainer initialized for domain [default] with concurrency=[1-1]
+2024-04-11 14:24:18,843 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:381 - Established shared JMS Connection
+2024-04-11 14:24:18,844 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@c1a2b2e
+2024-04-11 14:24:18,845 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@4af183b5
+2024-04-11 14:24:18,933 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerFactoryImpl:74 - Creating the EArchiveNotificationDlqListenerContainer for domain [default]
+2024-04-11 14:24:18,937 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:225 - Instantiating the createEArchiveNotificationDlqListener for domain [default]
+2024-04-11 14:24:18,938 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.j.m.MessageListenerContainerConfiguration:285 - Using message selector [DOMAIN='default']
+2024-04-11 14:24:18,939 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:327 - The timeout property [domibus.earchive.notification.dlq.timeout] for the queue [queue://domibus.internal.earchive.notification.dlq] is not defined.
+2024-04-11 14:24:18,939 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:311 - DefaultMessageListenerContainer initialized for domain [default] with concurrency=[1-1]
+2024-04-11 14:24:18,944 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:381 - Established shared JMS Connection
+2024-04-11 14:24:18,945 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@1d64af49
+2024-04-11 14:24:18,945 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@622ef3cc
+2024-04-11 14:24:19,033 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.j.MessageListenerContainerInitializer:334 - EArchiveListenerContainer initialized for domain [default]
+2024-04-11 14:24:19,036 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerFactoryImpl:52 - Creating the RetentionListenerContainer for domain [default]
+2024-04-11 14:24:19,036 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:240 - Instantiating the createRetentionListener for domain [default]
+2024-04-11 14:24:19,037 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.j.m.MessageListenerContainerConfiguration:285 - Using message selector [DOMAIN='default']
+2024-04-11 14:24:19,037 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:327 - The timeout property [domibus.retention.jms.timeout] for the queue [queue://domibus.internal.retentionMessage.queue] is not defined.
+2024-04-11 14:24:19,037 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.MessageListenerContainerConfiguration:311 - DefaultMessageListenerContainer initialized for domain [default] with concurrency=[5-10]
+2024-04-11 14:24:19,045 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:381 - Established shared JMS Connection
+2024-04-11 14:24:19,045 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@3f30e7fc
+2024-04-11 14:24:19,046 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@799a2784
+2024-04-11 14:24:19,046 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@41bcd119
+2024-04-11 14:24:19,129 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@5419fa71
+2024-04-11 14:24:19,130 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@6caef809
+2024-04-11 14:24:19,130 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@44a0441f
+2024-04-11 14:24:19,130 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@6333618b
+2024-04-11 14:24:19,130 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@7862c5ee
+2024-04-11 14:24:19,131 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@6397145b
+2024-04-11 14:24:19,131 [domibus@10.42.9.169] [] [] [] [main] DEBUG e.d.c.j.m.DomainMessageListenerContainerImpl:548 - Resumed paused task: org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker@2551348a
+2024-04-11 14:24:19,135 [domibus@10.42.9.169] [] [] [] [main]  INFO e.d.c.j.MessageListenerContainerInitializer:314 - RetentionListenerContainer initialized for domain [default]
+2024-04-11 14:24:19,144 [domibus@10.42.9.169] [] [] [] [main]  WARN o.s.w.c.s.AnnotationConfigWebApplicationContext:591 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'backendConnectorProviderExtServiceDelegate' defined in URL [jar:file:/data/tomcat/webapps/domibus/WEB-INF/lib/domibus-msh-ext-services-delegate-5.1.jar!/eu/domibus/ext/delegate/services/backend/BackendConnectorProviderExtServiceDelegate.class]: Unsatisfied dependency expressed through constructor parameter 1; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'backendConnectorStateServiceImpl' defined in URL [jar:file:/data/tomcat/webapps/domibus/WEB-INF/lib/domibus-MSH-5.1.jar!/eu/domibus/core/plugin/BackendConnectorStateServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 1; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageListenerContainerInitializer': Invocation of init method failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'java.util.List<eu.domibus.plugin.BackendConnector<?, ?>>' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.context.annotation.Lazy(value=true)}
+2024-04-11 14:24:19,543 [] [] [] [] [null_Worker-12]  WARN e.d.c.j.m.DomainMessageListenerContainerImpl:937 - Setup of JMS message listener invoker failed for destination 'queue://domibus.internal.largeMessage.queue' - trying to recover. Cause: The Consumer is closed
+javax.jms.IllegalStateException: The Consumer is closed
+	at org.apache.activemq.ActiveMQMessageConsumer.checkClosed(ActiveMQMessageConsumer.java:898)
+	at org.apache.activemq.ActiveMQMessageConsumer.receive(ActiveMQMessageConsumer.java:653)
+	at org.springframework.jms.support.destination.JmsDestinationAccessor.receiveFromConsumer(JmsDestinationAccessor.java:132)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.receiveMessage(AbstractPollingMessageListenerContainer.java:431)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.doReceiveAndExecute(AbstractPollingMessageListenerContainer.java:316)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.receiveAndExecute(AbstractPollingMessageListenerContainer.java:270)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.invokeListener(DefaultMessageListenerContainer.java:1237)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.run(DefaultMessageListenerContainer.java:1127)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)
+2024-04-11 14:24:19,629 [] [] [] [] [null_Worker-13]  WARN e.d.c.j.m.DomainMessageListenerContainerImpl:937 - Setup of JMS message listener invoker failed for destination 'queue://domibus.internal.splitAndJoin.queue' - trying to recover. Cause: java.io.EOFException
+javax.jms.JMSException: java.io.EOFException
+	at org.apache.activemq.util.JMSExceptionSupport.create(JMSExceptionSupport.java:80)
+	at org.apache.activemq.ActiveMQMessageConsumer.dequeue(ActiveMQMessageConsumer.java:505)
+	at org.apache.activemq.ActiveMQMessageConsumer.receive(ActiveMQMessageConsumer.java:666)
+	at org.springframework.jms.support.destination.JmsDestinationAccessor.receiveFromConsumer(JmsDestinationAccessor.java:132)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.receiveMessage(AbstractPollingMessageListenerContainer.java:431)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.doReceiveAndExecute(AbstractPollingMessageListenerContainer.java:316)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.receiveAndExecute(AbstractPollingMessageListenerContainer.java:270)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.invokeListener(DefaultMessageListenerContainer.java:1237)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.run(DefaultMessageListenerContainer.java:1127)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)
+Caused by: java.io.EOFException: null
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:397)
+	at org.apache.activemq.openwire.OpenWireFormat.unmarshal(OpenWireFormat.java:280)
+	at org.apache.activemq.transport.tcp.TcpTransport.readCommand(TcpTransport.java:240)
+	at org.apache.activemq.transport.tcp.TcpTransport.doRun(TcpTransport.java:232)
+	at org.apache.activemq.transport.tcp.TcpTransport.run(TcpTransport.java:215)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2024-04-11 14:24:19,645 [] [] [] [] [null_Worker-13] ERROR e.d.c.j.m.DomainMessageListenerContainerImpl:1004 - Could not refresh JMS Connection for destination 'queue://domibus.internal.splitAndJoin.queue' - retrying using FixedBackOff{interval=5000, currentAttempts=0, maxAttempts=unlimited}. Cause: Could not connect to broker URL: tcp://0.0.0.0:61616. Reason: java.net.ConnectException: Connection refused (Connection refused)
+javax.jms.JMSException: Could not connect to broker URL: tcp://0.0.0.0:61616. Reason: java.net.ConnectException: Connection refused (Connection refused)
+	at org.apache.activemq.util.JMSExceptionSupport.create(JMSExceptionSupport.java:38)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:374)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:304)
+	at org.apache.activemq.ActiveMQConnectionFactory.createConnection(ActiveMQConnectionFactory.java:244)
+	at org.springframework.jms.support.JmsAccessor.createConnection(JmsAccessor.java:197)
+	at org.springframework.jms.listener.AbstractJmsListeningContainer.createSharedConnection(AbstractJmsListeningContainer.java:412)
+	at org.springframework.jms.listener.AbstractJmsListeningContainer.refreshSharedConnection(AbstractJmsListeningContainer.java:397)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer.refreshConnectionUntilSuccessful(DefaultMessageListenerContainer.java:985)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer.recoverAfterListenerSetupFailure(DefaultMessageListenerContainer.java:959)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.run(DefaultMessageListenerContainer.java:1146)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)
+Caused by: java.net.ConnectException: Connection refused (Connection refused)
+	at java.base/java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.base/java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:399)
+	at java.base/java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:240)
+	at java.base/java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:224)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.base/java.net.Socket.connect(Socket.java:609)
+	at org.apache.activemq.transport.tcp.TcpTransport.connect(TcpTransport.java:525)
+	at org.apache.activemq.transport.tcp.TcpTransport.doStart(TcpTransport.java:488)
+	at org.apache.activemq.util.ServiceSupport.start(ServiceSupport.java:55)
+	at org.apache.activemq.transport.AbstractInactivityMonitor.start(AbstractInactivityMonitor.java:169)
+	at org.apache.activemq.transport.InactivityMonitor.start(InactivityMonitor.java:52)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.transport.WireFormatNegotiator.start(WireFormatNegotiator.java:72)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:354)
+	... 9 common frames omitted
+2024-04-11 14:24:19,645 [] [] [] [] [null_Worker-12] ERROR e.d.c.j.m.DomainMessageListenerContainerImpl:1004 - Could not refresh JMS Connection for destination 'queue://domibus.internal.largeMessage.queue' - retrying using FixedBackOff{interval=5000, currentAttempts=0, maxAttempts=unlimited}. Cause: Could not connect to broker URL: tcp://0.0.0.0:61616. Reason: java.net.ConnectException: Connection refused (Connection refused)
+javax.jms.JMSException: Could not connect to broker URL: tcp://0.0.0.0:61616. Reason: java.net.ConnectException: Connection refused (Connection refused)
+	at org.apache.activemq.util.JMSExceptionSupport.create(JMSExceptionSupport.java:38)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:374)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:304)
+	at org.apache.activemq.ActiveMQConnectionFactory.createConnection(ActiveMQConnectionFactory.java:244)
+	at org.springframework.jms.support.JmsAccessor.createConnection(JmsAccessor.java:197)
+	at org.springframework.jms.listener.AbstractJmsListeningContainer.createSharedConnection(AbstractJmsListeningContainer.java:412)
+	at org.springframework.jms.listener.AbstractJmsListeningContainer.refreshSharedConnection(AbstractJmsListeningContainer.java:397)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer.refreshConnectionUntilSuccessful(DefaultMessageListenerContainer.java:985)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer.recoverAfterListenerSetupFailure(DefaultMessageListenerContainer.java:959)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.run(DefaultMessageListenerContainer.java:1146)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)
+Caused by: java.net.ConnectException: Connection refused (Connection refused)
+	at java.base/java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.base/java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:399)
+	at java.base/java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:240)
+	at java.base/java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:224)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.base/java.net.Socket.connect(Socket.java:609)
+	at org.apache.activemq.transport.tcp.TcpTransport.connect(TcpTransport.java:525)
+	at org.apache.activemq.transport.tcp.TcpTransport.doStart(TcpTransport.java:488)
+	at org.apache.activemq.util.ServiceSupport.start(ServiceSupport.java:55)
+	at org.apache.activemq.transport.AbstractInactivityMonitor.start(AbstractInactivityMonitor.java:169)
+	at org.apache.activemq.transport.InactivityMonitor.start(InactivityMonitor.java:52)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.transport.WireFormatNegotiator.start(WireFormatNegotiator.java:72)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:354)
+	... 9 common frames omitted
+2024-04-11 14:24:19,734 [] [] [] [] [null_Worker-21]  WARN e.d.c.j.m.DomainMessageListenerContainerImpl:937 - Setup of JMS message listener invoker failed for destination 'queue://domibus.internal.pull.receipt.queue' - trying to recover. Cause: java.io.EOFException
+javax.jms.JMSException: java.io.EOFException
+	at org.apache.activemq.util.JMSExceptionSupport.create(JMSExceptionSupport.java:80)
+	at org.apache.activemq.ActiveMQMessageConsumer.dequeue(ActiveMQMessageConsumer.java:505)
+	at org.apache.activemq.ActiveMQMessageConsumer.receive(ActiveMQMessageConsumer.java:666)
+	at org.springframework.jms.support.destination.JmsDestinationAccessor.receiveFromConsumer(JmsDestinationAccessor.java:132)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.receiveMessage(AbstractPollingMessageListenerContainer.java:431)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.doReceiveAndExecute(AbstractPollingMessageListenerContainer.java:316)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.receiveAndExecute(AbstractPollingMessageListenerContainer.java:270)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.invokeListener(DefaultMessageListenerContainer.java:1237)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.run(DefaultMessageListenerContainer.java:1127)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)
+Caused by: java.io.EOFException: null
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:397)
+	at org.apache.activemq.openwire.OpenWireFormat.unmarshal(OpenWireFormat.java:280)
+	at org.apache.activemq.transport.tcp.TcpTransport.readCommand(TcpTransport.java:240)
+	at org.apache.activemq.transport.tcp.TcpTransport.doRun(TcpTransport.java:232)
+	at org.apache.activemq.transport.tcp.TcpTransport.run(TcpTransport.java:215)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2024-04-11 14:24:19,744 [] [] [] [] [null_Worker-21] ERROR e.d.c.j.m.DomainMessageListenerContainerImpl:1004 - Could not refresh JMS Connection for destination 'queue://domibus.internal.pull.receipt.queue' - retrying using FixedBackOff{interval=5000, currentAttempts=0, maxAttempts=unlimited}. Cause: Could not connect to broker URL: tcp://0.0.0.0:61616. Reason: java.net.ConnectException: Connection refused (Connection refused)
+javax.jms.JMSException: Could not connect to broker URL: tcp://0.0.0.0:61616. Reason: java.net.ConnectException: Connection refused (Connection refused)
+	at org.apache.activemq.util.JMSExceptionSupport.create(JMSExceptionSupport.java:38)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:374)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:304)
+	at org.apache.activemq.ActiveMQConnectionFactory.createConnection(ActiveMQConnectionFactory.java:244)
+	at org.springframework.jms.support.JmsAccessor.createConnection(JmsAccessor.java:197)
+	at org.springframework.jms.listener.AbstractJmsListeningContainer.createSharedConnection(AbstractJmsListeningContainer.java:412)
+	at org.springframework.jms.listener.AbstractJmsListeningContainer.refreshSharedConnection(AbstractJmsListeningContainer.java:397)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer.refreshConnectionUntilSuccessful(DefaultMessageListenerContainer.java:985)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer.recoverAfterListenerSetupFailure(DefaultMessageListenerContainer.java:959)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.run(DefaultMessageListenerContainer.java:1146)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)
+Caused by: java.net.ConnectException: Connection refused (Connection refused)
+	at java.base/java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.base/java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:399)
+	at java.base/java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:240)
+	at java.base/java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:224)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.base/java.net.Socket.connect(Socket.java:609)
+	at org.apache.activemq.transport.tcp.TcpTransport.connect(TcpTransport.java:525)
+	at org.apache.activemq.transport.tcp.TcpTransport.doStart(TcpTransport.java:488)
+	at org.apache.activemq.util.ServiceSupport.start(ServiceSupport.java:55)
+	at org.apache.activemq.transport.AbstractInactivityMonitor.start(AbstractInactivityMonitor.java:169)
+	at org.apache.activemq.transport.InactivityMonitor.start(InactivityMonitor.java:52)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.transport.WireFormatNegotiator.start(WireFormatNegotiator.java:72)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:354)
+	... 9 common frames omitted
+2024-04-11 14:24:20,130 [] [] [] [] [null_Worker-30]  WARN e.d.c.j.m.DomainMessageListenerContainerImpl:937 - Setup of JMS message listener invoker failed for destination 'queue://domibus.internal.pull.queue' - trying to recover. Cause: java.io.EOFException
+javax.jms.JMSException: java.io.EOFException
+	at org.apache.activemq.util.JMSExceptionSupport.create(JMSExceptionSupport.java:80)
+	at org.apache.activemq.ActiveMQMessageConsumer.dequeue(ActiveMQMessageConsumer.java:505)
+	at org.apache.activemq.ActiveMQMessageConsumer.receive(ActiveMQMessageConsumer.java:666)
+	at org.springframework.jms.support.destination.JmsDestinationAccessor.receiveFromConsumer(JmsDestinationAccessor.java:132)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.receiveMessage(AbstractPollingMessageListenerContainer.java:431)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.doReceiveAndExecute(AbstractPollingMessageListenerContainer.java:316)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.receiveAndExecute(AbstractPollingMessageListenerContainer.java:270)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.invokeListener(DefaultMessageListenerContainer.java:1237)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.run(DefaultMessageListenerContainer.java:1127)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)
+Caused by: java.io.EOFException: null
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:397)
+	at org.apache.activemq.openwire.OpenWireFormat.unmarshal(OpenWireFormat.java:280)
+	at org.apache.activemq.transport.tcp.TcpTransport.readCommand(TcpTransport.java:240)
+	at org.apache.activemq.transport.tcp.TcpTransport.doRun(TcpTransport.java:232)
+	at org.apache.activemq.transport.tcp.TcpTransport.run(TcpTransport.java:215)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2024-04-11 14:24:20,135 [] [] [] [] [null_Worker-30] ERROR e.d.c.j.m.DomainMessageListenerContainerImpl:1004 - Could not refresh JMS Connection for destination 'queue://domibus.internal.pull.queue' - retrying using FixedBackOff{interval=5000, currentAttempts=0, maxAttempts=unlimited}. Cause: Could not connect to broker URL: tcp://0.0.0.0:61616. Reason: java.net.ConnectException: Connection refused (Connection refused)
+javax.jms.JMSException: Could not connect to broker URL: tcp://0.0.0.0:61616. Reason: java.net.ConnectException: Connection refused (Connection refused)
+	at org.apache.activemq.util.JMSExceptionSupport.create(JMSExceptionSupport.java:38)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:374)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:304)
+	at org.apache.activemq.ActiveMQConnectionFactory.createConnection(ActiveMQConnectionFactory.java:244)
+	at org.springframework.jms.support.JmsAccessor.createConnection(JmsAccessor.java:197)
+	at org.springframework.jms.listener.AbstractJmsListeningContainer.createSharedConnection(AbstractJmsListeningContainer.java:412)
+	at org.springframework.jms.listener.AbstractJmsListeningContainer.refreshSharedConnection(AbstractJmsListeningContainer.java:397)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer.refreshConnectionUntilSuccessful(DefaultMessageListenerContainer.java:985)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer.recoverAfterListenerSetupFailure(DefaultMessageListenerContainer.java:959)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.run(DefaultMessageListenerContainer.java:1146)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)
+Caused by: java.net.ConnectException: Connection refused (Connection refused)
+	at java.base/java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.base/java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:399)
+	at java.base/java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:240)
+	at java.base/java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:224)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.base/java.net.Socket.connect(Socket.java:609)
+	at org.apache.activemq.transport.tcp.TcpTransport.connect(TcpTransport.java:525)
+	at org.apache.activemq.transport.tcp.TcpTransport.doStart(TcpTransport.java:488)
+	at org.apache.activemq.util.ServiceSupport.start(ServiceSupport.java:55)
+	at org.apache.activemq.transport.AbstractInactivityMonitor.start(AbstractInactivityMonitor.java:169)
+	at org.apache.activemq.transport.InactivityMonitor.start(InactivityMonitor.java:52)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.transport.WireFormatNegotiator.start(WireFormatNegotiator.java:72)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:354)
+	... 9 common frames omitted
+2024-04-11 14:24:20,232 [] [] [] [] [null_Worker-36]  WARN e.d.c.j.m.DomainMessageListenerContainerImpl:937 - Setup of JMS message listener invoker failed for destination 'queue://domibus.internal.earchive.queue' - trying to recover. Cause: java.io.EOFException
+javax.jms.JMSException: java.io.EOFException
+	at org.apache.activemq.util.JMSExceptionSupport.create(JMSExceptionSupport.java:80)
+	at org.apache.activemq.ActiveMQMessageConsumer.dequeue(ActiveMQMessageConsumer.java:505)
+	at org.apache.activemq.ActiveMQMessageConsumer.receive(ActiveMQMessageConsumer.java:666)
+	at org.springframework.jms.support.destination.JmsDestinationAccessor.receiveFromConsumer(JmsDestinationAccessor.java:132)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.receiveMessage(AbstractPollingMessageListenerContainer.java:431)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.doReceiveAndExecute(AbstractPollingMessageListenerContainer.java:316)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.receiveAndExecute(AbstractPollingMessageListenerContainer.java:270)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.invokeListener(DefaultMessageListenerContainer.java:1237)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.run(DefaultMessageListenerContainer.java:1127)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)
+Caused by: java.io.EOFException: null
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:397)
+	at org.apache.activemq.openwire.OpenWireFormat.unmarshal(OpenWireFormat.java:280)
+	at org.apache.activemq.transport.tcp.TcpTransport.readCommand(TcpTransport.java:240)
+	at org.apache.activemq.transport.tcp.TcpTransport.doRun(TcpTransport.java:232)
+	at org.apache.activemq.transport.tcp.TcpTransport.run(TcpTransport.java:215)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2024-04-11 14:24:20,236 [] [] [] [] [null_Worker-38]  WARN e.d.c.j.m.DomainMessageListenerContainerImpl:937 - Setup of JMS message listener invoker failed for destination 'queue://domibus.internal.earchive.notification.queue' - trying to recover. Cause: java.io.EOFException
+javax.jms.JMSException: java.io.EOFException
+	at org.apache.activemq.util.JMSExceptionSupport.create(JMSExceptionSupport.java:80)
+	at org.apache.activemq.ActiveMQMessageConsumer.dequeue(ActiveMQMessageConsumer.java:505)
+	at org.apache.activemq.ActiveMQMessageConsumer.receive(ActiveMQMessageConsumer.java:666)
+	at org.springframework.jms.support.destination.JmsDestinationAccessor.receiveFromConsumer(JmsDestinationAccessor.java:132)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.receiveMessage(AbstractPollingMessageListenerContainer.java:431)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.doReceiveAndExecute(AbstractPollingMessageListenerContainer.java:316)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.receiveAndExecute(AbstractPollingMessageListenerContainer.java:270)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.invokeListener(DefaultMessageListenerContainer.java:1237)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.run(DefaultMessageListenerContainer.java:1127)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)
+Caused by: java.io.EOFException: null
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:397)
+	at org.apache.activemq.openwire.OpenWireFormat.unmarshal(OpenWireFormat.java:280)
+	at org.apache.activemq.transport.tcp.TcpTransport.readCommand(TcpTransport.java:240)
+	at org.apache.activemq.transport.tcp.TcpTransport.doRun(TcpTransport.java:232)
+	at org.apache.activemq.transport.tcp.TcpTransport.run(TcpTransport.java:215)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2024-04-11 14:24:20,239 [] [] [] [] [null_Worker-36] ERROR e.d.c.j.m.DomainMessageListenerContainerImpl:1004 - Could not refresh JMS Connection for destination 'queue://domibus.internal.earchive.queue' - retrying using FixedBackOff{interval=5000, currentAttempts=0, maxAttempts=unlimited}. Cause: Could not connect to broker URL: tcp://0.0.0.0:61616. Reason: java.net.ConnectException: Connection refused (Connection refused)
+javax.jms.JMSException: Could not connect to broker URL: tcp://0.0.0.0:61616. Reason: java.net.ConnectException: Connection refused (Connection refused)
+	at org.apache.activemq.util.JMSExceptionSupport.create(JMSExceptionSupport.java:38)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:374)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:304)
+	at org.apache.activemq.ActiveMQConnectionFactory.createConnection(ActiveMQConnectionFactory.java:244)
+	at org.springframework.jms.support.JmsAccessor.createConnection(JmsAccessor.java:197)
+	at org.springframework.jms.listener.AbstractJmsListeningContainer.createSharedConnection(AbstractJmsListeningContainer.java:412)
+	at org.springframework.jms.listener.AbstractJmsListeningContainer.refreshSharedConnection(AbstractJmsListeningContainer.java:397)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer.refreshConnectionUntilSuccessful(DefaultMessageListenerContainer.java:985)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer.recoverAfterListenerSetupFailure(DefaultMessageListenerContainer.java:959)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.run(DefaultMessageListenerContainer.java:1146)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)
+Caused by: java.net.ConnectException: Connection refused (Connection refused)
+	at java.base/java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.base/java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:399)
+	at java.base/java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:240)
+	at java.base/java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:224)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.base/java.net.Socket.connect(Socket.java:609)
+	at org.apache.activemq.transport.tcp.TcpTransport.connect(TcpTransport.java:525)
+	at org.apache.activemq.transport.tcp.TcpTransport.doStart(TcpTransport.java:488)
+	at org.apache.activemq.util.ServiceSupport.start(ServiceSupport.java:55)
+	at org.apache.activemq.transport.AbstractInactivityMonitor.start(AbstractInactivityMonitor.java:169)
+	at org.apache.activemq.transport.InactivityMonitor.start(InactivityMonitor.java:52)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.transport.WireFormatNegotiator.start(WireFormatNegotiator.java:72)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:354)
+	... 9 common frames omitted
+2024-04-11 14:24:20,242 [] [] [] [] [null_Worker-38] ERROR e.d.c.j.m.DomainMessageListenerContainerImpl:1004 - Could not refresh JMS Connection for destination 'queue://domibus.internal.earchive.notification.queue' - retrying using FixedBackOff{interval=5000, currentAttempts=0, maxAttempts=unlimited}. Cause: Could not connect to broker URL: tcp://0.0.0.0:61616. Reason: java.net.ConnectException: Connection refused (Connection refused)
+javax.jms.JMSException: Could not connect to broker URL: tcp://0.0.0.0:61616. Reason: java.net.ConnectException: Connection refused (Connection refused)
+	at org.apache.activemq.util.JMSExceptionSupport.create(JMSExceptionSupport.java:38)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:374)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:304)
+	at org.apache.activemq.ActiveMQConnectionFactory.createConnection(ActiveMQConnectionFactory.java:244)
+	at org.springframework.jms.support.JmsAccessor.createConnection(JmsAccessor.java:197)
+	at org.springframework.jms.listener.AbstractJmsListeningContainer.createSharedConnection(AbstractJmsListeningContainer.java:412)
+	at org.springframework.jms.listener.AbstractJmsListeningContainer.refreshSharedConnection(AbstractJmsListeningContainer.java:397)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer.refreshConnectionUntilSuccessful(DefaultMessageListenerContainer.java:985)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer.recoverAfterListenerSetupFailure(DefaultMessageListenerContainer.java:959)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.run(DefaultMessageListenerContainer.java:1146)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)
+Caused by: java.net.ConnectException: Connection refused (Connection refused)
+	at java.base/java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.base/java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:399)
+	at java.base/java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:240)
+	at java.base/java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:224)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.base/java.net.Socket.connect(Socket.java:609)
+	at org.apache.activemq.transport.tcp.TcpTransport.connect(TcpTransport.java:525)
+	at org.apache.activemq.transport.tcp.TcpTransport.doStart(TcpTransport.java:488)
+	at org.apache.activemq.util.ServiceSupport.start(ServiceSupport.java:55)
+	at org.apache.activemq.transport.AbstractInactivityMonitor.start(AbstractInactivityMonitor.java:169)
+	at org.apache.activemq.transport.InactivityMonitor.start(InactivityMonitor.java:52)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.transport.WireFormatNegotiator.start(WireFormatNegotiator.java:72)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:354)
+	... 9 common frames omitted
+2024-04-11 14:24:20,245 [] [] [] [] [null_Worker-39]  WARN e.d.c.j.m.DomainMessageListenerContainerImpl:937 - Setup of JMS message listener invoker failed for destination 'queue://domibus.internal.earchive.notification.dlq' - trying to recover. Cause: java.io.EOFException
+javax.jms.JMSException: java.io.EOFException
+	at org.apache.activemq.util.JMSExceptionSupport.create(JMSExceptionSupport.java:80)
+	at org.apache.activemq.ActiveMQMessageConsumer.dequeue(ActiveMQMessageConsumer.java:505)
+	at org.apache.activemq.ActiveMQMessageConsumer.receive(ActiveMQMessageConsumer.java:666)
+	at org.springframework.jms.support.destination.JmsDestinationAccessor.receiveFromConsumer(JmsDestinationAccessor.java:132)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.receiveMessage(AbstractPollingMessageListenerContainer.java:431)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.doReceiveAndExecute(AbstractPollingMessageListenerContainer.java:316)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.receiveAndExecute(AbstractPollingMessageListenerContainer.java:270)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.invokeListener(DefaultMessageListenerContainer.java:1237)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.run(DefaultMessageListenerContainer.java:1127)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)
+Caused by: java.io.EOFException: null
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:397)
+	at org.apache.activemq.openwire.OpenWireFormat.unmarshal(OpenWireFormat.java:280)
+	at org.apache.activemq.transport.tcp.TcpTransport.readCommand(TcpTransport.java:240)
+	at org.apache.activemq.transport.tcp.TcpTransport.doRun(TcpTransport.java:232)
+	at org.apache.activemq.transport.tcp.TcpTransport.run(TcpTransport.java:215)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2024-04-11 14:24:20,252 [] [] [] [] [null_Worker-39] ERROR e.d.c.j.m.DomainMessageListenerContainerImpl:1004 - Could not refresh JMS Connection for destination 'queue://domibus.internal.earchive.notification.dlq' - retrying using FixedBackOff{interval=5000, currentAttempts=0, maxAttempts=unlimited}. Cause: Could not connect to broker URL: tcp://0.0.0.0:61616. Reason: java.net.ConnectException: Connection refused (Connection refused)
+javax.jms.JMSException: Could not connect to broker URL: tcp://0.0.0.0:61616. Reason: java.net.ConnectException: Connection refused (Connection refused)
+	at org.apache.activemq.util.JMSExceptionSupport.create(JMSExceptionSupport.java:38)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:374)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:304)
+	at org.apache.activemq.ActiveMQConnectionFactory.createConnection(ActiveMQConnectionFactory.java:244)
+	at org.springframework.jms.support.JmsAccessor.createConnection(JmsAccessor.java:197)
+	at org.springframework.jms.listener.AbstractJmsListeningContainer.createSharedConnection(AbstractJmsListeningContainer.java:412)
+	at org.springframework.jms.listener.AbstractJmsListeningContainer.refreshSharedConnection(AbstractJmsListeningContainer.java:397)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer.refreshConnectionUntilSuccessful(DefaultMessageListenerContainer.java:985)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer.recoverAfterListenerSetupFailure(DefaultMessageListenerContainer.java:959)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.run(DefaultMessageListenerContainer.java:1146)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)
+Caused by: java.net.ConnectException: Connection refused (Connection refused)
+	at java.base/java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.base/java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:399)
+	at java.base/java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:240)
+	at java.base/java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:224)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.base/java.net.Socket.connect(Socket.java:609)
+	at org.apache.activemq.transport.tcp.TcpTransport.connect(TcpTransport.java:525)
+	at org.apache.activemq.transport.tcp.TcpTransport.doStart(TcpTransport.java:488)
+	at org.apache.activemq.util.ServiceSupport.start(ServiceSupport.java:55)
+	at org.apache.activemq.transport.AbstractInactivityMonitor.start(AbstractInactivityMonitor.java:169)
+	at org.apache.activemq.transport.InactivityMonitor.start(InactivityMonitor.java:52)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.transport.WireFormatNegotiator.start(WireFormatNegotiator.java:72)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:354)
+	... 9 common frames omitted
+2024-04-11 14:24:20,328 [] [] [] [] [null_Worker-41]  WARN e.d.c.j.m.DomainMessageListenerContainerImpl:937 - Setup of JMS message listener invoker failed for destination 'queue://domibus.internal.retentionMessage.queue' - trying to recover. Cause: java.io.EOFException
+javax.jms.JMSException: java.io.EOFException
+	at org.apache.activemq.util.JMSExceptionSupport.create(JMSExceptionSupport.java:80)
+	at org.apache.activemq.ActiveMQMessageConsumer.dequeue(ActiveMQMessageConsumer.java:505)
+	at org.apache.activemq.ActiveMQMessageConsumer.receive(ActiveMQMessageConsumer.java:666)
+	at org.springframework.jms.support.destination.JmsDestinationAccessor.receiveFromConsumer(JmsDestinationAccessor.java:132)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.receiveMessage(AbstractPollingMessageListenerContainer.java:431)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.doReceiveAndExecute(AbstractPollingMessageListenerContainer.java:316)
+	at org.springframework.jms.listener.AbstractPollingMessageListenerContainer.receiveAndExecute(AbstractPollingMessageListenerContainer.java:270)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.invokeListener(DefaultMessageListenerContainer.java:1237)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.run(DefaultMessageListenerContainer.java:1127)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)
+Caused by: java.io.EOFException: null
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:397)
+	at org.apache.activemq.openwire.OpenWireFormat.unmarshal(OpenWireFormat.java:280)
+	at org.apache.activemq.transport.tcp.TcpTransport.readCommand(TcpTransport.java:240)
+	at org.apache.activemq.transport.tcp.TcpTransport.doRun(TcpTransport.java:232)
+	at org.apache.activemq.transport.tcp.TcpTransport.run(TcpTransport.java:215)
+	at java.base/java.lang.Thread.run(Thread.java:829)
+2024-04-11 14:24:20,333 [] [] [] [] [null_Worker-41] ERROR e.d.c.j.m.DomainMessageListenerContainerImpl:1004 - Could not refresh JMS Connection for destination 'queue://domibus.internal.retentionMessage.queue' - retrying using FixedBackOff{interval=5000, currentAttempts=0, maxAttempts=unlimited}. Cause: Could not connect to broker URL: tcp://0.0.0.0:61616. Reason: java.net.ConnectException: Connection refused (Connection refused)
+javax.jms.JMSException: Could not connect to broker URL: tcp://0.0.0.0:61616. Reason: java.net.ConnectException: Connection refused (Connection refused)
+	at org.apache.activemq.util.JMSExceptionSupport.create(JMSExceptionSupport.java:38)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:374)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:304)
+	at org.apache.activemq.ActiveMQConnectionFactory.createConnection(ActiveMQConnectionFactory.java:244)
+	at org.springframework.jms.support.JmsAccessor.createConnection(JmsAccessor.java:197)
+	at org.springframework.jms.listener.AbstractJmsListeningContainer.createSharedConnection(AbstractJmsListeningContainer.java:412)
+	at org.springframework.jms.listener.AbstractJmsListeningContainer.refreshSharedConnection(AbstractJmsListeningContainer.java:397)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer.refreshConnectionUntilSuccessful(DefaultMessageListenerContainer.java:985)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer.recoverAfterListenerSetupFailure(DefaultMessageListenerContainer.java:959)
+	at org.springframework.jms.listener.DefaultMessageListenerContainer$AsyncMessageListenerInvoker.run(DefaultMessageListenerContainer.java:1146)
+	at org.quartz.simpl.SimpleThreadPool$WorkerThread.run(SimpleThreadPool.java:573)
+Caused by: java.net.ConnectException: Connection refused (Connection refused)
+	at java.base/java.net.PlainSocketImpl.socketConnect(Native Method)
+	at java.base/java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:399)
+	at java.base/java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:240)
+	at java.base/java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:224)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.base/java.net.Socket.connect(Socket.java:609)
+	at org.apache.activemq.transport.tcp.TcpTransport.connect(TcpTransport.java:525)
+	at org.apache.activemq.transport.tcp.TcpTransport.doStart(TcpTransport.java:488)
+	at org.apache.activemq.util.ServiceSupport.start(ServiceSupport.java:55)
+	at org.apache.activemq.transport.AbstractInactivityMonitor.start(AbstractInactivityMonitor.java:169)
+	at org.apache.activemq.transport.InactivityMonitor.start(InactivityMonitor.java:52)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.transport.WireFormatNegotiator.start(WireFormatNegotiator.java:72)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.transport.TransportFilter.start(TransportFilter.java:64)
+	at org.apache.activemq.ActiveMQConnectionFactory.createActiveMQConnection(ActiveMQConnectionFactory.java:354)
+	... 9 common frames omitted
+2024-04-11 14:24:20,744 [domibus@10.42.9.169] [] [] [] [main] ERROR o.s.w.c.ContextLoader:299 - Context initialization failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'backendConnectorProviderExtServiceDelegate' defined in URL [jar:file:/data/tomcat/webapps/domibus/WEB-INF/lib/domibus-msh-ext-services-delegate-5.1.jar!/eu/domibus/ext/delegate/services/backend/BackendConnectorProviderExtServiceDelegate.class]: Unsatisfied dependency expressed through constructor parameter 1; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'backendConnectorStateServiceImpl' defined in URL [jar:file:/data/tomcat/webapps/domibus/WEB-INF/lib/domibus-MSH-5.1.jar!/eu/domibus/core/plugin/BackendConnectorStateServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 1; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageListenerContainerInitializer': Invocation of init method failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'java.util.List<eu.domibus.plugin.BackendConnector<?, ?>>' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.context.annotation.Lazy(value=true)}
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:800)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:229)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1372)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1222)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:582)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:955)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:920)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583)
+	at org.springframework.web.context.ContextLoader.configureAndRefreshWebApplicationContext(ContextLoader.java:399)
+	at org.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:278)
+	at org.springframework.web.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:103)
+	at eu.domibus.core.spring.DomibusContextLoaderListener.contextInitialized(DomibusContextLoaderListener.java:30)
+	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:4766)
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5230)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
+	at org.apache.catalina.core.ContainerBase.addChildInternal(ContainerBase.java:726)
+	at org.apache.catalina.core.ContainerBase.addChild(ContainerBase.java:698)
+	at org.apache.catalina.core.StandardHost.addChild(StandardHost.java:696)
+	at org.apache.catalina.startup.HostConfig.deployWAR(HostConfig.java:1024)
+	at org.apache.catalina.startup.HostConfig$DeployWar.run(HostConfig.java:1911)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:118)
+	at org.apache.catalina.startup.HostConfig.deployWARs(HostConfig.java:825)
+	at org.apache.catalina.startup.HostConfig.deployApps(HostConfig.java:475)
+	at org.apache.catalina.startup.HostConfig.start(HostConfig.java:1618)
+	at org.apache.catalina.startup.HostConfig.lifecycleEvent(HostConfig.java:319)
+	at org.apache.catalina.util.LifecycleBase.fireLifecycleEvent(LifecycleBase.java:123)
+	at org.apache.catalina.util.LifecycleBase.setStateInternal(LifecycleBase.java:423)
+	at org.apache.catalina.util.LifecycleBase.setState(LifecycleBase.java:366)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:946)
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:835)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1396)
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1386)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:75)
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:140)
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:919)
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:263)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:432)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:927)
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
+	at org.apache.catalina.startup.Catalina.start(Catalina.java:772)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.apache.catalina.startup.Bootstrap.start(Bootstrap.java:345)
+	at org.apache.catalina.startup.Bootstrap.main(Bootstrap.java:476)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'backendConnectorStateServiceImpl' defined in URL [jar:file:/data/tomcat/webapps/domibus/WEB-INF/lib/domibus-MSH-5.1.jar!/eu/domibus/core/plugin/BackendConnectorStateServiceImpl.class]: Unsatisfied dependency expressed through constructor parameter 1; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageListenerContainerInitializer': Invocation of init method failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'java.util.List<eu.domibus.plugin.BackendConnector<?, ?>>' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.context.annotation.Lazy(value=true)}
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:800)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:229)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1372)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1222)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:582)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1391)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1311)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:887)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791)
+	... 57 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'messageListenerContainerInitializer': Invocation of init method failed; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'java.util.List<eu.domibus.plugin.BackendConnector<?, ?>>' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.context.annotation.Lazy(value=true)}
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:160)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:440)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1796)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:620)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1391)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1311)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:887)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791)
+	... 71 common frames omitted
+Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'java.util.List<eu.domibus.plugin.BackendConnector<?, ?>>' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.context.annotation.Lazy(value=true)}
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.raiseNoMatchingBeanFound(DefaultListableBeanFactory.java:1801)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1357)
+	at org.springframework.context.annotation.ContextAnnotationAutowireCandidateResolver$1.getTarget(ContextAnnotationAutowireCandidateResolver.java:95)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:195)
+	at com.sun.proxy.$Proxy82.stream(Unknown Source)
+	at eu.domibus.core.plugin.BackendConnectorProviderImpl.getEnableAwares(BackendConnectorProviderImpl.java:55)
+	at eu.domibus.core.jms.MessageListenerContainerInitializer.createMessageListenersForPlugins(MessageListenerContainerInitializer.java:183)
+	at eu.domibus.core.jms.MessageListenerContainerInitializer.createInstancesFor(MessageListenerContainerInitializer.java:173)
+	at eu.domibus.core.jms.MessageListenerContainerInitializer.createInstancesFor(MessageListenerContainerInitializer.java:161)
+	at eu.domibus.core.jms.MessageListenerContainerInitializer.initialize(MessageListenerContainerInitializer.java:88)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleElement.invoke(InitDestroyAnnotationBeanPostProcessor.java:389)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:333)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:157)
+	... 84 common frames omitted
+2024-04-11 14:24:20,829 [domibus@10.42.9.169] [] [] [] [main]  WARN o.s.w.c.s.SpringBeanAutowiringSupport:89 - Current WebApplicationContext is not available for processing of MetricsServletContextListener: Make sure this class gets constructed in a Spring web application after the Spring WebApplicationContext has been initialized. Proceeding without injection.
+2024-04-11 14:24:20,832 [domibus@10.42.9.169] [] [] [] [main]  WARN o.s.w.c.s.SpringBeanAutowiringSupport:89 - Current WebApplicationContext is not available for processing of HealthCheckServletContextListener: Make sure this class gets constructed in a Spring web application after the Spring WebApplicationContext has been initialized. Proceeding without injection.
+11-Apr-2024 14:24:20.832 SEVERE [main] org.apache.catalina.core.StandardContext.startInternal One or more listeners failed to start. Full details will be found in the appropriate container log file
+11-Apr-2024 14:24:20.837 SEVERE [main] org.apache.catalina.core.StandardContext.startInternal Context [/domibus] startup failed due to previous errors
+11-Apr-2024 14:24:21.053 WARNING [main] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesThreads The web application [domibus] appears to have started a thread named [BC Entropy Daemon] but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread:
+ java.base@11.0.12/java.lang.Thread.sleep(Native Method)
+ org.bouncycastle.jcajce.provider.drbg.DRBG$EntropyDaemon.run(Unknown Source)
+ java.base@11.0.12/java.lang.Thread.run(Thread.java:829)
+11-Apr-2024 14:24:21.129 INFO [main] org.apache.catalina.startup.HostConfig.deployWAR Deployment of web application archive [/data/tomcat/webapps/domibus.war] has finished in [99,913] ms
+11-Apr-2024 14:24:21.130 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/data/tomcat/webapps/ROOT]
+11-Apr-2024 14:24:22.636 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+11-Apr-2024 14:24:22.736 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/data/tomcat/webapps/ROOT] has finished in [1,606] ms
+11-Apr-2024 14:24:22.736 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/data/tomcat/webapps/docs]
+11-Apr-2024 14:24:25.050 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+11-Apr-2024 14:24:25.053 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/data/tomcat/webapps/docs] has finished in [2,317] ms
+11-Apr-2024 14:24:25.053 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/data/tomcat/webapps/examples]
+11-Apr-2024 14:24:27.436 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+11-Apr-2024 14:24:27.544 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/data/tomcat/webapps/examples] has finished in [2,490] ms
+11-Apr-2024 14:24:27.544 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/data/tomcat/webapps/host-manager]
+11-Apr-2024 14:24:29.029 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+11-Apr-2024 14:24:29.033 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/data/tomcat/webapps/host-manager] has finished in [1,489] ms
+11-Apr-2024 14:24:29.033 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deploying web application directory [/data/tomcat/webapps/manager]
+11-Apr-2024 14:24:30.130 INFO [main] org.apache.jasper.servlet.TldScanner.scanJars At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+11-Apr-2024 14:24:30.133 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/data/tomcat/webapps/manager] has finished in [1,100] ms
+11-Apr-2024 14:24:30.138 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8080"]
+11-Apr-2024 14:24:30.230 INFO [main] org.apache.catalina.startup.Catalina.start Server startup in [109583] milliseconds

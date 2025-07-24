@@ -1,0 +1,24 @@
+services:
+  caddy:
+    image: {{ image.caddy }}
+    restart: unless-stopped
+    container_name: caddy
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - caddy-net
+
+volumes:
+  caddy_data:
+    external: true
+  caddy_config:
+
+networks:
+  caddy-net:
+    name: reverse_proxy
+    external: true

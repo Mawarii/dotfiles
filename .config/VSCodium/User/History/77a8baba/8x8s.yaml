@@ -1,0 +1,138 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: 'empfangsclient-ecc'
+  name: empfangsclient-ecc
+spec:
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: 'empfangsclient-ecc'
+  template:
+    metadata:
+      labels:
+        app: 'empfangsclient-ecc'
+    spec:
+      securityContext:
+        fsGroup: 1001
+        runAsGroup: 1001
+        runAsUser: 1001
+      containers:
+        - name: 'empfangsclient-ecc'
+          image: DOCKER_IMAGE_ECC
+          imagePullPolicy: 'IfNotPresent'
+          envFrom:
+            - configMapRef:
+                name: 'empfangsclient-ecc-configmap'
+          env:
+            - name: 'MARIADB_DATABASE'
+              valueFrom:
+                secretKeyRef:
+                  name: 'mariadb-auth-ecc'
+                  key: 'mariadb-database'
+            - name: 'SPRING_DATASOURCE_URL'
+              value: 'jdbc:mariadb://empfangsclient-ecc-mariadb:3306/${MARIADB_DATABASE}'
+            - name: 'SPRING_DATASOURCE_USERNAME'
+              valueFrom:
+                secretKeyRef:
+                  name: 'mariadb-auth-ecc'
+                  key: 'mariadb-user'
+            - name: 'SPRING_DATASOURCE_PASSWORD'
+              valueFrom:
+                secretKeyRef:
+                  name: 'mariadb-auth-ecc'
+                  key: 'mariadb-password'
+            - name: 'APPLICATION_FIT_CONNECT_CLIENT_SECRET'
+              valueFrom:
+                secretKeyRef:
+                  name: 'ecc-secrets'
+                  key: 'fitconnect-client-secret'
+            - name: ECC_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          ports:
+            - containerPort: 9443
+              name: http
+          startupProbe:
+            tcpSocket:
+              port: 9443
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 9443
+            periodSeconds: 10
+            timeoutSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 9443
+            periodSeconds: 10
+            timeoutSeconds: 10
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 500m
+              memory: 512Mi
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            # - name: ecc-logs
+            #   mountPath: /var/log
+          securityContext:
+            runAsUser: 1001
+            runAsGroup: 1001
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop: [ "ALL" ]
+            seccompProfile:
+              type: "RuntimeDefault"
+        - name: version-sidecar
+          image: DOCKER_IMAGE_SIDECAR
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+            periodSeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 15
+            timeoutSeconds: 1
+            periodSeconds: 15
+          ports:
+            - containerPort: 3000
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+          envFrom:
+            - secretRef:
+                name: cluster-stage-vars
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
+            requests:
+              memory: "64Mi"
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        # - name: ecc-logs
+        #   persistentVolumeClaim:
+        #     claimName: empfangsclient-ecc-logs-pvc

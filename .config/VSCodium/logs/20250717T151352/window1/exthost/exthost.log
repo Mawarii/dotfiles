@@ -1,0 +1,53 @@
+2025-07-17 15:13:53.383 [info] Extension host with pid 420237 started
+2025-07-17 15:13:53.383 [info] Skipping acquiring lock for /home/dmarkovic/.config/VSCodium/User/workspaceStorage/da77c4abd109d5958e043b840bb1d685.
+2025-07-17 15:13:53.551 [info] ExtensionService#_doActivateExtension vscode.emmet, startup: false, activationEvent: 'onLanguage'
+2025-07-17 15:13:53.568 [info] ExtensionService#_doActivateExtension ms-python.python, startup: false, activationEvent: 'onLanguage:yaml', root cause: redhat.ansible
+2025-07-17 15:13:53.753 [info] ExtensionService#_doActivateExtension redhat.vscode-yaml, startup: false, activationEvent: 'onLanguage:yaml', root cause: redhat.ansible
+2025-07-17 15:13:53.971 [info] ExtensionService#_doActivateExtension redhat.ansible, startup: false, activationEvent: 'onLanguage:yaml'
+2025-07-17 15:13:54.168 [info] ExtensionService#_doActivateExtension ms-python.vscode-pylance, startup: false, activationEvent: 'api', root cause: ms-python.python
+2025-07-17 15:13:54.560 [info] ExtensionService#_doActivateExtension vscode.git-base, startup: true, activationEvent: '*', root cause: vscode.git
+2025-07-17 15:13:54.577 [warning] [redhat.vscode-yaml] Accessing a resource scoped configuration without providing a resource is not expected. To get the effective value for '[yaml]', provide the URI of a resource or 'null' for any resource.
+2025-07-17 15:13:54.581 [warning] [redhat.vscode-yaml] Accessing a resource scoped configuration without providing a resource is not expected. To get the effective value for '[yaml]', provide the URI of a resource or 'null' for any resource.
+2025-07-17 15:13:54.585 [info] ExtensionService#_doActivateExtension vscode.git, startup: true, activationEvent: '*'
+2025-07-17 15:13:54.619 [info] ExtensionService#_doActivateExtension vscode.github, startup: true, activationEvent: '*'
+2025-07-17 15:13:54.718 [info] Eager extensions activated
+2025-07-17 15:13:54.725 [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch, startup: false, activationEvent: 'onStartupFinished'
+2025-07-17 15:13:54.727 [info] ExtensionService#_doActivateExtension vscode.merge-conflict, startup: false, activationEvent: 'onStartupFinished'
+2025-07-17 15:13:54.742 [info] ExtensionService#_doActivateExtension aaron-bond.better-comments, startup: false, activationEvent: 'onStartupFinished'
+2025-07-17 15:13:54.746 [info] ExtensionService#_doActivateExtension dbaeumer.vscode-eslint, startup: false, activationEvent: 'onStartupFinished'
+2025-07-17 15:13:54.770 [info] ExtensionService#_doActivateExtension eamodio.gitlens, startup: false, activationEvent: 'onStartupFinished'
+2025-07-17 15:13:54.887 [info] ExtensionService#_doActivateExtension felipecaputo.git-project-manager, startup: false, activationEvent: 'onStartupFinished'
+2025-07-17 15:13:55.109 [info] ExtensionService#_doActivateExtension vscode.github-authentication, startup: false, activationEvent: 'onAuthenticationRequest:github'
+2025-07-17 15:13:55.352 [warning] [redhat.vscode-yaml] Accessing a resource scoped configuration without providing a resource is not expected. To get the effective value for '[yaml]', provide the URI of a resource or 'null' for any resource.
+2025-07-17 15:19:50.694 [warning] TextEditor is closed/disposed
+2025-07-17 15:20:21.183 [warning] TextEditor is closed/disposed
+2025-07-17 15:20:31.644 [warning] [redhat.vscode-yaml] Accessing a resource scoped configuration without providing a resource is not expected. To get the effective value for '[yaml]', provide the URI of a resource or 'null' for any resource.
+2025-07-17 15:20:41.880 [warning] TextEditor is closed/disposed
+2025-07-17 15:20:43.035 [warning] TextEditor is closed/disposed
+2025-07-17 15:20:45.412 [warning] TextEditor is closed/disposed
+2025-07-17 15:20:49.330 [warning] TextEditor is closed/disposed
+2025-07-17 15:24:20.914 [info] Extension host terminating: renderer closed the MessagePort
+2025-07-17 15:24:20.926 [error] An error occurred when disposing the subscriptions for extension 'eamodio.gitlens':
+2025-07-17 15:24:20.926 [error] TypeError: Cannot read properties of undefined (reading 'dispose')
+	at Object.dispose (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:140:134075)
+	at Y1.<anonymous> (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:107:9946)
+	at Y1.dispose (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:107:10042)
+	at Object.dispose (/home/dmarkovic/.vscode-oss/extensions/eamodio.gitlens-17.3.1/dist/gitlens.js:536:29282)
+	at /home/dmarkovic/.vscode-oss/extensions/eamodio.gitlens-17.3.1/dist/gitlens.js:813:16179
+	at Array.forEach (<anonymous>)
+	at Object.dispose (/home/dmarkovic/.vscode-oss/extensions/eamodio.gitlens-17.3.1/dist/gitlens.js:813:16161)
+	at wi (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:25:748)
+	at file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:117:18464
+	at file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:25:1058
+	at Object.dispose (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:8:705)
+	at KG._deactivate (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:117:14729)
+	at file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:117:12015
+	at Array.map (<anonymous>)
+	at KG._deactivateAll (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:117:12003)
+	at KG.terminate (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:117:12356)
+	at X7.terminate (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:119:1082)
+	at hs (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:356:10566)
+	at MessagePortMain.<anonymous> (file:///opt/vscodium-bin/resources/app/out/vs/workbench/api/node/extensionHostProcess.js:356:7013)
+	at MessagePortMain.emit (node:events:518:28)
+	at MessagePortMain._internalPort.emit (node:electron/js2c/utility_init:2:3073)
+2025-07-17 15:24:20.933 [info] Extension host with pid 420237 exiting with code 0

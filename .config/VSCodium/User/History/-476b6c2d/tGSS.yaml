@@ -1,0 +1,53 @@
+auth:
+  rootPassword: "x6sBkS7oS9GXPdPm9iM1r6FdT1i1Z3D9eI3sC6T9whXsUfI5lM7TK86K6xGhD5pmM8M6Ahb7CGc37rWke7b372Sw2Bjv1WtwN7Ja8tWy1Ud9EVw7V18w1q9zJb65Zo2W"
+  database: "pflegewegweiser"
+  username: "pflegewegweiser"
+  password: "IXV6nV8yCJ1yPkXo1z7E1WxNVaMM2ibD9rWzcC99wM2wElL483UbZF7kAeH6z6f4C9BiB1hpAL1Jh4q35mGe3ZhIm4Gn32LjRj5Y82Nr22m55fFz8pZK98s9p7w2f1Au"
+primary:
+  configuration: |-
+    [mysqld]
+    skip-name-resolve
+    explicit_defaults_for_timestamp
+    basedir=/opt/bitnami/mariadb
+    datadir=/bitnami/mariadb/data
+    plugin_dir=/opt/bitnami/mariadb/plugin
+    port={{ .Values.primary.containerPorts.mysql }}
+    socket=/opt/bitnami/mariadb/tmp/mysql.sock
+    tmpdir=/opt/bitnami/mariadb/tmp
+    max_allowed_packet=256M
+    bind-address=*
+    pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
+    log-error=/opt/bitnami/mariadb/logs/mysqld.log
+    character-set-server=UTF8
+    collation-server=utf8_general_ci
+    slow_query_log=0
+    long_query_time=10.0
+    binlog_expire_logs_seconds=2592000
+    {{- if .Values.tls.enabled }}
+    ssl_cert=/opt/bitnami/mariadb/certs/{{ .Values.tls.certFilename }}
+    ssl_key=/opt/bitnami/mariadb/certs/{{ .Values.tls.certKeyFilename }}
+    {{- if (include "mariadb.tlsCACert" .) }}
+    ssl_ca={{ include "mariadb.tlsCACert" . }}
+    {{- end }}
+    {{- end }}
+    [client]
+    port=3306
+    socket=/opt/bitnami/mariadb/tmp/mysql.sock
+    default-character-set=UTF8
+    plugin_dir=/opt/bitnami/mariadb/plugin
+
+    [manager]
+    port=3306
+    socket=/opt/bitnami/mariadb/tmp/mysql.sock
+    pid-file=/opt/bitnami/mariadb/tmp/mysqld.pid
+  resources:
+    limits:
+      cpu: 300m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  persistence:
+    size: 10Gi
+  pdb:
+    create: false

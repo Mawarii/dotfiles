@@ -1,0 +1,13 @@
+alertmanager:
+  enabled: false
+
+grafana:
+  enabled: false
+  forceDeployDashboards: true
+  namespaceOverride: "grafana"
+
+prometheus:
+  thanosService:
+    enabled: true
+  prometheusSpec:
+    enableRemoteWriteReceiver: true

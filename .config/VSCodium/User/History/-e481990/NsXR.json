@@ -1,0 +1,70 @@
+{
+    "files.associations": {
+        "*.yaml": "yaml",
+    },
+    "yaml.schemas": {
+        "https://json.schemastore.org/yamllint.json": "*.yaml"
+    },
+    "workbench.startupEditor": "none",
+    "editor.fontSize": 15,
+    "editor.wordWrap": "on",
+    "git.confirmSync": false,
+    "editor.fontFamily": "'Hack Nerd Font', 'monospace', monospace",
+    "redhat.telemetry.enabled": false,
+    "update.showReleaseNotes": false,
+    "git.ignoreRebaseWarning": true,
+    "go.toolsManagement.autoUpdate": true,
+    "better-comments.tags": [
+        {
+            "tag": "!",
+            "color": "#FF4d4d",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
+        },
+        {
+            "tag": "?",
+            "color": "#5DC3B9",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
+        },
+        {
+            "tag": "//",
+            "color": "#474747",
+            "strikethrough": true,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
+        },
+        {
+            "tag": "todo",
+            "color": "#FF8C00",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
+        },
+        {
+            "tag": "*",
+            "color": "#98C379",
+            "strikethrough": false,
+            "underline": false,
+            "backgroundColor": "transparent",
+            "bold": false,
+            "italic": false
+        }
+    ],
+    "security.workspace.trust.untrustedFiles": "open",
+    "explorer.confirmDragAndDrop": false,
+    "editor.mouseWheelScrollSensitivity": 2,
+    "window.titleBarStyle": "custom",
+    "editor.formatOnSave": true,
+    "workbench.colorTheme": "GitHub Light",
+}

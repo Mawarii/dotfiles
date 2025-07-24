@@ -1,0 +1,27 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: empfangsclient-plus-client
+  name: empfangsclient-plus-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: empfangsclient-plus-client
+  template:
+    metadata:
+      labels:
+        app: empfangsclient-plus-client
+    spec:
+      containers:
+        - name: client
+          image: ghcr.io/shiftdigital-de/shiftdesk-client:canary
+          env:
+            - name: SERVER_URL
+              value: "https://server-ecp.dev.efa.publicplan.cloud"
+            - name: CLIENT_URL
+              value: "https://client-ecp.dev.efa.publicplan.cloud"
+            - name: RELEASE
+              value: "canary"

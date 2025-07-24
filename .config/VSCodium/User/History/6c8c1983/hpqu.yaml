@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: empfangsclient-plus-client-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: "ecp-client.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: empfangsclient-plus-client
+                port:
+                  number: http
+  tls:
+    - hosts:
+        - "ecp-client.dev.efa.publicplan.cloud"
+      secretName: "ecp-client-tls"

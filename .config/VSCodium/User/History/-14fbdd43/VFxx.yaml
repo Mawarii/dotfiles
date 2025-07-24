@@ -1,0 +1,7 @@
+architecture: standalone
+
+auth:
+  enabled: true
+  sentinel: false
+  existingSecret: "redis-auth"
+  existingSecretPasswordKey: ""

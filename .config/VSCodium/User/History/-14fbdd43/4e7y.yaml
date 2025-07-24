@@ -1,0 +1,7 @@
+architecture: standalone
+
+auth:
+  enabled: true
+  sentinel: true
+  existingSecret: ""
+  existingSecretPasswordKey: ""

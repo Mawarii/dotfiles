@@ -1,0 +1,48 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: empfangsclient-eco-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: "eco.-zdi.staging.efa.owl-it.de"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: empfangsclient-eco
+                port:
+                  name: http
+          - path: /health
+            pathType: Prefix
+            backend:
+              service:
+                name: disallowed-service
+                port:
+                  number: 80
+    - host: "develop-organization.eco.zdi.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - path: /health
+            pathType: Prefix
+            backend:
+              service:
+                name: disallowed-service
+                port:
+                  number: 80
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: empfangsclient-eco
+                port:
+                  name: http
+  tls:
+    - hosts:
+        - "eco.zdi.pre-stage.efa.publicplan.cloud"
+      secretName: empfangsclient-eco-tls

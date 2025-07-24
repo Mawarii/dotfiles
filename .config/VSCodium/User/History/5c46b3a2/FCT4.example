@@ -1,0 +1,5 @@
+[control-planes]
+controlplane-001 ansible_host=12.34.45.78 ansible_user=shield ansible_port=22222
+
+[worker]
+worker-001 ansible_host=12.34.45.78 ansible_user=shield ansible_port=22222

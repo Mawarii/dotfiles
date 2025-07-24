@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: sync
+spec:
+  schedule: "*/15 * * * *"
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: sync
+              image: nixery.dev/bash/rsync
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/sh
+                - -c
+                - rsync -Phavv rsync://hsi-intranet-drupal-drupal/staticfiles /srv && rsync -Phavv /srv/ rsync://public-static-static/staticfiles
+              volumeMounts:
+                - mountPath: /srv
+                  name: tempdir
+          restartPolicy: OnFailure
+          volumes:
+            - name: tempdir
+              persistentVolumeClaim:
+                claimName: staticfiles-cronjob
+      backoffLimit: 3
+  concurrencyPolicy: Forbid

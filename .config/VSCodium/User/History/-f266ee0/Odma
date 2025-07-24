@@ -1,0 +1,46 @@
+http://*.thlvhlc1.zv.thlv.de {
+        redir https://{host}{uri}
+}
+
+https://*.thlvhlc1.zv.thlv.de {
+        tls /certs/cert.pem /certs/key.pem
+
+
+        @keycloak host forms-flow-idm-keycloak.thlvhlc1.zv.thlv.de
+        handle @keycloak {
+                reverse_proxy localhost:8080
+        }
+}
+
+http://forms-flow-forms.THLVHLC1.zv.thlv.de {
+        reverse_proxy localhost:3001
+}
+
+http://forms-flow-documents-api.THLVHLC1.zv.thlv.de {
+        reverse_proxy localhost:5006
+}
+
+http://forms-flow-data-analysis.THLVHLC1.zv.thlv.de {
+        reverse_proxy localhost:6001
+}
+
+http://forms-flow-bpm.THLVHLC1.zv.thlv.de {
+        reverse_proxy localhost:8000
+}
+
+http://forms-flow-api.THLVHLC1.zv.thlv.de {
+        reverse_proxy localhost:5000
+}
+
+http://forms-flow-analytics.THLVHLC1.zv.thlv.de {
+        reverse_proxy localhost:7000
+}
+
+http://forms-flow-web.THLVHLC1.zv.thlv.de {
+        reverse_proxy localhost:3004
+}
+
+http://forms-flow-micro-frontend.THLVHLC1.zv.thlv.de {
+        reverse_proxy localhost:3003
+}
+

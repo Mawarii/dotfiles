@@ -1,0 +1,14 @@
+---
+- name: Check if default port is open
+  ansible.builtin.wait_for:
+    host: "{{ hostvars[item].ansible_host }}"
+    port: "{{ ssh_port }}"
+    timeout: 5
+  ignore_errors: true
+  register: port_check
+  loop: "{{ groups['all'] }}"
+
+- name: Set variables for SSH user and port
+  ansible.builtin.set_fact:
+    ansible_user: "{% if port_check.failed %}{{ default_ssh_user }}{% else %}{{ ssh_user }}{% endif %}"
+    ansible_port: "{% if port_check.failed %}{{ default_ssh_port }}{% else %}{{ ssh_port }}{% endif %}"

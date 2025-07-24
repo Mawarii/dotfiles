@@ -1,0 +1,159 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+  - ../../../../databases/bitnami-mariadb-10.11.4-debian-11-r0/overlays/develop
+  - ../../../../databases/bitnami-minio-2023-6-19-debian-11-r0/overlays/develop
+  - ../../../../databases/bitnami-redis-standalone-7.2.1-debian-11-r26/overlays/develop
+  - govforms2-workflow-core-version-ingress.yaml
+  - govforms2-workflow-core-basic-auth.yaml
+  - govforms2-workflow-core-user-data-deletion-job.yaml
+
+patches:
+  - path: govforms2-workflow-core.patch.yaml
+    target:
+      kind: Deployment
+      name: govforms2-workflow-core
+  - path: govforms2-workflow-core-ingress.patch.yaml
+    target:
+      kind: Ingress
+      name: govforms2-workflow-core-ingress
+  - path: govforms2-mariadb.patch.yaml
+    target:
+      kind: StatefulSet
+      name: mariadb
+  - path: govforms2-workflow-core-configmap.patch.yaml
+    target:
+      kind: ConfigMap
+      name: govforms2-workflow-core-configmap
+  - path: govforms2-workflow-core-secrets.patch.yaml
+    target:
+      kind: Secret
+      name: govforms2-workflow-core-secrets
+  - path: govforms2-workflow-core-akeneo-import-job.patch.yaml
+    target:
+      kind: CronJob
+      name: govforms2-akeneo-import-job
+#  - path: govforms2-workflow-core-rabbitmq-consumer-job.patch.yaml
+#    target:
+#      kind: CronJob
+#      name: govforms2-rabbitmq-consumer-job
+
+images:
+  - name: DOCKER_IMAGE_1
+    newName: gitlab.publicplan.cloud:5050/themenwelt-formulare/govforms2/govforms2_workflow_core
+    newTag: "ci-ad1c3211"
+  - name: DOCKER_IMAGE_1_ORIGIN
+    newName: gitlab.publicplan.cloud:5050/themenwelt-formulare/govforms2/govforms2_workflow_core
+    newTag: "ci-ad1c3211"
+  - name: DOCKER_IMAGE_2
+    newName: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/common/base-images/nginx-hardened
+    newTag: "v0.0.1"
+  - name: DOCKER_IMAGE_2_ORIGIN
+    newName: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/common/base-images/nginx-hardened
+    newTag: "v0.0.1"
+  - name: DOCKER_IMAGE_3
+    newName: bitnami/minio-client
+    newTag: "2023.9.22-debian-11-r0"
+  - name: DOCKER_IMAGE_3_ORIGIN
+    newName: bitnami/minio-client
+    newTag: "2023.9.22-debian-11-r0"
+  - name: DOCKER_IMAGE_4
+    newName: gitlab.publicplan.cloud:5050/themenwelt-formulare/govforms2/kosit-validator
+    newTag: "v0.6.0"
+  - name: DOCKER_IMAGE_4_ORIGIN
+    newName: gitlab.publicplan.cloud:5050/themenwelt-formulare/govforms2/kosit-validator
+    newTag: "v0.6.0"
+  - name: DOCKER_IMAGE_5
+    newName: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/tools/version-sidecar
+    newTag: v1.3.2
+  - name: DOCKER_IMAGE_5_ORIGIN
+    newName: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/tools/version-sidecar
+    newTag: v1.3.2
+  - name: DOCKER_IMAGE_6
+    newName: gitlab.publicplan.cloud:5050/themenwelt-formulare/govforms2/form-config/formio-akeneo-sync
+    newTag: "v0.4.1"
+  - name: DOCKER_IMAGE_6_ORIGIN
+    newName: gitlab.publicplan.cloud:5050/themenwelt-formulare/govforms2/form-config/formio-akeneo-sync
+    newTag: "v0.4.1"
+  - name: DOCKER_IMAGE_7
+    newName: docker.io/bitnami/rabbitmq
+    newTag: "4.0.3-debian-12-r0"
+  - name: DOCKER_IMAGE_7_ORIGIN
+    newName: docker.io/bitnami/rabbitmq
+    newTag: "4.0.3-debian-12-r0"
+
+replacements: #version sidecar replacements
+  - source:
+      kind: Deployment
+      name: govforms2-workflow-core
+      fieldPath: spec.template.spec.containers.[name=application].image
+    targets:
+      - select:
+          kind: Deployment
+          name: govforms2-workflow-core
+        fieldPaths:
+          - spec.template.spec.containers.[name=version-sidecar].env.[name=DOCKER_IMAGE_1].value
+        options:
+          create: true
+  - source:
+      kind: Deployment
+      name: govforms2-workflow-core
+      fieldPath: spec.template.spec.containers.[name=nginx].image
+    targets:
+      - select:
+          kind: Deployment
+          name: govforms2-workflow-core
+        fieldPaths:
+          - spec.template.spec.containers.[name=version-sidecar].env.[name=DOCKER_IMAGE_2].value
+        options:
+          create: true
+  - source:
+      kind: Deployment
+      name: govforms2-workflow-core
+      fieldPath: spec.template.spec.containers.[name=kosit-validator].image
+    targets:
+      - select:
+          kind: Deployment
+          name: govforms2-workflow-core
+        fieldPaths:
+          - spec.template.spec.containers.[name=version-sidecar].env.[name=DOCKER_IMAGE_4].value
+        options:
+          create: true
+  - source:
+      kind: Deployment
+      name: govforms2-workflow-core
+      fieldPath: spec.template.spec.containers.[name=version-sidecar].image
+    targets:
+      - select:
+          kind: Deployment
+          name: govforms2-workflow-core
+        fieldPaths:
+          - spec.template.spec.containers.[name=version-sidecar].env.[name=DOCKER_IMAGE_5].value
+        options:
+          create: true
+  - source:
+      kind: StatefulSet
+      name: mariadb
+      fieldPath: spec.template.spec.containers.[name=mariadb].image
+    targets:
+      - select:
+          kind: Deployment
+          name: govforms2-workflow-core
+        fieldPaths:
+          - spec.template.spec.containers.[name=version-sidecar].env.[name=DATABASE_DOCKER_IMAGE_1].value
+        options:
+          create: true
+  - source:
+      kind: StatefulSet
+      name: redis-standalone-master
+      fieldPath: spec.template.spec.containers.[name=redis].image
+    targets:
+      - select:
+          kind: Deployment
+          name: govforms2-workflow-core
+        fieldPaths:
+          - spec.template.spec.containers.[name=version-sidecar].env.[name=DATABASE_DOCKER_IMAGE_2].value
+        options:
+          create: true

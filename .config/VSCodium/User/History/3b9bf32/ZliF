@@ -1,0 +1,4 @@
+#!/bin/env bash
+
+BUCKET_SUBDIR=${BUCKET_SUBDIR:-"default"}
+LOCAL_BACKUP_PATH=${LOCAL_BACKUP_PATH:-"/backup"}

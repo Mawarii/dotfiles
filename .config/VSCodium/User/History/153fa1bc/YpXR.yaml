@@ -1,0 +1,23 @@
+---
+- name: Get local IP address
+  ansible.builtin.set_fact:
+    local_ip_address: "{{ ansible_all_ipv4_addresses | ansible.utils.ipaddr(local_ip_address_range) }}"
+
+- name: Generate init.yaml file
+  ansible.builtin.template:
+    src: ./templates/init.yaml.j2
+    dest: /tmp/init.yaml
+    mode: '0700'
+
+- name: Check if node is already initialized
+  ansible.builtin.shell: |
+    sudo kubeadm init phase preflight --config /tmp/{{ group_names[0] }}.yaml
+  changed_when: false
+  ignore_errors: true
+  register: preflight_check
+
+- name: Run init command
+  ansible.builtin.shell: |
+    sudo kubeadm init --config /tmp/init.yaml --upload-certs
+  changed_when: false
+  when: not preflight_check.failed

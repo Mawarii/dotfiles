@@ -1,0 +1,22 @@
+---
+- name: Configure firewall
+  hosts: localhost
+  become: false
+  gather_facts: false
+  roles:
+    - configure-firewall
+
+- name: Prepare machine
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - machine-hardening
+
+- name: Configure firewall
+  hosts: localhost
+  become: false
+  gather_facts: false
+  roles:
+    - role: configure-firewall
+      action: close-default-ssh-port.yaml

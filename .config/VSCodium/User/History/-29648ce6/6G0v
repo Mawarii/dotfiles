@@ -1,0 +1,18 @@
+FROM squidfunk/mkdocs-material AS builder
+
+WORKDIR /app
+
+COPY .git /app/.git
+COPY ./docs /app/docs
+COPY ./mkdocs.yml /app/mkdocs.yml
+
+RUN apk add --update --no-cache git
+RUN pip3 install \
+    mkdocs-git-revision-date-localized-plugin \
+    mkdocs-nav-weight \
+    mkdocs-pdf-export-plugin
+RUN mkdocs build
+
+FROM nginx
+
+COPY --from=builder /app/site /usr/share/nginx/html

@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: prometheus-basic-auth
+stringData:
+  # promadmin:1glcjXB4zFrQa3efK5ue9xhy1biNGcXS
+  # pre-stage:rYLmG6GckNQSUKmLTvNZvxbxU5tnndLK
+  # staging:iTu3REw1lBGWXBIyJlMtXcZldA6dGJw0
+  # production:j5M8f72wKsoWnS3t8wjcCEFXC9Wy1t86
+  auth: |
+    promadmin:$apr1$prJ3BL7e$LfwiyeDVrk.BJXELrbgkH0
+    pre-stage:$apr1$uyrqwYyw$2LLnXeWBazNPSIn.dhMB2/
+    staging:$apr1$jv/7Wa5q$fKZJuJ.aEmOeegZXnsg.w.
+    production:$apr1$ZQSAIwFZ$bDrDNTt1WrRUjOR2RazBo1
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: thanos-basic-auth
+stringData:
+  # thanos:nuVb6ndKqeo1p0yE6E4R51opQUmSw9Er
+  auth: |
+    thanos:$apr1$LbEVH4KK$jWfRqCNnVCOBJQBnp4bM6/
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: grafana
+stringData:
+  password: q0vhtFhzppfOge8qLndbdWa8yJIaWpoY
+  keycloak_client_id: grafana-wsp
+  keycloak_client_secret: K1lukk599gGZqpJfkXnJCY2Jr6PWSKOb
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: thanos-config
+stringData:
+  objstore.yml: |
+    type: S3
+    config:
+      endpoint: "s3storage.cloudical.in"
+      bucket: "krz-thanos"
+      region: "eu-mid-fsn1-dc18"
+      access_key: "krz-thanos"
+      secret_key: "D9geP8TMS3C73loMuxyxEXKpOg5wRSDn"

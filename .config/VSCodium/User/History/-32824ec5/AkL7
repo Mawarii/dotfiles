@@ -1,0 +1,12 @@
+PROJECT_NAME=oots-projectathon
+DOMAIN_SUFFIX=docker.localhost
+SYNC_PATH=./project/
+
+DB_VERSION=10.11.2
+DB_HOST=db
+DB_NAME=oots
+DB_ROOT_PASSWORD=db_root_password
+DB_USER=db_user
+DB_PASSWORD=db_password
+
+SENTRY_DSN="https://7617ae3e706143e29af6307dd1d0cb16@sentry.dev.publicplan.cloud/12"

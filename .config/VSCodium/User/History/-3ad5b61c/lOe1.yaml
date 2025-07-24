@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  roles:
+    - install-docker
+    - install-forms-flow.yaml

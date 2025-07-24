@@ -1,0 +1,10 @@
+{
+    "imports": {
+        "@formsflow/root-config": "/formsflow-root-config.js",
+        "@formsflow/nav": "//forms-flow-micro-frontend.thlvhlc1.zv.thlv.de/nav/forms-flow-nav.js",
+        "@formsflow/formsflow-web": "//forms-flow-micro-frontend.thlvhlc1.zv.thlv.de/web/forms-flow-web.js",
+        "@formsflow/admin":"//forms-flow-micro-frontend.thlvhlc1.zv.thlv.de/admin/forms-flow-admin.js",
+        "@formsflow/service":"//forms-flow-micro-frontend.thlvhlc1.zv.thlv.de/service/forms-flow-service.js",
+        "@formsflow/theme":"//forms-flow-micro-frontend.thlvhlc1.zv.thlv.de/theme/forms-flow-theme.js"
+    }
+}

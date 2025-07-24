@@ -1,0 +1,34 @@
+---
+controlplanes:
+  hosts:
+    controlplane-001:
+      ansible_host: 37.27.176.180
+      ansible_user: "{{ ssh_user }}"
+      ansible_port: "{{ ssh_port }}"
+    controlplane-002:
+      ansible_host: 95.216.184.40
+      ansible_user: "{{ ssh_user }}"
+      ansible_port: "{{ ssh_port }}"
+    controlplane-003:
+      ansible_host: 157.180.23.59
+      ansible_user: "{{ ssh_user }}"
+      ansible_port: "{{ ssh_port }}"
+
+worker:
+  hosts:
+    worker-001:
+      ansible_host: 65.109.167.242
+      ansible_user: "{{ ssh_user }}"
+      ansible_port: "{{ ssh_port }}"
+    worker-002:
+      ansible_host: 135.181.36.19
+      ansible_user: "{{ ssh_user }}"
+      ansible_port: "{{ ssh_port }}"
+    worker-003:
+      ansible_host: 157.180.27.29
+      ansible_user: "{{ ssh_user }}"
+      ansible_port: "{{ ssh_port }}"
+
+all:
+  vars:
+    ansible_python_interpreter: /nix/store/f2krmq3iv5nibcvn4rw7nrnrciqprdkh-python3-3.12.9/bin/python3.12

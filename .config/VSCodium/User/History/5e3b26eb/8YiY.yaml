@@ -1,0 +1,22 @@
+---
+- name: Check SSH port
+  ansible.builtin.include_tasks: "check-ssh-port.yaml"
+
+- name: Configure apt packages
+  ansible.builtin.include_tasks: "configure-apt-packages.yaml"
+
+- name: Create non-root user
+  ansible.builtin.include_tasks: "create-non-root-user.yaml"
+
+- name: Configure fail2ban service
+  ansible.builtin.include_tasks: "configure-fail2ban.yaml"
+
+- name: Configure sshd service
+  ansible.builtin.include_tasks: "configure-sshd.yaml"
+
+- name: Configure sshd service
+  when: inventory_hostname == server[0]
+  ansible.builtin.include_tasks: "install-helm.yaml"
+
+- name: Check SSH port
+  ansible.builtin.include_tasks: "check-ssh-port.yaml"

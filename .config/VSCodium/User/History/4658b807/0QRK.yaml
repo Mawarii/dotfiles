@@ -1,0 +1,58 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cronjob-pvc-backup
+spec:
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: pvc-backup-job
+        spec:
+          securityContext:
+            fsGroup: 10001
+            runAsGroup: 10001
+            runAsNonRoot: true
+            runAsUser: 10001
+          imagePullSecrets:
+            - name: gitlab-registry
+          restartPolicy: OnFailure
+          containers:
+            - name: backup
+              image: "gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/tools/backup-jobs:v1.5.0"
+              securityContext:
+                runAsGroup: 10001
+                runAsNonRoot: true
+                runAsUser: 10001
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - "ALL"
+                seccompProfile:
+                  type: RuntimeDefault
+                readOnlyRootFilesystem: true
+                privileged: false
+              envFrom:
+                - secretRef:
+                    name: cluster-stage-vars
+              env:
+                #? possible values postgres / mariadb / mysql / mongodb / pvc
+                - name: DB_TYPE
+                  value: "pvc"
+                - name: BUCKET_SUBDIR
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: "metadata.namespace"
+                - name: PVC_DATA_LOCATION
+                  value: "/var/www/html"
+              volumeMounts:
+                - mountPath: "/tmp"
+                  name: tmp
+                - mountPath: "/home/tools"
+                  name: home
+          volumes:
+            - name: tmp
+              emptyDir: {}
+            - name: home
+              emptyDir: {}

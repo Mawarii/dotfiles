@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: govforms2-admin-client-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: govforms2-admin-client
+  template:
+    metadata:
+      labels:
+        k8s-app: govforms2-admin-client
+    spec:
+      containers:
+        - name: application
+          image: DOCKER_IMAGE_1
+          envFrom:
+            -   configMapRef:
+                  name: govforms2-admin-client-configmap
+          securityContext:
+            runAsUser: 10001
+            runAsGroup: 10001
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+            periodSeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 15
+            timeoutSeconds: 1
+            periodSeconds: 15
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: /var/www/env
+              name: env
+            - mountPath: /tmp
+              name: tmp
+            - mountPath: /var/run
+              name: run
+            - mountPath: /var/cache/nginx
+              name: cache
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+        - name: version-sidecar
+          image: DOCKER_IMAGE_2
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3030
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+            periodSeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3030
+            initialDelaySeconds: 15
+            timeoutSeconds: 1
+            periodSeconds: 15
+          ports:
+            - containerPort: 3030
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+          env:
+            - name: PORT
+              value: "3030"
+          envFrom:
+            - secretRef:
+                name: cluster-stage-vars
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
+            requests:
+              memory: "64Mi"
+      volumes:
+        - emptyDir: { }
+          name: env
+        - emptyDir: { }
+          name: tmp
+        - emptyDir: { }
+          name: run
+        - emptyDir: { }
+          name: cache

@@ -1,0 +1,8 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - role: install-docker
+    - role: deploy-caddy
+      when: enable_caddy
+    - role: deploy-forms-flow

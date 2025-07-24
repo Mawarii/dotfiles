@@ -1,0 +1,26 @@
+---
+apiVersion: acid.zalan.do/v1
+kind: postgresql
+metadata:
+  labels:
+    app.kubernetes.io/name: zammad
+    app.kubernetes.io/component: database
+  name: zammad-postgresql
+spec:
+  teamId: "zammad"
+  volume:
+    size: 50Gi
+  numberOfInstances: 2
+  users:
+    postgres:
+      - superuser
+      - createdb
+    zammad: []
+  databases:
+    zammad: zammad
+  postgresql:
+    version: "15"
+    parameters:
+      max_connections: "250"
+  enableLogicalBackup: true
+  logicalBackupSchedule: "0 0 */1 * *"

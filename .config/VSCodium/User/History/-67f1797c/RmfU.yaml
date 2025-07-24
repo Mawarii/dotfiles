@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: internalcluster-chartmuseum
+  namespace: argocd
+spec:
+  destination:
+    namespace: chartmuseum
+    name: publicplan-internal
+  project: internalcluster-projects-chartmuseum
+  sources:
+    - chart: chartmuseum
+      helm:
+        valueFiles:
+          - $values/chartmuseum/values.yaml
+      repoURL: https://chartmuseum.github.io/charts
+      targetRevision: 3.10.3
+    - ref: values
+      repoURL: git@gitlab.publicplan.cloud:team-kops/deployments/internal/chartmuseum.git
+      targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

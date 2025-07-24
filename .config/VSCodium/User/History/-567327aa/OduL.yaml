@@ -1,0 +1,13 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: customercluster-sbhh-nocodb
+  namespace: argocd
+  annotations:
+    k8s.publicplan.cloud/contact: "Juliya Rajasingam"
+spec:
+  destination:
+    namespace: sbhh-nocodb
+    name: publicplan-customer
+  project: customercluster-projects-sbhh

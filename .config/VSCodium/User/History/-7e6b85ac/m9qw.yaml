@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: formio-mongodb-extra-secret
+  annotations:
+    secret-generator.v1.mittwald.de/autogenerate: db-secret,jwt-secret
+    secret-generator.v1.mittwald.de/length: 128
+    secret-generator.v1.mittwald.de/encoding: base64url
+type: Opaque

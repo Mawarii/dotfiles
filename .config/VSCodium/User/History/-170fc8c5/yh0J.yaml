@@ -1,0 +1,138 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: domibus-mysql
+  labels:
+    app: domibus
+spec:
+  revisionHistoryLimit: 1
+  replicas: 1
+  selector:
+    matchLabels:
+      app: domibus
+      tier: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: domibus
+        tier: mysql
+    spec:
+      securityContext:
+        fsGroup: 10000
+        fsGroupChangePolicy: "OnRootMismatch"
+      initContainers:
+        - name: mysql-datacopy
+          command:
+            [
+              "sh",
+              "-c",
+              "cp -r /resources/* /copydata && cp -r /usr/local/bin/* /copydata2",
+            ]
+          image: DOMIBUS_MYSQL_IMAGE
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 10000
+          volumeMounts:
+            - mountPath: /copydata
+              name: resources
+            - mountPath: /copydata2
+              name: bin
+      containers:
+        - name: mysql
+          image: DOMIBUS_MYSQL_IMAGE
+          ports:
+            - containerPort: 3306
+              name: mysql
+              protocol: TCP
+          securityContext:
+            runAsUser: 10000
+            runAsGroup: 10000
+            runAsNonRoot: true
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: domibus-mysql
+                  key: mysql-root-password
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: domibus-mysql
+                  key: MYSQL_DATABASE
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: domibus-mysql
+                  key: MYSQL_USER
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: domibus-mysql
+                  key: mysql-password
+          livenessProbe:
+            exec:
+              command: ["mysqladmin", "ping"]
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            exec:
+              # Check we can execute queries over TCP (skip-networking is off).
+              command:
+                - bash
+                - "-c"
+                - |
+                  mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -e "SELECT 1"
+            initialDelaySeconds: 15
+            periodSeconds: 2
+            timeoutSeconds: 1
+          volumeMounts:
+            - name: shared-db-file-system
+              mountPath: /var/lib/mysql
+            - name: tmp
+              mountPath: /tmp
+            - name: mysqld
+              mountPath: /var/run/mysqld
+            - name: resources
+              mountPath: /resources
+            - name: bin
+              mountPath: /usr/local/bin
+            - name: log
+              mountPath: /var/log
+          resources:
+            limits:
+              memory: "1Gi"
+            requests:
+              memory: "512Mi"
+      volumes:
+        - name: shared-db-file-system
+          persistentVolumeClaim:
+            claimName: mysqlvol
+        - name: log
+          persistentVolumeClaim:
+            claimName: log-pvc-mysql
+        - name: tmp
+          emptyDir: {}
+        - name: mysqld
+          emptyDir: {}
+        - name: resources
+          emptyDir: {}
+        - name: bin
+          emptyDir: {}
+      imagePullSecrets:
+        - name: gitlab-registry

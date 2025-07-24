@@ -1,0 +1,22 @@
+---
+- name: Configure firewall
+  hosts: localhost
+  become: false
+  gather_facts: false
+  roles:
+    - configure-firewall
+
+- name: Machine hardening
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - machine-hardening
+
+- name: Close default SSH port
+  hosts: localhost
+  become: false
+  gather_facts: false
+  roles:
+    - role: configure-firewall
+      action: close-default-ssh-port

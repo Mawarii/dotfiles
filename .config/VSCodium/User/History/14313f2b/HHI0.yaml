@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  creationTimestamp: null
+  name: customercluster-mariadb-operator
+  namespace: argocd
+spec:
+  destination:
+    name: publicplan-customer
+    namespace: mariadb-operator
+  project: customercluster-infra
+  sources:
+  - chart: mariadb-operator
+    helm:
+      valueFiles:
+      - $values/applications/mariadb-operator/default-values.yaml
+      - $values/applications/mariadb-operator/values.yaml
+    repoURL: https://mariadb-operator.github.io/mariadb-operator
+    targetRevision: 0.20.0
+  - ref: values
+    repoURL: git@gitlab.publicplan.cloud:team-kops/infra-internal/pp-customer-cluster.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

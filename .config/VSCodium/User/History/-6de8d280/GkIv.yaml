@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: govforms2-admin-client-configmap
+data:
+  VITE_REACT_APP_API_GOVFORMS2_BASE_PATH_DEFAULT_DOCKER: ''
+  VITE_REACT_APP_LOCALE_DOCKER: ''
+  VITE_REACT_APP_REQUEST_TIMEOUT_MS_DOCKER: ''
+  VITE_REACT_APP_ENVIRONMENT_DOCKER: ''
+  VITE_REACT_APP_BASIC_AUTH_USER_DOCKER: ''
+  VITE_REACT_APP_BASIC_AUTH_PASSWORD_DOCKER: ''
+  VITE_OIDC_ISSUER_DOCKER: "https://keycloak.live.publicplan.cloud/auth/realms/master"
+  VITE_OIDC_CLIENT_ID_DOCKER: "govforms2-admin-client"
+  VITE_OIDC_CLIENT_SECRET_DOCKER: "AOpJh8Tv2TI36q9pcsIwoEJNe8OFt2K2"
+  VITE_OIDC_REDIRECT_URI_DOCKER: "https://govforms2-admin-client.dev.efa.publicplan.cloud"

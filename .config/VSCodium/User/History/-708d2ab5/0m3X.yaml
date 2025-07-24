@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: govforms2-akeneo
+  labels:
+    k8s-env: develop
+spec:
+  template:
+    spec:
+      imagePullSecrets:
+        - name: gitlab-registry-govforms2-akeneo
+        - name: gitlab-registry-version-sidecar
+      containers:
+        - name: application
+          envFrom:
+            - secretRef:
+                name: govforms2-akeneo-secrets
+            - configMapRef:
+                name: govforms2-akeneo-configmap

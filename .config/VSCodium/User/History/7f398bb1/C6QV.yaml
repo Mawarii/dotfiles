@@ -1,0 +1,32 @@
+---
+- name: Generate Wordpress default values file
+  ansible.builtin.copy:
+    src: "{{ role_path }}/templates/default-values.yaml"
+    dest: /tmp/wordpress-default-values.yaml
+    mode: '0640'
+
+- name: Generate Wordpress values file
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/values.yaml.j2"
+    dest: /tmp/wordpress-values.yaml
+    mode: '0640'
+
+- name: Add Bitnami chart repo
+  kubernetes.core.helm_repository:
+    name: bitnami
+    repo_url: "https://charts.bitnami.com/bitnami"
+
+- name: Install Wordpress via Helm
+  kubernetes.core.helm:
+    atomic: true
+    kubeconfig: /etc/rancher/k3s/k3s.yaml
+    chart_ref: bitnami/wordpress
+    chart_version: "{{ wordpress.chart_version }}"
+    release_state: present
+    release_name: wordpress
+    release_namespace: "{{ wordpress.namespace }}"
+    create_namespace: true
+    values_files:
+      - /tmp/wordpress-default-values.yaml
+      - /tmp/wordpress-values.yaml
+    wait: true

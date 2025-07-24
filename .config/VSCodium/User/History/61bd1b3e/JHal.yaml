@@ -1,0 +1,10 @@
+---
+- name: Machine preparation and hardening
+  hosts: all
+  become: true
+  gather_facts: false
+  roles:
+    - role: prepare-machine
+
+- name: Install K3s
+  ansible.builtin.import_playbook: k3s.orchestration.site

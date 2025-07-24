@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - empfangsclient-plus-postgresql-cluster.yaml
+  - empfangsclient-plus-keycloak-secret.yaml
+  - empfangsclient-plus-minio-secret.yaml
+  - empfangsclient-plus-client-deployment.yaml
+  - empfangsclient-plus-dummy-deployment.yaml
+  - empfangsclient-plus-server-deployment.yaml
+  - empfangsclient-plus-worker-deployment.yaml

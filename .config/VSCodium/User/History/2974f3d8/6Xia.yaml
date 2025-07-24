@@ -1,0 +1,43 @@
+---
+- name: Run debug tasks
+  hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Detect Kubernetes versions
+      block:
+        - name: Detect running Kubernetes version
+          ansible.builtin.shell:
+            cmd: dpkg-query -W -f='${Version}' kubeadm
+          changed_when: false
+          failed_when: false
+          register: kube_version_running_out
+
+        - name: Detect latest Kubernetes version
+          ansible.builtin.shell: |
+            set -o pipefail
+            apt-cache madison kubeadm | grep -F {{ kubernetes_version }} | head -1 | awk '{print $3}'
+          args:
+            executable: /bin/bash
+          changed_when: false
+          register: kube_version_latest_out
+
+        - name: Set Kubernetes version variables
+          ansible.builtin.set_fact:
+            kube_version_running: "{{ kube_version_running_out.stdout | default('0.0.0-0.0', true) }}"
+            kube_version_latest: "{{ kube_version_latest_out.stdout | default('0.0.0-0.0', true) }}"
+
+        - name: Check if upgrade is needed
+          ansible.builtin.set_fact:
+            kube_update_needed: "{{ kube_version_running is version_compare(kube_version_latest, '<') }}"
+
+        - name: Print versions
+          ansible.builtin.debug:
+            msg:
+              - "Running: {{ kube_version_running }}"
+              - "Latest: {{ kube_version_latest }}"
+              - "Update?: {{ kube_update_needed }}"
+
+    - name: Test version compare
+      ansible.builtin.debug:
+        msg: "v{{ kube_version_running.split('-')[0] }}"

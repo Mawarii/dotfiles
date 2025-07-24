@@ -1,0 +1,19 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+resources:
+  - ../../base
+  - redis-secret.yaml
+
+images:
+  - name: DOCKER_IMAGE_1
+    newName: gitlab.publicplan.cloud:5050/regmo/sdg-backend
+    newTag: 2e12be8e
+
+secretGenerator:
+  - name: gitlab-registry
+    type: kubernetes.io/dockerconfigjson
+    files:
+      - ./mixins/.dockerconfig.json
+    options:
+      disableNameSuffixHash: true

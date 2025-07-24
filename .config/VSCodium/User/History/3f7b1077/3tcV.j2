@@ -1,0 +1,84 @@
+defaultRules:
+  rules:
+    etcd: false
+
+prometheus-windows-exporter:
+  prometheus:
+    monitor:
+      enabled: false
+
+alertmanager:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    hosts:
+      - alertmanager.demo.mawari.eu
+    tls:
+    - secretName: alertmanager-general-tls
+      hosts:
+      - alertmanager.demo.mawari.eu
+  alertmanagerSpec:
+    externalUrl: https://alertmanager.demo.mawari.eu
+
+grafana:
+  adminUser: admin
+  adminPassword: password
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    hosts:
+      - grafana.demo.mawari.eu
+    tls:
+    - secretName: grafana-general-tls
+      hosts:
+      - grafana.demo.mawari.eu
+
+kubeEtcd:
+  enabled: false
+
+kubeControllerManager:
+  enabled: true
+  endpoints: ["{{ groups['server'][0] }}"]
+  service:
+    enabled: true
+    port: 10252
+    targetPort: 10252
+  serviceMonitor:
+    enabled: true
+    https: false
+
+kubeScheduler:
+  enabled: true
+  endpoints: ["{{ groups['server'][0] }}"]
+  service:
+    enabled: true
+    port: 10251
+    targetPort: 10251
+  serviceMonitor:
+    enabled: true
+    https: false
+
+kubeProxy:
+  enabled: true
+  endpoints: ["{{ groups['server'][0] }}"]
+  service:
+    enabled: true
+    port: 10249
+    targetPort: 10249
+
+prometheus:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    hosts:
+      - prometheus.demo.mawari.eu
+    tls:
+    - secretName: prometheus-general-tls
+      hosts:
+      - prometheus.demo.mawari.eu

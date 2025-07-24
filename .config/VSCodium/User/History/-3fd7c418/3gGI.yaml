@@ -1,0 +1,9 @@
+---
+- name: Upgrade Kubernetes apt packages
+  hosts: all
+  become: true
+  gather_facts: true
+  port: "{{ ssh_port }}"
+  remote_user: "{{ ssh_user }}"
+  roles:
+    - common

@@ -1,0 +1,9 @@
+---
+- name: Get local IP address
+  ansible.builtin.set_fact:
+    local_ip_address: "{{ ansible_all_ipv4_addresses | ansible.utils.ipaddr(local_ip_address_range) }}"
+
+- name: Template init
+  ansible.builtin.template:
+    src: ./templates/jail.local.j2
+    dest: /etc/fail2ban/jail.local

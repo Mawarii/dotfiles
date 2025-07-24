@@ -1,0 +1,14 @@
+stages:
+  - build
+
+chart-sync:
+  stage: build
+  image:
+    name: gcr.io/bitnami-labs/charts-syncer:v0.20.3
+    entrypoint: [""]
+  script:
+    - /charts-syncer sync
+        -c "${CI_PROJECT_DIR}/config.yaml"
+        --skip-dependencies
+  only:
+    - main

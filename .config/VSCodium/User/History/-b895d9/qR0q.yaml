@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: filebrowser
+spec:
+  timeZone: "Europe/Berlin"
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: filebrowser-mon
+          annoations:
+            ciu.enable: "true"
+        spec:
+          securityContext:
+            runAsUser: 10001
+            runAsGroup: 10001
+          containers:
+          - name: wireguard
+            image: curlimages/curl:8.8.0
+            args:
+              - "https://uptime.mawari.eu/api/push/oodaPFMhOM?status=up&msg=OK"
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              capabilities:
+                drop: ["ALL"]
+          restartPolicy: Never
+      backoffLimit: 3

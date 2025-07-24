@@ -1,0 +1,16 @@
+storage:
+  data:
+    name: "vaultwarden-data"
+    size: "15Gi"
+    class: ""
+    path: "/data"
+    keepPvc: true
+    accessMode: "ReadWriteOnce"
+
+  attachments:
+    name: "vaultwarden-files"
+    size: "100Gi"
+    class: ""
+    path: /files
+    keepPvc: true
+    accessMode: "ReadWriteOnce"

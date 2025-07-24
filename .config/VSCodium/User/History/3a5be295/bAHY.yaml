@@ -1,0 +1,65 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: govforms2-akeneo-import-job
+spec:
+  schedule: "*/5 * * * *"
+  suspend: false # temporary disable cronjob
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: govforms2-workflow-core-akeneo-import-job
+        spec:
+          securityContext:
+            fsGroup: 10001
+            runAsGroup: 10001
+            runAsNonRoot: true
+            runAsUser: 10001
+          restartPolicy: Never
+          containers:
+            - name: akeneo-import-job
+              image: DOCKER_IMAGE_6
+              command:
+                - /usr/local/bin/php
+                - /srv/app/bin/console
+                - workflow:import
+              securityContext:
+                runAsGroup: 10001
+                runAsNonRoot: true
+                runAsUser: 10001
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop: ["ALL"]
+                seccompProfile:
+                  type: RuntimeDefault
+                readOnlyRootFilesystem: true
+                privileged: false
+              env:
+                - name: APP_ENV
+                  value: "prod"
+                - name: DATABASE_PW
+                  valueFrom:
+                    secretKeyRef:
+                      name: mariadb-auth
+                      key: mariadb-password
+                - name: DATABASE_URL_FORM
+                  value: "mysql://mariadb:$(DATABASE_PW)@mariadb.govforms2-workflow-core.svc:3306/form?serverVersion=mariadb-10.11.2&charset=utf8"
+              volumeMounts:
+                - name: tmp
+                  mountPath: /tmp
+                - name: symfony-logs
+                  mountPath: /srv/app/var/log
+                - name: cache
+                  mountPath: /srv/app/var/cache
+                - name: public
+                  mountPath: /srv/app/public
+          volumes:
+            - name: tmp
+              emptyDir: {}
+            - name: symfony-logs
+              emptyDir: {}
+            - name: cache
+              emptyDir: {}
+            - name: public
+              emptyDir: {}

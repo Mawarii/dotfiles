@@ -1,0 +1,5 @@
+---
+- name: Ensure {{ installation_path }}/{{ folder.nocodb }} directory exists
+  ansible.builtin.file:
+    path: "{{ installation_path }}/{{ folder.nocodb }}"
+    state: directory

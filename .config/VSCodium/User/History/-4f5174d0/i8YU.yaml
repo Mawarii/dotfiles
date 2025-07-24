@@ -1,0 +1,24 @@
+---
+- name: Ensure keycloak directory exists
+  ansible.builtin.file:
+    path: "{{ formsflow_install_path }}/keycloak"
+    state: directory
+
+- name: Generate keycloak .env file
+  ansible.builtin.template:
+    src: "keycloak.env.j2"
+    dest: "{{ formsflow_install_path }}/keycloak/.env"
+
+- name: Generate keycloak compose file
+  ansible.builtin.template:
+    src: "keycloak-compose.yaml.j2"
+    dest: "{{ formsflow_install_path }}/keycloak/compose.yml"
+
+- name: Create and start services
+  community.docker.docker_compose_v2:
+    project_src: "{{ formsflow_install_path }}/keycloak"
+  register: output
+
+- name: Show results
+  ansible.builtin.debug:
+    var: output

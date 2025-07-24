@@ -1,0 +1,20 @@
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: efacluster-ip-deletion-service
+#   namespace: argocd
+# spec:
+#   destination:
+#     namespace: ip-deletion-service
+#     name: in-cluster
+#   project: efacluster-intermediaryplatform
+#   sources:
+#     - path: kustomization/overlays/pre-stage
+#       repoURL: "git@gitlab.publicplan.cloud:iac/efa/distributions/intermediaryplatform/deletion-service-dist.git"
+#       targetRevision: HEAD
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true

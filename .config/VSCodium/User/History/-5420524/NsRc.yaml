@@ -1,0 +1,6 @@
+grafana:
+  enabled: false
+  forceDeployDashboards: true
+  namespaceOverride: "loki"
+prometheus:
+  enabled: false

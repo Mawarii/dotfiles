@@ -1,0 +1,28 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./mailer-secret.yaml
+  - ./image-pull-secret.yaml
+  - ./redis-secret.yaml
+  - ./otb-deployment.yaml
+  - ./otb-cron-init.yaml
+  - ./otb-cron-mail.yaml
+  - ./otb-cron-general.yaml
+  - ./otb-cron-cache.yaml
+  - ./otb-service.yaml
+  - ./uploads-pvc.yaml
+
+configMapGenerator:
+  - name: cache-config
+    files:
+      - ./cache.yaml
+  - name: monolog-config
+    files:
+      - ./monolog.yaml
+  - name: nginx-config
+    files:
+      - ./nginx.conf
+  - name: flysystem-config
+    files:
+      - ./flysystem.yaml

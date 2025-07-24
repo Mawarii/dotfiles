@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: govforms2-akeneo-service
+spec:
+  selector:
+    k8s-app: govforms2-akeneo
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: http

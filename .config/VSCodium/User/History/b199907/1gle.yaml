@@ -1,0 +1,12 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: domibus
+  labels:
+    k8s-env: pre-stage
+spec:
+  template:
+    spec:
+      containers:
+        - name: domibus
+          imagePullPolicy: Always

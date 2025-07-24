@@ -1,0 +1,43 @@
+---
+- name: Check if hcloud CSI is already installed
+  kubernetes.core.k8s_info:
+    kubeconfig: /etc/kubernetes/admin.conf
+    api_version: v1
+    kind: DaemonSet
+    name: hcloud-csi-provider-node
+    namespace: "{{ hcloud_namespace }}"
+  register: hcloud_installation
+
+- name: Generate hcloud CSI default values file
+  when: hcloud_installation.resources | length == 0
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/hcloud-default-values.yaml.j2"
+    dest: /tmp/hcloud-default-values.yaml
+    mode: '0770'
+
+- name: Generate hcloud CSI values file
+  when: hcloud_installation.resources | length == 0
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/hcloud-values.yaml.j2"
+    dest: /tmp/hcloud-values.yaml
+    mode: '0770'
+
+- name: Add hcloud CSI chart repo
+  when: hcloud_installation.resources | length == 0
+  kubernetes.core.helm_repository:
+    name: hcloud
+    repo_url: "https://helm.hcloud.io"
+
+- name: Install hcloud CSI via Helm
+  when: hcloud_installation.resources | length == 0
+  kubernetes.core.helm:
+    atomic: true
+    kubeconfig: /etc/kubernetes/admin.conf
+    chart_ref: hcloud/hcloud
+    chart_version: "{{ hcloud_version }}"
+    release_name: hcloud
+    release_namespace: "{{ hcloud_namespace }}"
+    values_files:
+      - /tmp/hcloud-default-values.yaml
+      - /tmp/hcloud-values.yaml
+    wait: true

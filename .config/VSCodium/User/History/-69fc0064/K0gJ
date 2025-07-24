@@ -1,0 +1,31 @@
+https://keycloak.formsflow.publicplan.cloud {
+	reverse_proxy forms-flow-idm-keycloak:8080
+}
+
+https://forms.formsflow.publicplan.cloud {
+	reverse_proxy forms-flow-forms:3001
+}
+
+https://documents-api.formsflow.publicplan.cloud {
+	reverse_proxy forms-flow-documents-api:5006
+}
+
+https://data-analysis-api.formsflow.publicplan.cloud {
+	reverse_proxy forms-flow-data-analysis-api-data-analysis-api-1:5000
+}
+
+https://bpm.formsflow.publicplan.cloud {
+	reverse_proxy forms-flow-bpm:8080
+}
+
+https://api.formsflow.publicplan.cloud {
+	reverse_proxy forms-flow-webapi:5000
+}
+
+https://redash.formsflow.publicplan.cloud {
+	reverse_proxy forms-flow-redash:5000
+}
+
+https://web.formsflow.publicplan.cloud {
+	reverse_proxy forms-flow-web-root-config:8080
+}

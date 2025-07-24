@@ -1,0 +1,55 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: govforms2-akeneo
+  namespace: argocd
+spec:
+  destination:
+    namespace: govforms2-akeneo
+    server: "https://kubernetes.default.svc"
+  project: efacluster-govforms2
+  sources:
+  - path: kustomization/overlays/develop
+    repoURL: "git@gitlab.publicplan.cloud:iac/efa/distributions/govforms2/govforms2-akeneo.git"
+    targetRevision: master
+  - chart: mysql
+    helm:
+      valueFiles:
+        - $values/helm/mysql/develop/default-values.yaml
+        - $values/helm/mysql/develop/values.yaml
+      releaseName: mysql
+    repoURL: registry-1.docker.io/bitnamicharts
+    targetRevision: "20.2.4"
+  - chart: minio
+    helm:
+      valueFiles:
+        - $values/helm/minio/develop/default-values.yaml
+        - $values/helm/minio/develop/values.yaml
+      releaseName: minio
+    repoURL: registry-1.docker.io/bitnamicharts
+    targetRevision: "15.0.3"
+  - chart: redis
+    helm:
+      valueFiles:
+        - $values/helm/redis/develop/default-values.yaml
+        - $values/helm/redis/develop/values.yaml
+      releaseName: redis
+    repoURL: registry-1.docker.io/bitnamicharts
+    targetRevision: "17.15.2"
+  - chart: rabbitmq
+    helm:
+      valueFiles:
+        - $values/helm/rabbitmq/develop/default-values.yaml
+        - $values/helm/rabbitmq/develop/values.yaml
+      releaseName: rabbitmq
+    repoURL: registry-1.docker.io/bitnamicharts
+    targetRevision: "15.3.1"
+  - ref: values
+    repoURL: "git@gitlab.publicplan.cloud:iac/efa/distributions/govforms2/govforms2-akeneo.git"
+    targetRevision: master
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

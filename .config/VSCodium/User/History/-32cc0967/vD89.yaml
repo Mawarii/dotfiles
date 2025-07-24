@@ -1,0 +1,28 @@
+---
+## OCI-Bitnami-Charts
+apiVersion: v1
+data:
+  enableOCI: dHJ1ZQ==
+  name: Yml0bmFtaS1tYXJpYWRi
+  type: aGVsbQ==
+  url: cmVnaXN0cnktMS5kb2NrZXIuaW8vYml0bmFtaWNoYXJ0cw==
+kind: Secret
+metadata:
+  labels:
+    argocd.argoproj.io/secret-type: repository
+  name: repo-bitnami-oci
+type: Opaque
+---
+## OCI-Actions-Runner-Controller (GitHub Runner Operator)
+apiVersion: v1
+stringData:
+  enableOCI: "true"
+  name: "github-arc"
+  type: helm
+  url: ghcr.io/actions/actions-runner-controller-charts
+kind: Secret
+metadata:
+  labels:
+    argocd.argoproj.io/secret-type: repository
+  name: repo-github-arc-oci
+type: Opaque

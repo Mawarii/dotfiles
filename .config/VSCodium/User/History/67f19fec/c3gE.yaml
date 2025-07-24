@@ -1,0 +1,19 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+resources:
+  - ../../base
+  - ingress.yaml
+  - mariadb_secrets.yaml
+  # - mariadb_v1alpha1_mariadb.yaml
+
+patches:
+  - path: deployment.patch.yaml
+    target:
+      kind: Deployment
+      name: dca-backend
+
+images:
+  - name: DCA_BACKEND_IMAGE
+    newName: gitlab.publicplan.cloud:5050/regmo/dca-backend
+    newTag: v1.48.0

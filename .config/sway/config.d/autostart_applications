@@ -17,7 +17,7 @@ exec thunderbird
 exec google-chrome-stable
 
 # Spotify
-exec spotify-launcher
+exec spotify
 
 # Bitwarden
 exec bitwarden-desktop

@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mariadb-wsp-secret
+stringData:
+  auth: promadmin:$apr1$e8kSmViA$It4clhTmgAybWtl47J9Ud.

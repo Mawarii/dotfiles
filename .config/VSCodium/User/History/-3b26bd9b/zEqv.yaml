@@ -1,0 +1,69 @@
+loki:
+  schemaConfig:
+    configs:
+      - from: 2024-04-01
+        store: tsdb
+        object_store: s3
+        schema: v13
+        index:
+          prefix: loki_index_
+          period: 24h
+  ingester:
+    chunk_encoding: snappy
+  tracing:
+    enabled: true
+  querier:
+    max_concurrent: 4
+  storage:
+    bucketNames:
+      chunks: monicore-loki-chunks
+      ruler: monicore-loki-ruler
+      admin: monicore-loki-admin
+    type: s3
+    s3:
+      s3: https://fsn1.your-objectstorage.com
+      endpoint: https://fsn1.your-objectstorage.com
+      region: fsn1
+      secretAccessKey: q8pj4m7TIzmJvmFEHA685NGLNtB8Xv7HBj2JKvyp
+      accessKeyId: R6EIFXUHCKKFV2D6C51O
+      signatureVersion: null
+      s3ForcePathStyle: true
+      insecure: false
+      http_config: {}
+      backoff_config: {}
+      disable_dualstack: false
+
+deploymentMode: SimpleScalable
+
+backend:
+  replicas: 2
+read:
+  replicas: 2
+write:
+  replicas: 2
+
+minio:
+  enabled: false
+
+# Zero out replica counts of other deployment modes
+singleBinary:
+  replicas: 0
+
+ingester:
+  replicas: 0
+querier:
+  replicas: 0
+queryFrontend:
+  replicas: 0
+queryScheduler:
+  replicas: 0
+distributor:
+  replicas: 0
+compactor:
+  replicas: 0
+indexGateway:
+  replicas: 0
+bloomCompactor:
+  replicas: 0
+bloomGateway:
+  replicas: 0

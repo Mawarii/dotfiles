@@ -1,0 +1,298 @@
+2025-07-22 09:15:27.539 [info] [main] Log level: Info
+2025-07-22 09:15:27.539 [info] [main] Validating found git in: "git"
+2025-07-22 09:15:27.539 [info] [main] Using git "2.50.1" from "git"
+2025-07-22 09:15:27.539 [info] [Model][doInitialScan] Initial repository scan started
+2025-07-22 09:15:27.539 [info] > git rev-parse --show-toplevel [6ms]
+2025-07-22 09:15:27.539 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:15:27.539 [info] > git rev-parse --show-toplevel [23ms]
+2025-07-22 09:15:27.542 [info] > git rev-parse --git-dir --git-common-dir [4ms]
+2025-07-22 09:15:27.550 [info] [Model][openRepository] Opened repository (path): /home/dmarkovic/git-projects/publicplan/efa/distributions/DPA/hr-dpa-dist
+2025-07-22 09:15:27.550 [info] [Model][openRepository] Opened repository (real path): /home/dmarkovic/git-projects/publicplan/efa/distributions/DPA/hr-dpa-dist
+2025-07-22 09:15:27.571 [info] > git rev-parse --show-toplevel [10ms]
+2025-07-22 09:15:27.571 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:15:27.572 [info] > git config --get commit.template [15ms]
+2025-07-22 09:15:27.587 [info] > git rev-parse --show-toplevel [8ms]
+2025-07-22 09:15:27.587 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:15:27.595 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [9ms]
+2025-07-22 09:15:27.851 [info] > git rev-parse --show-toplevel [256ms]
+2025-07-22 09:15:27.851 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:15:27.997 [info] > git rev-parse --show-toplevel [28ms]
+2025-07-22 09:15:28.022 [info] > git status -z -uall [14ms]
+2025-07-22 09:15:28.022 [info] > git rev-parse --git-dir --git-common-dir [4ms]
+2025-07-22 09:15:28.024 [info] [Model][openRepository] Opened repository (path): /home/dmarkovic/git-projects/publicplan/efa/rbac
+2025-07-22 09:15:28.024 [info] [Model][openRepository] Opened repository (real path): /home/dmarkovic/git-projects/publicplan/efa/rbac
+2025-07-22 09:15:28.025 [info] [Model][doInitialScan] Initial repository scan completed - repositories (2), closed repositories (0), parent repositories (0), unsafe repositories (0)
+2025-07-22 09:15:28.025 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [11ms]
+2025-07-22 09:15:28.092 [info] > git show --textconv :helm/noots-sak-dp-server/develop/values.yaml [22ms]
+2025-07-22 09:15:28.092 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [55ms]
+2025-07-22 09:15:28.150 [info] > git check-ignore -v -z --stdin [44ms]
+2025-07-22 09:15:28.152 [info] > git config --get --local branch.main.vscode-merge-base [52ms]
+2025-07-22 09:15:28.158 [info] > git config --get commit.template [67ms]
+2025-07-22 09:15:28.158 [info] > git config --get commit.template [73ms]
+2025-07-22 09:15:28.159 [info] > git ls-files --stage -- helm/noots-sak-dp-server/develop/values.yaml [82ms]
+2025-07-22 09:15:28.177 [info] > git cat-file -s 4dfe49bf5e59a61687e3ed1619846283c5dd02a7 [13ms]
+2025-07-22 09:15:28.178 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/origin/main refs/remotes/origin/main [19ms]
+2025-07-22 09:15:28.184 [info] > git rev-parse --show-toplevel [35ms]
+2025-07-22 09:15:28.184 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:15:28.197 [info] > git merge-base refs/heads/main refs/remotes/origin/main [14ms]
+2025-07-22 09:15:28.206 [info] > git diff --name-status -z --diff-filter=ADMR 5b0eec7013e74559ab8f118f2484b48319aee653...refs/remotes/origin/main [3ms]
+2025-07-22 09:15:28.207 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/master refs/remotes/master [13ms]
+2025-07-22 09:15:28.207 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [18ms]
+2025-07-22 09:15:28.261 [info] > git status -z -uall [44ms]
+2025-07-22 09:15:28.261 [info] > git status -z -uall [32ms]
+2025-07-22 09:15:28.262 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [26ms]
+2025-07-22 09:15:28.263 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [40ms]
+2025-07-22 09:15:28.288 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/master refs/remotes/master [16ms]
+2025-07-22 09:15:28.312 [info] > git config --get --local branch.master.vscode-merge-base [20ms]
+2025-07-22 09:15:28.318 [info] > git config --get commit.template [31ms]
+2025-07-22 09:15:28.318 [info] > git blame --root --incremental 5b0eec7013e74559ab8f118f2484b48319aee653 -- helm/noots-sak-dp-server/develop/values.yaml [36ms]
+2025-07-22 09:15:28.335 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/origin/master refs/remotes/origin/master [17ms]
+2025-07-22 09:15:28.353 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/master refs/remotes/master [8ms]
+2025-07-22 09:15:28.353 [info] > git merge-base refs/heads/master refs/remotes/origin/master [13ms]
+2025-07-22 09:15:28.362 [info] > git diff --name-status -z --diff-filter=ADMR bc1b0d5cf25787ffaf7851560b48b3fa98108e31...refs/remotes/origin/master [4ms]
+2025-07-22 09:15:28.374 [info] > git status -z -uall [4ms]
+2025-07-22 09:15:28.386 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [12ms]
+2025-07-22 09:15:28.640 [info] > git check-ignore -v -z --stdin [1ms]
+2025-07-22 09:15:33.537 [info] > git rev-parse --show-toplevel [2ms]
+2025-07-22 09:15:33.537 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:15:35.892 [info] > git rev-parse --show-toplevel [5ms]
+2025-07-22 09:15:35.892 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:15:35.926 [info] > git rev-parse --show-toplevel [6ms]
+2025-07-22 09:15:35.926 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:15:38.284 [info] > git checkout -q -- helm/noots-sak-dp-server/develop/values.yaml [3ms]
+2025-07-22 09:15:38.322 [info] > git config --get commit.template [18ms]
+2025-07-22 09:15:38.325 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [4ms]
+2025-07-22 09:15:38.338 [info] > git status -z -uall [7ms]
+2025-07-22 09:15:38.340 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [2ms]
+2025-07-22 09:15:39.378 [info] > git config --get commit.template [8ms]
+2025-07-22 09:15:39.379 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [1ms]
+2025-07-22 09:15:39.395 [info] > git status -z -uall [9ms]
+2025-07-22 09:15:39.396 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [2ms]
+2025-07-22 09:15:39.479 [info] > git ls-files --stage -- helm/noots-sak-dp-server/develop/values.yaml [3ms]
+2025-07-22 09:15:39.492 [info] > git cat-file -s 4dfe49bf5e59a61687e3ed1619846283c5dd02a7 [2ms]
+2025-07-22 09:15:39.510 [info] > git show --textconv :helm/noots-sak-dp-server/develop/values.yaml [3ms]
+2025-07-22 09:15:41.640 [info] [main] Log level: Info
+2025-07-22 09:15:41.640 [info] [main] Validating found git in: "git"
+2025-07-22 09:15:41.640 [info] [main] Using git "2.50.1" from "git"
+2025-07-22 09:15:41.640 [info] [Model][doInitialScan] Initial repository scan started
+2025-07-22 09:15:41.640 [info] > git rev-parse --show-toplevel [13ms]
+2025-07-22 09:15:41.640 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:15:41.769 [info] > git rev-parse --show-toplevel [123ms]
+2025-07-22 09:15:41.796 [info] > git rev-parse --git-dir --git-common-dir [1ms]
+2025-07-22 09:15:41.804 [info] [Model][openRepository] Opened repository (path): /home/dmarkovic/git-projects/publicplan/efa/distributions/DPA/hr-dpa-dist
+2025-07-22 09:15:41.804 [info] [Model][openRepository] Opened repository (real path): /home/dmarkovic/git-projects/publicplan/efa/distributions/DPA/hr-dpa-dist
+2025-07-22 09:15:41.820 [info] > git rev-parse --show-toplevel [3ms]
+2025-07-22 09:15:41.820 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:15:41.820 [info] > git config --get commit.template [7ms]
+2025-07-22 09:15:42.178 [info] > git rev-parse --show-toplevel [19ms]
+2025-07-22 09:15:42.178 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:15:42.194 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [18ms]
+2025-07-22 09:15:42.205 [info] > git rev-parse --show-toplevel [14ms]
+2025-07-22 09:15:42.205 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:15:42.214 [info] > git rev-parse --show-toplevel [4ms]
+2025-07-22 09:15:42.236 [info] > git status -z -uall [16ms]
+2025-07-22 09:15:42.236 [info] > git rev-parse --git-dir --git-common-dir [2ms]
+2025-07-22 09:15:42.239 [info] [Model][openRepository] Opened repository (path): /home/dmarkovic/git-projects/publicplan/efa/rbac
+2025-07-22 09:15:42.239 [info] [Model][openRepository] Opened repository (real path): /home/dmarkovic/git-projects/publicplan/efa/rbac
+2025-07-22 09:15:42.239 [info] [Model][doInitialScan] Initial repository scan completed - repositories (2), closed repositories (0), parent repositories (0), unsafe repositories (0)
+2025-07-22 09:15:42.245 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [19ms]
+2025-07-22 09:15:42.283 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [30ms]
+2025-07-22 09:15:42.288 [info] > git ls-files --stage -- helm/noots-sak-dp-server/develop/values.yaml [43ms]
+2025-07-22 09:15:42.302 [info] > git cat-file -s 4dfe49bf5e59a61687e3ed1619846283c5dd02a7 [8ms]
+2025-07-22 09:15:42.303 [info] > git config --get --local branch.main.vscode-merge-base [15ms]
+2025-07-22 09:15:42.308 [info] > git config --get commit.template [26ms]
+2025-07-22 09:15:42.312 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/origin/main refs/remotes/origin/main [4ms]
+2025-07-22 09:15:42.362 [info] > git show --textconv :helm/noots-sak-dp-server/develop/values.yaml [39ms]
+2025-07-22 09:15:42.363 [info] > git merge-base refs/heads/main refs/remotes/origin/main [45ms]
+2025-07-22 09:15:42.420 [info] > git diff --name-status -z --diff-filter=ADMR 5b0eec7013e74559ab8f118f2484b48319aee653...refs/remotes/origin/main [53ms]
+2025-07-22 09:15:42.421 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/master refs/remotes/master [60ms]
+2025-07-22 09:15:42.440 [info] > git config --get commit.template [12ms]
+2025-07-22 09:15:42.473 [info] > git status -z -uall [13ms]
+2025-07-22 09:15:42.474 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [8ms]
+2025-07-22 09:15:42.483 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [28ms]
+2025-07-22 09:15:42.494 [info] > git blame --root --incremental 5b0eec7013e74559ab8f118f2484b48319aee653 -- helm/noots-sak-dp-server/develop/values.yaml [22ms]
+2025-07-22 09:15:42.510 [info] > git config --get commit.template [20ms]
+2025-07-22 09:15:42.510 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/master refs/remotes/master [28ms]
+2025-07-22 09:15:42.538 [info] > git status -z -uall [7ms]
+2025-07-22 09:15:42.539 [info] > git config --get --local branch.master.vscode-merge-base [24ms]
+2025-07-22 09:15:42.744 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/origin/master refs/remotes/origin/master [200ms]
+2025-07-22 09:15:42.750 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [213ms]
+2025-07-22 09:15:42.752 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/master refs/remotes/master [227ms]
+2025-07-22 09:15:42.838 [info] > git check-ignore -v -z --stdin [81ms]
+2025-07-22 09:15:42.851 [info] > git merge-base refs/heads/master refs/remotes/origin/master [100ms]
+2025-07-22 09:15:42.873 [info] > git diff --name-status -z --diff-filter=ADMR bc1b0d5cf25787ffaf7851560b48b3fa98108e31...refs/remotes/origin/master [17ms]
+2025-07-22 09:15:42.908 [info] > git status -z -uall [10ms]
+2025-07-22 09:15:42.909 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [6ms]
+2025-07-22 09:15:45.551 [info] > git check-ignore -v -z --stdin [4ms]
+2025-07-22 09:15:48.488 [info] > git ls-files --stage -- helm/noots-sak-dp-server/develop/values.yaml [0ms]
+2025-07-22 09:15:48.494 [info] > git cat-file -s 4dfe49bf5e59a61687e3ed1619846283c5dd02a7 [2ms]
+2025-07-22 09:15:48.502 [info] > git show --textconv :helm/noots-sak-dp-server/develop/values.yaml [2ms]
+2025-07-22 09:15:49.330 [info] > git pull --tags origin main [2031ms]
+2025-07-22 09:15:49.330 [info] From gitlab.publicplan.cloud:iac/efa/distributions/dpa/hr-dpa-dist
+ * branch            main       -> FETCH_HEAD
+   5b0eec7..5cee499  main       -> origin/main
+2025-07-22 09:15:49.344 [info] > git config --get commit.template [6ms]
+2025-07-22 09:15:49.344 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [1ms]
+2025-07-22 09:15:49.356 [info] > git status -z -uall [6ms]
+2025-07-22 09:15:49.357 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [1ms]
+2025-07-22 09:15:49.380 [info] > git blame --root --incremental 5cee49989ef517064eacd029f8cb33722c716b3c -- helm/noots-sak-dp-server/develop/values.yaml [14ms]
+2025-07-22 09:15:49.381 [info] > git merge-base refs/heads/main refs/remotes/origin/main [2ms]
+2025-07-22 09:15:49.387 [info] > git diff --name-status -z --diff-filter=ADMR 5cee49989ef517064eacd029f8cb33722c716b3c...refs/remotes/origin/main [1ms]
+2025-07-22 09:15:50.472 [info] > git config --get commit.template [5ms]
+2025-07-22 09:15:50.473 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [1ms]
+2025-07-22 09:15:50.483 [info] > git status -z -uall [6ms]
+2025-07-22 09:15:50.484 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [2ms]
+2025-07-22 09:15:50.609 [info] > git ls-files --stage -- helm/noots-sak-dp-server/develop/values.yaml [37ms]
+2025-07-22 09:15:50.615 [info] > git cat-file -s 390e6e30c5bdee0d25964b39dbe21f7e8783ffa7 [1ms]
+2025-07-22 09:15:50.624 [info] > git show --textconv :helm/noots-sak-dp-server/develop/values.yaml [1ms]
+2025-07-22 09:16:02.956 [info] > git config --get commit.template [13ms]
+2025-07-22 09:16:02.957 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [2ms]
+2025-07-22 09:16:02.976 [info] > git status -z -uall [10ms]
+2025-07-22 09:16:02.977 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [2ms]
+2025-07-22 09:16:06.486 [info] > git add -A -- helm/noots-sak-dp-server/develop/values.yaml [3ms]
+2025-07-22 09:16:06.515 [info] > git config --get commit.template [17ms]
+2025-07-22 09:16:06.516 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [3ms]
+2025-07-22 09:16:06.545 [info] > git status -z -uall [18ms]
+2025-07-22 09:16:06.548 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [5ms]
+2025-07-22 09:16:06.878 [info] > git show --textconv HEAD:helm/noots-sak-dp-server/develop/values.yaml [9ms]
+2025-07-22 09:16:06.879 [info] > git ls-tree -l HEAD -- helm/noots-sak-dp-server/develop/values.yaml [2ms]
+2025-07-22 09:16:07.696 [info] > git ls-files --stage -- helm/noots-sak-dp-server/develop/values.yaml [12ms]
+2025-07-22 09:16:07.709 [info] > git ls-tree -l HEAD -- helm/noots-sak-dp-server/develop/values.yaml [13ms]
+2025-07-22 09:16:07.711 [info] > git cat-file -s dd36ccc91b37d61b0f38d7d6e97a805ab48c48a9 [6ms]
+2025-07-22 09:16:07.733 [info] > git show --textconv HEAD:helm/noots-sak-dp-server/develop/values.yaml [9ms]
+2025-07-22 09:16:07.734 [info] > git show --textconv :helm/noots-sak-dp-server/develop/values.yaml [1ms]
+2025-07-22 09:16:07.998 [info] > git config --get commit.template [5ms]
+2025-07-22 09:16:07.999 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [1ms]
+2025-07-22 09:16:08.011 [info] > git status -z -uall [6ms]
+2025-07-22 09:16:08.012 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [1ms]
+2025-07-22 09:16:14.558 [info] > git -c user.useConfigOnly=true commit --quiet --allow-empty-message --file - [7ms]
+2025-07-22 09:16:14.567 [info] > git config --get commit.template [1ms]
+2025-07-22 09:16:14.576 [info] > git config --get commit.template [1ms]
+2025-07-22 09:16:14.584 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [2ms]
+2025-07-22 09:16:14.597 [info] > git status -z -uall [6ms]
+2025-07-22 09:16:14.598 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [2ms]
+2025-07-22 09:16:14.615 [info] > git merge-base refs/heads/main refs/remotes/origin/main [2ms]
+2025-07-22 09:16:14.620 [info] > git blame --root --incremental 297e15048cfe1e5edab676a1deb55a8f4607c65f -- helm/noots-sak-dp-server/develop/values.yaml [14ms]
+2025-07-22 09:16:14.622 [info] > git diff --name-status -z --diff-filter=ADMR 5cee49989ef517064eacd029f8cb33722c716b3c...refs/remotes/origin/main [2ms]
+2025-07-22 09:16:14.646 [info] > git config --get commit.template [1ms]
+2025-07-22 09:16:14.653 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [2ms]
+2025-07-22 09:16:14.666 [info] > git status -z -uall [7ms]
+2025-07-22 09:16:14.666 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [1ms]
+2025-07-22 09:16:15.799 [info] > git pull --tags origin main [821ms]
+2025-07-22 09:16:15.799 [info] From gitlab.publicplan.cloud:iac/efa/distributions/dpa/hr-dpa-dist
+ * branch            main       -> FETCH_HEAD
+2025-07-22 09:16:16.915 [info] > git push origin main:main [1103ms]
+2025-07-22 09:16:16.915 [info] To gitlab.publicplan.cloud:iac/efa/distributions/dpa/hr-dpa-dist.git
+   5cee499..297e150  main -> main
+2025-07-22 09:16:16.945 [info] > git config --get commit.template [14ms]
+2025-07-22 09:16:16.945 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [2ms]
+2025-07-22 09:16:16.966 [info] > git status -z -uall [5ms]
+2025-07-22 09:16:16.966 [info] > git ls-files --stage -- helm/noots-sak-dp-server/develop/values.yaml [12ms]
+2025-07-22 09:16:16.971 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [5ms]
+2025-07-22 09:16:16.980 [info] > git cat-file -s dd36ccc91b37d61b0f38d7d6e97a805ab48c48a9 [9ms]
+2025-07-22 09:16:16.981 [info] > git merge-base refs/heads/main refs/remotes/origin/main [2ms]
+2025-07-22 09:16:16.992 [info] > git diff --name-status -z --diff-filter=ADMR 297e15048cfe1e5edab676a1deb55a8f4607c65f...refs/remotes/origin/main [5ms]
+2025-07-22 09:16:16.992 [info] > git show --textconv :helm/noots-sak-dp-server/develop/values.yaml [1ms]
+2025-07-22 09:16:18.028 [info] > git config --get commit.template [17ms]
+2025-07-22 09:16:18.030 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/main refs/remotes/main [3ms]
+2025-07-22 09:16:18.048 [info] > git status -z -uall [8ms]
+2025-07-22 09:16:18.049 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [2ms]
+2025-07-22 09:16:18.114 [info] > git rev-parse --show-toplevel [1ms]
+2025-07-22 09:16:18.121 [info] > git rev-parse --git-dir --git-common-dir [1ms]
+2025-07-22 09:16:18.124 [info] [Model][openRepository] Opened repository (path): /home/dmarkovic/git-projects/publicplan/efa/cluster-meta/develop/infrastructure/distributions
+2025-07-22 09:16:18.124 [info] [Model][openRepository] Opened repository (real path): /home/dmarkovic/git-projects/publicplan/efa/cluster-meta/develop/infrastructure/distributions
+2025-07-22 09:16:18.136 [info] > git config --get commit.template [5ms]
+2025-07-22 09:16:18.145 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/master refs/remotes/master [2ms]
+2025-07-22 09:16:18.159 [info] > git status -z -uall [8ms]
+2025-07-22 09:16:18.161 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [3ms]
+2025-07-22 09:16:18.182 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/master refs/remotes/master [11ms]
+2025-07-22 09:16:18.199 [info] > git config --get --local branch.master.vscode-merge-base [10ms]
+2025-07-22 09:16:18.206 [info] > git config --get commit.template [25ms]
+2025-07-22 09:16:18.216 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/origin/master refs/remotes/origin/master [10ms]
+2025-07-22 09:16:18.230 [info] > git merge-base refs/heads/master refs/remotes/origin/master [8ms]
+2025-07-22 09:16:18.238 [info] > git for-each-ref --format=%(refname)%00%(upstream:short)%00%(objectname)%00%(upstream:track)%00%(upstream:remotename)%00%(upstream:remoteref) refs/heads/master refs/remotes/master [9ms]
+2025-07-22 09:16:18.239 [info] > git diff --name-status -z --diff-filter=ADMR 4a00be0cdde6f96d7705497974020db70bc011c7...refs/remotes/origin/master [2ms]
+2025-07-22 09:16:18.252 [info] > git status -z -uall [7ms]
+2025-07-22 09:16:18.269 [info] > git for-each-ref --sort -committerdate --format %(refname)%00%(objectname)%00%(*objectname) [18ms]
+2025-07-22 09:16:18.288 [info] > git rev-parse --show-toplevel [3ms]
+2025-07-22 09:16:18.288 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:16:18.623 [info] > git show --textconv :applications/ingress-nginx/default-values.yaml [35ms]
+2025-07-22 09:16:18.630 [info] > git ls-files --stage -- applications/ingress-nginx/default-values.yaml [8ms]
+2025-07-22 09:16:18.638 [info] > git cat-file -s 54267c52e545e2a4718891d593f04c5d830aa85b [3ms]
+2025-07-22 09:16:18.660 [info] > git blame --root --incremental 4a00be0cdde6f96d7705497974020db70bc011c7 -- applications/ingress-nginx/default-values.yaml [7ms]
+2025-07-22 09:16:18.854 [info] > git check-ignore -v -z --stdin [8ms]
+2025-07-22 09:16:18.854 [info] > git check-ignore -v -z --stdin [1ms]
+2025-07-22 09:16:19.486 [info] > git show --textconv :helm/noots-sak-dp-server/develop/values.yaml [7ms]
+2025-07-22 09:16:19.487 [info] > git ls-files --stage -- helm/noots-sak-dp-server/develop/values.yaml [2ms]
+2025-07-22 09:16:19.493 [info] > git cat-file -s dd36ccc91b37d61b0f38d7d6e97a805ab48c48a9 [1ms]
+2025-07-22 09:16:19.813 [info] > git check-ignore -v -z --stdin [3ms]
+2025-07-22 09:16:21.753 [info] > git check-ignore -v -z --stdin [15ms]
+2025-07-22 09:16:21.755 [info] > git check-ignore -v -z --stdin [4ms]
+2025-07-22 09:30:19.793 [info] > git show --textconv :kustomization/overlays/develop/kustomization.yaml [8ms]
+2025-07-22 09:30:19.794 [info] > git ls-files --stage -- kustomization/overlays/develop/kustomization.yaml [2ms]
+2025-07-22 09:30:19.800 [info] > git cat-file -s 01ebe49b1332a147b3eea76aa510776c3ec804fd [1ms]
+2025-07-22 09:30:19.823 [info] > git blame --root --incremental 297e15048cfe1e5edab676a1deb55a8f4607c65f -- kustomization/overlays/develop/kustomization.yaml [5ms]
+2025-07-22 09:30:20.484 [info] > git show --textconv :kustomization/overlays/develop/ingress.yaml [15ms]
+2025-07-22 09:30:20.486 [info] > git ls-files --stage -- kustomization/overlays/develop/ingress.yaml [4ms]
+2025-07-22 09:30:20.495 [info] > git cat-file -s 48d50186b1ca61c4519aa1883d2f1f7479b355d1 [2ms]
+2025-07-22 09:30:20.519 [info] > git blame --root --incremental 297e15048cfe1e5edab676a1deb55a8f4607c65f -- kustomization/overlays/develop/ingress.yaml [5ms]
+2025-07-22 09:30:30.946 [info] > git check-ignore -v -z --stdin [3ms]
+2025-07-22 09:30:31.822 [info] > git show --textconv :helm/noots-sak-dp-server/develop/values.yaml [8ms]
+2025-07-22 09:30:31.823 [info] > git ls-files --stage -- helm/noots-sak-dp-server/develop/values.yaml [1ms]
+2025-07-22 09:30:31.829 [info] > git cat-file -s dd36ccc91b37d61b0f38d7d6e97a805ab48c48a9 [2ms]
+2025-07-22 09:44:24.188 [info] > git check-ignore -v -z --stdin [3ms]
+2025-07-22 09:44:28.096 [info] > git check-ignore -v -z --stdin [3ms]
+2025-07-22 09:44:28.776 [info] > git check-ignore -v -z --stdin [4ms]
+2025-07-22 09:46:38.737 [info] > git check-ignore -v -z --stdin [0ms]
+2025-07-22 09:46:42.826 [info] > git show --textconv :helm/noots-sak-dp-server/develop/resources/ca.crt [10ms]
+2025-07-22 09:46:42.827 [info] > git ls-files --stage -- helm/noots-sak-dp-server/develop/resources/ca.crt [1ms]
+2025-07-22 09:46:42.833 [info] > git cat-file -s db4032b3ad14f2dc287721ff6eee87c7f1aca9ae [1ms]
+2025-07-22 09:46:44.784 [info] > git show --textconv :helm/noots-sak-dp-server/develop/values.yaml [8ms]
+2025-07-22 09:46:44.784 [info] > git ls-files --stage -- helm/noots-sak-dp-server/develop/values.yaml [1ms]
+2025-07-22 09:46:44.792 [info] > git cat-file -s dd36ccc91b37d61b0f38d7d6e97a805ab48c48a9 [2ms]
+2025-07-22 09:51:34.032 [info] > git rev-parse --show-toplevel [2ms]
+2025-07-22 09:51:34.032 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:51:50.717 [info] > git rev-parse --show-toplevel [1ms]
+2025-07-22 09:51:50.718 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:51:52.531 [info] > git rev-parse --show-toplevel [1ms]
+2025-07-22 09:51:52.531 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:51:53.138 [info] > git rev-parse --show-toplevel [2ms]
+2025-07-22 09:51:53.138 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:51:53.576 [info] > git rev-parse --show-toplevel [1ms]
+2025-07-22 09:51:53.576 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:51:53.941 [info] > git rev-parse --show-toplevel [1ms]
+2025-07-22 09:51:53.941 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:51:54.363 [info] > git rev-parse --show-toplevel [0ms]
+2025-07-22 09:51:54.363 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:51:55.028 [info] > git rev-parse --show-toplevel [1ms]
+2025-07-22 09:51:55.028 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:51:56.974 [info] > git rev-parse --show-toplevel [2ms]
+2025-07-22 09:51:56.974 [info] fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+2025-07-22 09:52:00.573 [info] > git show --textconv :helm/noots-sak-dp-server/develop/values.yaml [11ms]
+2025-07-22 09:52:00.574 [info] > git ls-files --stage -- helm/noots-sak-dp-server/develop/values.yaml [2ms]
+2025-07-22 09:52:00.582 [info] > git cat-file -s dd36ccc91b37d61b0f38d7d6e97a805ab48c48a9 [2ms]
+2025-07-22 09:56:42.033 [info] > git show --textconv :helm/noots-sak-dp-server/develop/values.yaml [10ms]
+2025-07-22 09:56:42.034 [info] > git ls-files --stage -- helm/noots-sak-dp-server/develop/values.yaml [2ms]
+2025-07-22 09:56:42.048 [info] > git cat-file -s dd36ccc91b37d61b0f38d7d6e97a805ab48c48a9 [4ms]

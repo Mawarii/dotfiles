@@ -1,0 +1,7 @@
+---
+- name: create random but idempotent password
+  ansible.builtin.debug:
+    msg: "{{ formio.database.password }}"
+- name: create random but asdf
+  ansible.builtin.debug:
+    msg: "{{ formio.database.password }}"

@@ -1,0 +1,27 @@
+[all]
+hostname ansible_host=5.75.138.20 ansible_user=formsflow ansible_port=1337
+
+[all:vars]
+keycloak_url=https://keycloak.formsflow.publicplan.cloud
+formio_url=https://forms.formsflow.publicplan.cloud
+web_url=https://web.ff.cloudical.in
+redash_url=https://redash.formsflow.publicplan.cloud
+formsflow_api_url=https://api.ff.cloudical.in
+camunda_url=https://bpm.ff.cloudical.in
+data_analysis_api_url=https://data-analysis.ff.cloudical.in
+documents_api_url=https://documents-api.ff.cloudical.in
+
+formio_root_email=admin@example.com
+redash_admin_email=admin@example.com
+redash_organization=your-org-name
+
+; do not add a trailing slash!
+installation_path=$HOME/docker
+
+enable_caddy=true
+enable_keycloak=true
+enable_data_analysis=true
+enable_redash=true
+
+; if Keycloak is disabled you have to set the following variable
+;bpm_clientsecret=your-secret

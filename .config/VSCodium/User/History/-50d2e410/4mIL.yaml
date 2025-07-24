@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    k8s.publicplan.cloud/contact: Team KOPS
+  creationTimestamp: null
+  name: infisical-operator
+  namespace: argocd
+spec:
+  destination:
+    namespace: infisical-operator
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+    - chart: secrets-operator
+      helm:
+        valueFiles:
+          - $values/applications/infisical-operator/default-values.yaml
+          - $values/applications/infisical-operator/values.yaml
+      repoURL: https://dl.cloudsmith.io/public/infisical/helm-charts/helm/charts/
+      targetRevision: 0.9.2
+    - ref: values
+      repoURL: git@gitlab.publicplan.cloud:team-kops/infra-internal/terraform/pp-core-cluster.git
+      targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

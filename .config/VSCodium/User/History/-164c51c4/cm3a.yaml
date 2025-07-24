@@ -1,0 +1,5 @@
+---
+- name: Create empty auth.log file
+  ansible.builtin.file:
+    path: /var/log/auth.log
+    state: touch

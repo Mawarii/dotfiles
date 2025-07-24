@@ -1,0 +1,119 @@
+# Default values for nocodb.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: nocodb/nocodb
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "0.251.0"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: "nocodb"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations:
+  backup.velero.io/backup-volumes: internalcluster-nocodb
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  port: 8080
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/whitelist-source-range: "213.61.255.112/29, 78.138.64.211/32, 78.138.66.143/32, 141.91.18.0/24"
+  hosts:
+    - host: nocodb-sbhh.c.dev.publicplan.cloud
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: tls-nocodb-c-dev-publicplan-cloud
+      hosts:
+        - nocodb-sbhh.c.dev.publicplan.cloud
+
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  limits: {}
+    # cpu: 250m
+    # memory: 256Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+extraEnvs:
+  NC_PUBLIC_URL: https://nocodb-sbhh.c.dev.publicplan.cloud
+  DB_QUERY_LIMIT_DEFAULT: '100'
+
+extraSecretEnvs:
+  NC_AUTH_JWT_SECRET: hEjLI21599hE5Pj9zZ37TqQ7oC6aK4P1lR7rV4q2r758CKqT9cX9sWgTh88mPXhV46j6F1u1Ck3kXsZqPLp7PgEo8Id14mWeT4yNs3AbNj9ZcUvNab5Cd9Hq19Hl43Ib
+  NC_DB: mysql2://mariadb:3306?u=nocodb&p=w0M3IwRFIcJcT6x9UzMX3cvXHUiqtD7U&d=nocodb
+
+storage:
+  # If disabled, another persistent storage should be configured for attachments to work.
+  # We recommend setting NC_S3_BUCKET_NAME and other NC_S3* environment variables.
+  # Refer documentation for more details.
+  enabled: true
+  size: 3Gi
+  storageClassName: "default"
+
+postgresql:
+  enabled: false
+  auth:
+    database: nocodb
+    username: nocodb
+    password: secretPass
+  persistence:
+    size: 8Gi
+
+mysql:
+  enabled: false
+  auth:
+    database: nocodb
+    username: nocodb
+    password: secretPass
+  persistence:
+    enabled: false
+    size: 8Gi

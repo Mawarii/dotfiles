@@ -1,0 +1,96 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mariadb
+data: {}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mariadb
+type: Opaque
+stringData:
+  password: w0M3IwRFIcJcT6x9UzMX3cvXHUiqtD7U
+  root-password: b7eOzojHxONeU7bHkzuwof7iCGEaJdPJQFWudpaSdJ9UkdtUuYSycdKjruRguy21aebV59i280Dn1pcIpV5RsUJBg3uRf2nUiOn27oVh8l9DA7JLbAhMZkpSYMKnLEKV
+---
+apiVersion: mariadb.mmontes.io/v1alpha1
+kind: MariaDB
+metadata:
+  name: mariadb
+spec:
+  rootPasswordSecretKeyRef:
+    name: mariadb
+    key: root-password
+  database: nocodb
+  username: nocodb
+  passwordSecretKeyRef:
+    name: mariadb
+    key: password
+  image:
+    repository: mariadb
+    tag: "11.4.2"
+    pullPolicy: IfNotPresent
+  port: 3306
+  volumeClaimTemplate:
+    resources:
+      requests:
+        storage: 8Gi
+    accessModes:
+      - ReadWriteOnce
+  volumes:
+    - name: tmp
+      emptyDir: {}
+  volumeMounts:
+    - name: tmp
+      mountPath: /tmp
+  myCnf: |
+    [mariadb]
+    bind-address=0.0.0.0
+    default_storage_engine=InnoDB
+    binlog_format=row
+    innodb_autoinc_lock_mode=2
+    max_allowed_packet=256M
+    innodb_large_prefix=true
+  myCnfConfigMapKeyRef:
+    name: mariadb
+    key: my.cnf
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 300m
+      memory: 512Mi
+  env:
+    - name: TZ
+      value: SYSTEM
+  envFrom:
+    - configMapRef:
+        name: mariadb
+  podSecurityContext:
+    runAsUser: 0
+  securityContext:
+    allowPrivilegeEscalation: false
+  livenessProbe:
+    exec:
+      command:
+        - bash
+        - -c
+        - mariadb -u root -p"${MARIADB_ROOT_PASSWORD}" -e "SELECT 1;"
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 5
+  readinessProbe:
+    exec:
+      command:
+        - bash
+        - -c
+        - mariadb -u root -p"${MARIADB_ROOT_PASSWORD}" -e "SELECT 1;"
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 5
+  podDisruptionBudget:
+    maxUnavailable: 50%
+  updateStrategy:
+    type: RollingUpdate

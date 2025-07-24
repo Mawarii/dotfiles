@@ -1,0 +1,16 @@
+services:
+  nocodb:
+    image: {{ image.nocodb }}
+    restart: unless-stopped
+    container_name: nocodb
+    environment: 
+      NC_DB: {{ nocodb_connection_string }}
+    expose:
+      - "8080"
+    networks:
+      - proxy-net
+
+networks:
+  proxy-net:
+    name: reverse_proxy
+    external: true

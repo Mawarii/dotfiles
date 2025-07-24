@@ -1,0 +1,71 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: govforms2-akeneo-import-job
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: govforms2-akeneo-import-job
+        spec:
+          securityContext:
+            fsGroup: 10001
+            runAsGroup: 10001
+            runAsNonRoot: true
+            runAsUser: 10001
+          restartPolicy: OnFailure
+          containers:
+            - name: akeneo-import-job
+              image: DOCKER_IMAGE_3
+              command:
+                - /usr/local/bin/php
+                - /srv/app/bin/console
+                - akeneo:import
+              securityContext:
+                runAsGroup: 10001
+                runAsNonRoot: true
+                runAsUser: 10001
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop: ["ALL"]
+                seccompProfile:
+                  type: RuntimeDefault
+                readOnlyRootFilesystem: true
+                privileged: false
+              env:
+                - name: APP_ENV
+                  value: "prod"
+                - name: AKENEO_BASEURL
+                  value: "https://govforms2-akeneo.dev.efa.publicplan.cloud"
+                - name: FORMIO_PROJECT_STAGE_BASEURL
+                  value: "https://backend-govforms.service.wirtschaft.nrw/develop-ytmxvdoulejyfkd"
+                - name: FORMIO_PROJECT_STAGE_API_TOKEN
+                  value: "J8KNE4BXNoJ9bUhj3aTcUUxdFb6sea"
+                - name: IMPORT_AKENEO_CLIENT_ID
+                  value: "1_dakdq3gqg1wkoss888s0kkos8cws0ckowoc08gcw0s8kowsgk"
+                - name: IMPORT_AKENEO_SECRET
+                  value: "1tbu7n73lwhwo44c8g8o4c0w8cwgs48kow0so840c40c04gk0w"
+                - name: IMPORT_AKENEO_USERNAME
+                  value: "formio_4368"
+                - name: IMPORT_AKENEO_PASSWORD
+                  value: "f655d3665"
+              volumeMounts:
+                - name: tmp
+                  mountPath: /tmp
+                - name: symfony-logs
+                  mountPath: /srv/app/var/log
+                - name: cache
+                  mountPath: /srv/app/var/cache
+                - name: public
+                  mountPath: /srv/app/public
+          volumes:
+            - name: tmp
+              emptyDir: {}
+            - name: symfony-logs
+              emptyDir: {}
+            - name: cache
+              emptyDir: {}
+            - name: public
+              emptyDir: {}

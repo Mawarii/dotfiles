@@ -1,0 +1,93 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+  - ../../../../databases/bitnami-mysql-8.0.33-debian-11-r28/overlays/staging
+  - govforms2-akeneo-version-ingress.yaml
+
+patches:
+  - path: govforms2-akeneo.patch.yaml
+    target:
+      kind: Deployment
+      name: govforms2-akeneo
+  - path: govforms2-akeneo-ingress.patch.yaml
+    target:
+      kind: Ingress
+      name: govforms2-akeneo-ingress
+  - path: govforms2-akeneo-secrets.patch.yaml
+    target:
+      kind: Secret
+      name: govforms2-akeneo-secrets
+  - path: govforms2-mysql.patch.yaml
+    target:
+      kind: StatefulSet
+      name: mysql-wsp
+  - path: mysql-secret.patch.yaml
+    target:
+      kind: Secret
+      name: mysql-wsp
+
+images:
+  - name: DOCKER_IMAGE_1
+    newName: gitlab.krz.de:4567/customers/publicplan/wsp/staging/images/govforms2_form-config_akeneo
+    newTag: "v0.2.3"
+  - name: DOCKER_IMAGE_1_ORIGIN
+    newName: gitlab.publicplan.cloud:5050/themenwelt-formulare/govforms2/form-config/akeneo
+    newTag: "v0.2.3"
+  - name: DOCKER_IMAGE_2
+    newName: gitlab.krz.de:4567/customers/publicplan/wsp/staging/images/nginx-hardened
+    newTag: "v0.0.1"
+  - name: DOCKER_IMAGE_2_ORIGIN
+    newName: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/common/base-images/nginx-hardened
+    newTag: "v0.0.1"
+  - name: DOCKER_IMAGE_3
+    newName: gitlab.krz.de:4567/customers/publicplan/wsp/staging/images/govforms2_form-config_formio-akeneo-sync
+    newTag: "v0.3.2"
+  - name: DOCKER_IMAGE_3_ORIGIN
+    newName: gitlab.publicplan.cloud:5050/themenwelt-formulare/govforms2/form-config/formio-akeneo-sync
+    newTag: "v0.3.2"
+  - name: DOCKER_IMAGE_4
+    newName: gitlab.krz.de:4567/customers/publicplan/wsp/staging/images/version-sidecar
+    newTag: v1.3.2
+  - name: DOCKER_IMAGE_4_ORIGIN
+    newName: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/tools/version-sidecar
+    newTag: v1.3.2
+
+replacements: #version sidecar replacements
+  - source:
+      kind: Deployment
+      name: govforms2-akeneo
+      fieldPath: spec.template.spec.containers.[name=application].image
+    targets:
+      - select:
+          kind: Deployment
+          name: govforms2-akeneo
+        fieldPaths:
+          - spec.template.spec.containers.[name=version-sidecar].env.[name=DOCKER_IMAGE_1].value
+        options:
+          create: true
+  - source:
+      kind: Deployment
+      name: govforms2-akeneo
+      fieldPath: spec.template.spec.containers.[name=nginx].image
+    targets:
+      - select:
+          kind: Deployment
+          name: govforms2-akeneo
+        fieldPaths:
+          - spec.template.spec.containers.[name=version-sidecar].env.[name=DOCKER_IMAGE_2].value
+        options:
+          create: true
+  - source:
+      kind: Deployment
+      name: govforms2-akeneo
+      fieldPath: spec.template.spec.containers.[name=version-sidecar].image
+    targets:
+      - select:
+          kind: Deployment
+          name: govforms2-akeneo
+        fieldPaths:
+          - spec.template.spec.containers.[name=version-sidecar].env.[name=DOCKER_IMAGE_4].value
+        options:
+          create: true

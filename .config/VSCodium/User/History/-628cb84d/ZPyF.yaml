@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  creationTimestamp: null
+  name: kube-prometheus-stack
+  namespace: argocd
+spec:
+  destination:
+    name: in-cluster
+    namespace: kube-prometheus-stack
+  project: efacluster-infra
+  sources:
+    - chart: kube-prometheus-stack
+      helm:
+        valueFiles:
+          - $values/applications/kube-prometheus-stack/default-values.yaml
+          - $values/applications/kube-prometheus-stack/values.yaml
+      repoURL: https://prometheus-community.github.io/helm-charts
+      targetRevision: 70.4.2
+    - ref: values
+      repoURL: git@gitlab.publicplan.cloud:iac/efa/cluster-meta/develop/infrastructure/distributions.git
+      targetRevision: HEAD
+  syncPolicy:
+    automated: {}
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

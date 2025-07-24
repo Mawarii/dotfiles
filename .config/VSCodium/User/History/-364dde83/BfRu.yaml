@@ -1,0 +1,49 @@
+---
+- name: Add Kubernetes apt repository
+  block:
+    - name: Remove old Kubernetes signing key
+      ansible.builtin.file:
+        path: "/usr/share/keyrings/kubernetes-key.gpg"
+        state: absent
+
+    - name: Remove old Kubernetes sources
+      ansible.builtin.file:
+        path: "/etc/apt/sources.list.d/kubernetes-stable.list"
+        state: absent
+
+    - name: Download Kubernetes signing key
+      ansible.builtin.apt_key:
+        url: https://pkgs.k8s.io/core:/stable:/v{{ kubernetes_version }}/deb/Release.key
+        keyring: /usr/share/keyrings/kubernetes-key.gpg
+        state: present
+
+    - name: Add Kubernetes sources
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/kubernetes-key.gpg] https://pkgs.k8s.io/core:/stable:/v{{ kubernetes_version }}/deb/ /"
+        state: present
+        filename: "kubernetes-stable"
+
+- name: Add CRI-O apt repository
+  when: "crio_version is version('1.28', '>=', strict=true)"
+  block:
+    - name: Remove old CRI-O signing key
+      ansible.builtin.file:
+        path: "/usr/share/keyrings/cri-o-key.gpg"
+        state: absent
+
+    - name: Remove old CRI-O sources
+      ansible.builtin.file:
+        path: "/etc/apt/sources.list.d/cri-o-stable.list"
+        state: absent
+
+    - name: Download CRI-O signing key
+      ansible.builtin.apt_key:
+        url: https://pkgs.k8s.io/addons:/cri-o:/stable:/v{{ crio_version }}/deb/Release.key
+        keyring: /usr/share/keyrings/cri-o-key.gpg
+        state: present
+
+    - name: Add CRI-O sources
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/cri-o-key.gpg] https://pkgs.k8s.io/addons:/cri-o:/stable:/v{{ crio_version }}/deb/ /"
+        state: present
+        filename: "cri-o-stable"

@@ -1,0 +1,39 @@
+--- Current Configs ---
+
+Cluster : 11 VMs
+  Control Nodes : 3 Machines
+      CPU : 1 CPU each ( Model : AMD Ryzen 9 5950X 16-Core Processor)
+      Memmory : 4 GB each
+
+  Worker Nodes : 8 Machines
+      CPU : 1 CPU each ( Model : AMD Ryzen 9 5950X 16-Core or AMD Ryzen 9 7950X3D 16-Core Processor)
+      Memmory : Total Capacity 325 GB
+
+  Total Storage: 4 TB
+
+Other VMs
+  - Development Oneclient
+      192.168.1.154 - Not Needed
+      192.168.1.163 - 8 Core CPU - 24 GB Ram - 250 GB Storage
+
+  - Hosting
+       (One Client Dev-test)      192.168.1.147 - 4 CPU Cores - 12 GB Ram - 160 GB Storage
+       (One Client Customer-Test) 192.168.1.152 - 4 CPU Cores - 12 GB Ram - 160 GB Storage
+       (One Client Dev) New Req   192.168.1.147 - 4 CPU Cores - 12 GB Ram - 160 GB Storage
+
+  - Deployments
+      - Linux VM for running Deployment scripts (Jump Host)
+          - CPU - 2 Core
+          - Memory - 4 GB
+
+  - Unknown
+        192.168.1.160 - 4 Core CPU - 16 GB RAM - 200 GB Storage - Windows Server
+        192.168.1.161 - 4 Core CPU - 16 GB RAM - 200 GB Storage - Windows Server
+        192.168.1.162 - 4 Core CPU - 16 GB RAM - 200 GB Storage - MSSQL Server on Ubuntu
+
+
+Chartmeuseum - Hosted on publicplan dev cluster to ensure it is reachable even when this cluster is down
+Harbor - Hosted on publicplan dev cluster to ensure it is reachable even when this cluster is down
+
+
+Please edit any of the above stuff and add anything else that is neded.

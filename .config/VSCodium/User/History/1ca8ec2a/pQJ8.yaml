@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: empfangsclient-ecc-configmap
+data:
+  APPLICATION_FIT_CONNECT_ENVIRONMENT: "TEST"
+  APPLICATION_FIT_CONNECT_SUBMISSION_LIMIT: "100"
+  MARIADB_HOSTNAME: mariadb-ecc:3306
+
+  SCHEDULER_CRON_EXPRESSION: "0 */3 6-19 * * MON-FRI"
+
+  BASE_ISSUER_URI: "https://keycloak.fitko.dev.efa.publicplan.cloud"
+  KEYCLOAK_ENABLED: "true"
+
+  SUBMISSION_PROVIDER: "fitconnect"
+
+  APPLICATION_XTA_SERVER_URL: "https://endpoint.zdi-idmz-dev.nrw.de/zdi-xta-em-gec/"
+  APPLICATION_XTA_USER_NAME: "publicplan-gec"
+  APPLICATION_XTA_KEYSTORE_PATH: "/src/main/resources/cert/fullchain-keystore.jks"
+  APPLICATION_XTA_STATUS_OPEN_ALLOWED: "true"
+
+  DECRYPTION_SERVICE: "vault"
+  DECRYPTION_HOST: "empfangsclient-fitko-vault-server"
+  DECRYPTION_PORT: "8200"
+  DECRYPTION_SCHEME: "http"
+  DECRYPTION_PATH: "ec"
+  DECRYPTION_KUBERNETESROLE: "ecc-role"
+
+  SENTRY_DSN: "https://3f177f7090504f55c92c02a3f8e4b6f5@sentry.live.publicplan.cloud/34"
+  SENTRY_ENVIRONMENT: "develop"
+  SENTRY_TRACESSAMPLERATE: "1.0"
+
+  SPRING_DATASOURCE_DRIVERCLASSNAME: "com.p6spy.engine.spy.P6SpyDriver"
+
+  # LOGGING_FILE_NAME: "/var/log/spring-${ECC_POD_NAME}.log"
+  # LOGGING_LOGBACK_ROLLINGPOLICY_MAXHISTORY: "90"

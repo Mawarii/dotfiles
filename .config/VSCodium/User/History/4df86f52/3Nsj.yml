@@ -1,0 +1,14 @@
+services:
+  forms-flow-web:
+    container_name: forms-flow-web
+    build:
+      context: /storage/main-instance/forms-flow-ai/forms-flow-web/
+      dockerfile: Dockerfile
+    ports:
+      - "3004:8080"
+    tty: true
+
+networks:
+  caddy-net:
+    name: caddy_proxy
+    external: true

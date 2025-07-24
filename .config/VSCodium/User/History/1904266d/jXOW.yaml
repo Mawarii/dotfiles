@@ -1,0 +1,24 @@
+apiVersion: acid.zalan.do/v1
+kind: postgresql
+metadata:
+  name: harbor-postgresql
+spec:
+  teamId: "harbor"
+  volume:
+    size: 20Gi
+  numberOfInstances: 2
+  users:
+    postgres:
+    - superuser
+    - createdb
+    harbor: []
+  databases:
+    harbor: harbor
+    registry: harbor
+    notary_server: harbor
+    notary_signer: harbor
+  postgresql:
+    version: "15"
+    parameters:
+      max_connections: "400"
+  enableLogicalBackup: true

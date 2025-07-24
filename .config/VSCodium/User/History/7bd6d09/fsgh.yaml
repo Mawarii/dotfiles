@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sheethappens
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      kubernetes.io/app: sheethappens
+  template:
+    metadata:
+      labels:
+        kubernetes.io/app: sheethappens
+    spec:
+      containers:
+        - name: sheethappens
+          image: nginxinc/nginx-unprivileged
+          ports:
+            - containerPort: 8080
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: wip
+              mountPath: /usr/share/nginx/html/index.html
+              subPath: index.html
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: wip
+          configMap:
+            name: wip-config
+        - name: tmp
+          emptyDir: {}

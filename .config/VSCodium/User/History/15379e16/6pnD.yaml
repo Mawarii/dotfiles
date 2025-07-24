@@ -1,0 +1,41 @@
+global:
+  storageClass: "default"
+
+matomoUsername: kops
+matomoPassword: "eiDeeRoo4ohqu3Oed4neihui7peicaec"
+matomoEmail: kops@publicplan.de
+matomoWebsiteName: publicplan Matomo
+matomoWebsiteHost: https://matomo.internal.publicplan.cloud
+
+allowEmptyPassword: false
+
+updateStrategy:
+  type: Recreate
+
+smtpAuth: "Plain"
+smtpHost: "smtp.office365.com"
+smtpPort: "587"
+smtpUser: "noreply@publicplan.de"
+smtpPassword: "6RAFwwuZbbJtQYxZ"
+smtpProtocol: "tls"
+noreplyName: "Matomo"
+noreplyAddress: "noreply@publicplan.de"
+
+ingress:
+  enabled: true
+  ingressClassName: "nginx"
+  hostname: "matomo.internal.publicplan.cloud"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  tls: true
+
+mariadb:
+  auth:
+    rootPassword: "Aa6bahfeiwiu4aaShiacait6EiYeiwoo8Mai6una7IethaeQuuphiechee3vimeet4neeji6FeiNgaishoo2aing0AhShohDu5uu7Fahquoh8raeNafaneelo1Ohfei3"
+    password: "weev2quaiDuShu1roo1Kaef8chaevoot5ohJaeji1ouj0daxii2OoWohmah3oonee5Aej5Ta5vahXaik5ce9ohnahcaVeigheyae5Eewael7bieGhaerei2oolite8ul"
+
+cronjobs:
+  taskScheduler:
+    enabled: false
+  archive:
+    enabled: false

@@ -1,0 +1,9 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: sdg-frontend-service
+spec:
+  selector:
+    k8s-app: sdg-frontend
+  ports:
+    - port: 3000

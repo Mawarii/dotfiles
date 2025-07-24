@@ -1,0 +1,73 @@
+---
+- name: Upgrade kubeadm package
+  ansible.builtin.apt:
+    pkg:
+      - kubeadm={{ kube_version_latest }}
+    state: present
+    update_cache: true
+    allow_change_held_packages: true
+
+- name: Hold kubeadm package
+  ansible.builtin.dpkg_selections:
+    name: kubeadm
+    selection: hold
+
+- name: Check if kubeadm upgrade is plannable
+  when: inventory_hostname == groups['controlplanes'][0]
+  ansible.builtin.command:
+    cmd: kubeadm upgrade plan
+  changed_when: false
+
+- name: Apply kubeadm upgrade
+  when: inventory_hostname == groups['controlplanes'][0]
+  ansible.builtin.command:
+    cmd: kubeadm upgrade apply "v{{ kube_version_latest.split('-')[0] }}" --yes
+  changed_when: true
+
+- name: Apply kubeadm upgrade
+  when: not inventory_hostname == groups['controlplanes'][0]
+  ansible.builtin.command:
+    cmd: kubeadm upgrade node
+  changed_when: true
+
+- name: Drain node
+  ansible.builtin.command: |
+    kubectl drain {{ inventory_hostname }} \
+      --ignore-daemonsets \
+      --delete-emptydir-data \
+      --timeout=180s \
+      --kubeconfig /etc/kubernetes/admin.conf
+  changed_when: true
+  delegate_to: "{{ groups['controlplanes'][0] }}"
+
+- name: Wait for the drain to finish
+  ansible.builtin.pause:
+    seconds: 15
+
+- name: Upgrade other Kubernetes packages
+  ansible.builtin.apt:
+    pkg:
+      - kubelet={{ kube_version_latest }}
+      - kubectl={{ kube_version_latest }}
+    state: present
+    update_cache: true
+    allow_change_held_packages: true
+
+- name: Hold kubelet package
+  ansible.builtin.dpkg_selections:
+    name: kubelet
+    selection: hold
+
+- name: Hold kubectl package
+  ansible.builtin.dpkg_selections:
+    name: kubectl
+    selection: hold
+
+- name: Reboot machine
+  ansible.builtin.reboot:
+
+- name: Uncordon node
+  ansible.builtin.command:
+    cmd: kubectl uncordon {{ inventory_hostname }} --kubeconfig /etc/kubernetes/admin.conf
+  changed_when: true
+  delegate_to: "{{ groups['controlplanes'][0] }}"

@@ -1,0 +1,31 @@
+{{ keycloak_url }} {
+	reverse_proxy forms-flow-idm-keycloak:8080
+}
+
+{{ formio_url }} {
+	reverse_proxy forms-flow-forms:3001
+}
+
+{{ documents_api_url }} {
+	reverse_proxy forms-flow-documents-api:5006
+}
+
+{{ data_analysis_api_url }} {
+	reverse_proxy forms-flow-data-analysis-api-data-analysis-api-1:5000
+}
+
+{{ camunda_url }} {
+	reverse_proxy forms-flow-bpm:8080
+}
+
+{{ formsflow_api_url }} {
+	reverse_proxy forms-flow-webapi:5000
+}
+
+{{ redash_url }} {
+	reverse_proxy forms-flow-redash:5000
+}
+
+{{ web_url }} {
+	reverse_proxy forms-flow-web-root-config:8080
+}

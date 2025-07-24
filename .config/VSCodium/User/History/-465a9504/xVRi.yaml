@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frs
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: baukasten-tp03.efa-stage.owl-it.de
+      http:
+        paths:
+          - backend:
+              service:
+                name: frs
+                port:
+                  number: 3000
+            path: /
+            pathType: Prefix

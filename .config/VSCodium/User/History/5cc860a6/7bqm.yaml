@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: empfangsclient-plus-secret
+  annotations:
+    secret-generator.v1.mittwald.de/autogenerate: authorization-key,cipher-key
+type: Opaque

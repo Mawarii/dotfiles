@@ -1,0 +1,9 @@
+---
+# Source: matomo/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: matomo
+type: Opaque
+stringData:
+  matomo-password: "vHgwBM2QqrJiehjdIjvDK20rlFZuyr47"

@@ -1,0 +1,27 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: fbk-keycloak-postgresql
+spec:
+  instances: 2
+  postgresUID: 10001
+  postgresGID: 10001
+  primaryUpdateStrategy: unsupervised
+  bootstrap:
+    initdb:
+      database: fbk-keycloak
+      owner: fbk-keycloak
+  storage:
+    size: 30Gi
+  backup:
+    barmanObjectStore:
+      destinationPath: "s3://efa-develop-cloudnative-pg/fbk-keycloak"
+      endpointURL: https://hel1.your-objectstorage.com
+      s3Credentials:
+        accessKeyId:
+          name: cluster-stage-vars
+          key: CLUSTER_STAGE_S3_ACCESS_KEY
+        secretAccessKey:
+          name: cluster-stage-vars
+          key: CLUSTER_STAGE_S3_SECRET_KEY
+    retentionPolicy: "30d"

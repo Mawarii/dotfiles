@@ -1,0 +1,8 @@
+#!/bin/env bash
+
+# local backup vars
+BUCKET_SUBDIR=${BUCKET_SUBDIR:-"default"}
+LOCAL_BACKUP_PATH=${LOCAL_BACKUP_PATH:-"/backup"}
+
+# get whole backup path
+BACKUP_PATH="$LOCAL_BACKUP_PATH/$BUCKET_SUBDIR/$DB_TYPE"

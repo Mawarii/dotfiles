@@ -1,0 +1,93 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mariadb
+data: {}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mariadb
+type: Opaque
+stringData:
+  password: 57m9ag9l5b6Y2hBsI3wBwbX2cM24fY4d
+  root-password: G4Q7M3rkPsZ1uP32FX1uv7T5ojqw2hX3P4T9wB9ySg1A8SbU3W85d66ptX4tsbQ2L3F4JTzGFsy3cvP6rmUz4Yg5Mc7l3JG7X4H7Rp6UrZ5Jv9rXpq9H69P2Ymre1Ndp
+---
+apiVersion: mariadb.mmontes.io/v1alpha1
+kind: MariaDB
+metadata:
+  name: mariadb
+spec:
+  rootPasswordSecretKeyRef:
+    name: mariadb
+    key: root-password
+  database: nocodb
+  username: nocodb
+  passwordSecretKeyRef:
+    name: mariadb
+    key: password
+  image:
+    repository: mariadb
+    tag: "11.0.2"
+    pullPolicy: IfNotPresent
+  port: 3306
+  volumeClaimTemplate:
+    resources:
+      requests:
+        storage: 8Gi
+    accessModes:
+      - ReadWriteOnce
+  volumes:
+    - name: tmp
+      emptyDir: {}
+  volumeMounts:
+    - name: tmp
+      mountPath: /tmp
+  myCnf: |
+    [mariadb]
+    bind-address=0.0.0.0
+    default_storage_engine=InnoDB
+    binlog_format=row
+    innodb_autoinc_lock_mode=2
+    max_allowed_packet=256M
+    innodb_large_prefix=true
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 300m
+      memory: 512Mi
+  env:
+    - name: TZ
+      value: SYSTEM
+  envFrom:
+    - configMapRef:
+        name: mariadb
+  podSecurityContext:
+    runAsUser: 0
+  securityContext:
+    allowPrivilegeEscalation: false
+  livenessProbe:
+    exec:
+      command:
+        - bash
+        - -c
+        - mariadb -u root -p"${MARIADB_ROOT_PASSWORD}" -e "SELECT 1;"
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 5
+  readinessProbe:
+    exec:
+      command:
+        - bash
+        - -c
+        - mariadb -u root -p"${MARIADB_ROOT_PASSWORD}" -e "SELECT 1;"
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 5
+  podDisruptionBudget:
+    maxUnavailable: 50%
+  updateStrategy:
+    type: RollingUpdate

@@ -1,0 +1,9 @@
+---
+- ansible.builtin.include_tasks: "./prepare-deployment.yaml"
+- ansible.builtin.include_tasks: "./deploy-keycloak.yaml"
+  when: enable_keycloak | bool
+- ansible.builtin.include_tasks: "./deploy-forms-flow.yaml"
+- ansible.builtin.include_tasks: "./deploy-data_analysis.yaml"
+  when: enable_data_analysis | bool
+- ansible.builtin.include_tasks: "./deploy-redash.yaml"
+  when: enable_redash | bool

@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: vaultwarden-credentials
+stringData:
+  HARBOR_ADMIN_PASSWORD: 'iQpwmHJqF!iVkQacMeLxTEBB5tyZ&qM55Ek8vjtpxY8XQMabC*P9eEr!xd^U7jy$'
+  secretKey: "oPEhGbxUdIEX94qz"

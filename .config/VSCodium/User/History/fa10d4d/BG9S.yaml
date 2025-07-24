@@ -1,0 +1,7 @@
+---
+- name: Add firewall rule for default SSH port
+  when: hcloud_token != ""
+  hetzner.hcloud.firewall:
+    api_token: "{{ hcloud_token }}"
+    name: "default_ssh_port"
+    state: absent

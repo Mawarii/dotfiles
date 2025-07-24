@@ -1,0 +1,20 @@
+projectID=1546
+
+include .env
+export
+
+create-private-key:
+	@ssh-keygen -t ed25519 -C shield@publicplan.de -N "" -f kustomization/argocd-deploy
+
+upload-private-key:
+	@curl --request POST --header "PRIVATE-TOKEN: ${GITLAB_PRIVATE_TOKEN}" \
+     "https://gitlab.publicplan.cloud/api/v4/projects/${projectID}/secure_files"  --form "name=argocd-deploy" --form "file=@./kustomization/argocd-deploy"
+
+download-private-key:
+	@curl --request GET --header "PRIVATE-TOKEN: ${GITLAB_PRIVATE_TOKEN}" https://gitlab.publicplan.cloud/api/v4/projects/${projectID}/secure_files/5/download --output ./kustomization/argocd-deploy
+
+delete-private-key:
+	@curl --request DELETE --header "PRIVATE-TOKEN: ${GITLAB_PRIVATE_TOKEN}" "https://gitlab.publicplan.cloud/api/v4/projects/${projectID}/secure_files/${TARGET}"
+
+list-private-keys:
+	@curl --header "PRIVATE-TOKEN: ${GITLAB_PRIVATE_TOKEN}" "https://gitlab.publicplan.cloud/api/v4/projects/${projectID}/secure_files"

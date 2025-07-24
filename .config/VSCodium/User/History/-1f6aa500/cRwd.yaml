@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  creationTimestamp: null
+  name: devcluster-gitlab-runner-new
+  namespace: argocd
+spec:
+  destination:
+    name: publicplan-dev
+    namespace: gitlab-runner
+  project: devcluster-infra
+  sources:
+  - chart: gitlab-runner
+    helm:
+      releaseName: runner-new
+      valueFiles:
+      - $values/applications/gitlab-runner/default-values.yaml
+      - $values/applications/gitlab-runner/values-runner-new.yaml
+    repoURL: https://charts.gitlab.io/
+    targetRevision: 0.71.0
+  - ref: values
+    repoURL: git@gitlab.publicplan.cloud:team-kops/infra-internal/pp-dev-cluster.git
+    targetRevision: HEAD
+  - path: applications/gitlab-runner/resources
+    repoURL: git@gitlab.publicplan.cloud:team-kops/infra-internal/pp-dev-cluster.git
+    targetRevision: HEAD
+  - chart: minio
+    helm:
+      releaseName: minio
+      valueFiles:
+      - $values/applications/gitlab-runner/values-minio-new.yaml
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 14.10.5
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

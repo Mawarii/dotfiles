@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  creationTimestamp: null
+  name: efacluster-kubernetes-replicator
+  namespace: argocd
+spec:
+  destination:
+    name: in-cluster
+    namespace: kubernetes-replicator
+  project: efacluster-infra
+  sources:
+  - chart: kubernetes-replicator
+    helm:
+      valueFiles:
+      - $values/applications/kubernetes-replicator/default-values.yaml
+      - $values/applications/kubernetes-replicator/values.yaml
+    repoURL: https://helm.mittwald.de
+    targetRevision: 2.11.0
+  - ref: values
+    repoURL: git@gitlab.publicplan.cloud:iac/efa/cluster-meta/develop/infrastructure/distributions.git
+    targetRevision: HEAD
+  - path: applications/kubernetes-replicator/resources
+    repoURL: git@gitlab.publicplan.cloud:iac/efa/cluster-meta/develop/infrastructure/distributions.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

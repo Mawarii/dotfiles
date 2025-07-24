@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: govforms2-workflow-core-version-ingress
+  labels:
+    k8s-env: "pre-stage"
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: "version.pre-stage.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/govforms2-workflow-core"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  name: version

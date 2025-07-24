@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: efacluster-ip-preview-space
+  namespace: argocd
+spec:
+  destination:
+    namespace: ip-preview-space
+    name: in-cluster
+  project: efacluster-intermediaryplatform
+  sources:
+    - path: kustomization/overlays/develop
+      repoURL: "git@gitlab.publicplan.cloud:iac/efa/distributions/intermediaryplatform/preview_frontend-dist.git"
+      targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

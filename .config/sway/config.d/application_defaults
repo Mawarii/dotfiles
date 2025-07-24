@@ -5,7 +5,7 @@ for_window [app_id="(?i)firefox"] focus
 assign [class="(?i)firefox"] 2
 for_window [class="(?i)firefox"] focus
 
-assign [app_id="(?i)codium-url-handler"] 3
+assign [app_id="(?i)codium"] 3
 
 assign [class="(?i)google-chrome"] 4
 
@@ -13,9 +13,9 @@ assign [app_id="(?i)thunderbird"] 5
 
 for_window [class="(?i)spotify"] move to workspace 10
 
-assign [class="(?i)rocket.chat"] 7
 assign [class="(?i)vivaldi-stable"] 7
 
+assign [instance="(?i)vesktop"] 8
 assign [class="(?i)vesktop"] 8
 for_window [class="(?i)vesktop"] move left
 

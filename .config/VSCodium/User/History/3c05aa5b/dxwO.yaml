@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: regmocluster-oots-preview-space
+  namespace: argocd-applications-regmo
+spec:
+  destination:
+    namespace: oots-preview-space
+    name: publicplan-regmo
+  project: regmocluster-projects-regmo
+  source:
+    path: env/dev
+    repoURL: 'git@gitlab.publicplan.cloud:regmo/infrastructure/oots-preview-space-dist.git'
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

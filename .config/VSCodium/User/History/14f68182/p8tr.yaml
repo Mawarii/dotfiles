@@ -1,0 +1,55 @@
+storage:
+  data:
+    name: "vaultwarden-data"
+    size: "15Gi"
+    class: ""
+    path: "/data"
+    keepPvc: true
+    accessMode: "ReadWriteOnce"
+
+  attachments:
+    name: "vaultwarden-files"
+    size: "100Gi"
+    class: ""
+    path: /files
+    keepPvc: true
+    accessMode: "ReadWriteOnce"
+
+database:
+  type: "postgresql"
+  host: "vaultwarden-postgresql"
+  port: "5432"
+  username: "vaultwarden"
+  password: "Nb3xdcjQPnRXvel6XQIT03wP4I5eRnZGJiYTimlLXOXfJXRjOQIyng8rCAcK5BCF"
+  dbName: "vaultwarden"
+
+domain: "https://vault.cloudical.net"
+
+signupsAllowed: false
+signupDomains: "cloudical.io"
+
+invitationOrgName: "Vaultwarden Cloudical GmbH"
+
+adminToken:
+  existingSecret: "admin-token"
+  existingSecretKey: "ADMIN_TOKEN"
+  value: "NotUsed"
+
+timeZone: "Europe/Berlin"
+
+smtp:
+  existingSecret: "vaultwarden-smtp"
+  host: "smtp.office365.com"
+  port: 587
+  from: "tools@cloudical.io"
+  fromName: "Vaultwarden Cloudical GmbH"
+  username:
+    existingSecretKey: "SMTP_USERNAME"
+  authMechanism: "Login"
+
+ingress:
+  enabled: true
+  additionalAnnotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hostname: "vault.cloudical.net"
+  tlsSecret: "tls-net-cloudical-vault"

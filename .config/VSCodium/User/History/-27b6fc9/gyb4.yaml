@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: pullsecret-newsletter
+type: kubernetes.io/dockerconfigjson
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJnaXRsYWIucHVibGljcGxhbi5jbG91ZDo1MDUwIjp7InVzZXJuYW1lIjoicmVjaHRucnctaW1hZ2UtcHVsbCIsInBhc3N3b3JkIjoiOG9icWRlVnMycFBnOTN0YmkyOF8iLCJhdXRoIjoiY21WamFIUnVjbmN0YVcxaFoyVXRjSFZzYkRvNGIySnhaR1ZXY3pKd1VHYzVNM1JpYVRJNFh3PT0ifX19

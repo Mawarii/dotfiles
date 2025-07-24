@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: diun-config
+data:
+  diun.yaml: |
+    db:
+      path: /data/diun.db
+
+    watch:
+      workers: 10
+      schedule: "0 */6 * * *"
+      jitter: 30s
+      firstCheckNotif: false
+      runOnStartup: true
+
+    defaults:
+      watchRepo: true
+      notifyOn:
+        - new
+      maxTags: "1"
+      includeTags:
+        - '^v*\d+\.\d+\.\d+$' # default -> (v)1.2.3
+        - '^\d+\.\d+\.\d+-([0-9]*[a-z]+[0-9]+[a-z]*|[a-z]*[0-9]+[a-z]+[0-9]*)+$' # it-tools & searxng -> 2024.2.3-ab12cf
+      excludeTags:
+        - 'latest'
+
+    notif:
+      gotify:
+        endpoint: "https://gotify.mawari.eu"
+        token: "A4-udt.FCafpMdS"
+        priority: "1"
+        timeout: 10s
+        templateTitle: "{{ .Entry.Image }}"
+        templateBody: |
+          Image {{ if (eq .Entry.Status "new") }}has been added{{ else }}has updates available{{ end }}.
+
+    providers:
+      kubernetes:
+        tlsInsecure: false

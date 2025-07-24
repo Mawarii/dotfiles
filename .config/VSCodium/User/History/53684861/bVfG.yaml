@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mariadb
+stringData:
+  mariadb-password: superGeheim
+  mariadb-root-password: superGeheim2
+  mariadb-replication-password: 639PIEvUfWD74sdjqEkZ9xLSeaneYR77prouvL9OckWj2oI5
+  database-dsn: mysql://oots:superGeheim@mariadb:3306/oots?serverVersion=mariadb-10.11.2
+  db-version: 10.11.2
+  db-host: mariadb
+  db-name: oots
+  db-user: oots
+  db-password: superGeheim

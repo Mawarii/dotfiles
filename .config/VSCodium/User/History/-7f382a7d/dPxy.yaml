@@ -1,0 +1,3 @@
+---
+- name: Check SSH port
+  ansible.builtin.include_tasks: "check-ssh-port.yaml"

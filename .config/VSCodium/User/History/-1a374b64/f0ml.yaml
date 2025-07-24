@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: govforms2-akeneo-configmap
+data:
+  APP_ENV: 'prod'
+  APP_INDEX_HOSTS: 'http://elastic:l0i6VdRM1BQl1j227Q99K3OB@akeneo-elastic-search-dev-es-dev.twf-govforms2-akeneo.svc:9200'

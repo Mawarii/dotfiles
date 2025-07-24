@@ -1,0 +1,22 @@
+---
+- name: Get local IP address
+  ansible.builtin.set_fact:
+    local_ip_address: "{{ ansible_all_ipv4_addresses | ansible.utils.ipaddr(local_node_network) }}"
+
+- name: Check if node is already initialized
+  ansible.builtin.stat:
+    path: /var/lib/kubelet/config.yaml
+  register: stat_result
+
+- name: Generate init.yaml file
+  when: not stat_result.stat.exists
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/init.yaml.j2"
+    dest: /tmp/init.yaml
+    mode: '0700'
+
+- name: Run init command
+  when: not stat_result.stat.exists
+  ansible.builtin.command:
+    cmd: sudo kubeadm init --config /tmp/init.yaml --upload-certs
+  changed_when: false

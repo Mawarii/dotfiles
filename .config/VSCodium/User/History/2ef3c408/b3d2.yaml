@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: efacluster-formularbaukasten
+  namespace: argocd
+spec:
+  clusterResourceWhitelist:
+    # - group: ''
+    #   kind: 'Namespace'
+    - group: "*"
+      kind: "*"
+  destinations:
+    - name: in-cluster
+      namespace: "formularbaukasten"
+      server: "*"
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  sourceNamespaces:
+    - formularbaukasten
+  sourceRepos:
+    - "*"

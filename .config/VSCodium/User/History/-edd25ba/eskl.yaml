@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  creationTimestamp: null
+  name: efacluster-postgres-operator
+  namespace: argocd
+spec:
+  destination:
+    name: in-cluster
+    namespace: postgres-operator
+  project: efacluster-infra
+  sources:
+  - path: applications/postgres-operator/resources
+    repoURL: git@gitlab.publicplan.cloud:iac/efa/cluster-meta/pre-stage/infrastructure/distributions.git
+    targetRevision: HEAD
+  - chart: postgres-operator
+    helm:
+      valueFiles:
+      - $values/applications/postgres-operator/default-values.yaml
+      - $values/applications/postgres-operator/values.yaml
+    repoURL: https://opensource.zalando.com/postgres-operator/charts/postgres-operator
+    targetRevision: 1.13.0
+  - ref: values
+    repoURL: git@gitlab.publicplan.cloud:iac/efa/cluster-meta/pre-stage/infrastructure/distributions.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

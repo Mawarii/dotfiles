@@ -1,0 +1,49 @@
+terraform {
+  required_providers {
+    hcloud = {
+      source  = "hetznercloud/hcloud"
+      version = "~> 1.49.1"
+    }
+    ssh = {
+      source  = "loafoe/ssh"
+      version = "~> 2"
+    }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~> 4"
+    }
+    helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2"
+    }
+    kubectl = {
+      source  = "alekc/kubectl"
+      version = "~> 2"
+    }
+  }
+  backend "local" {
+  }
+}
+
+provider "hcloud" {
+  token = var.hcloud_token
+}
+
+provider "ssh" {
+}
+
+provider "helm" {
+  kubernetes {
+    config_path = "${path.cwd}/local/kubeconfig"
+  }
+}
+
+provider "kubectl" {
+  load_config_file  = true
+  apply_retry_count = 3
+  config_path       = "${path.cwd}/local/kubeconfig"
+}
+
+provider "kubernetes" {
+  config_path    = "${path.cwd}/local/kubeconfig"
+}

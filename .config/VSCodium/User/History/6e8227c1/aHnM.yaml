@@ -1,0 +1,11 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: domibus-mysql
+  labels:
+    app: domibus
+spec:
+  template:
+    spec:
+      imagePullSecrets:
+        - name: gitlab-registry-sdg-domibus

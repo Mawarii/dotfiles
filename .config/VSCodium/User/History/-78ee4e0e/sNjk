@@ -1,0 +1,52 @@
+FROM php:8.3-cli AS dev
+
+ARG PHP_EXTENSIONS="curl ctype dom fileinfo gd intl iconv opcache xml zip"
+ARG DOCUMENT_ROOT="/var/www/html"
+ENV APP_ENV dev
+ENV APP_DEBUG 1
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+                       git unzip libcurl4-openssl-dev libicu-dev libpng-dev \
+                       libxml2-dev zlib1g-dev libzip-dev \
+ && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+ && pecl install xdebug \
+ && docker-php-ext-install ${PHP_EXTENSIONS} \
+ && docker-php-ext-enable ${PHP_EXTENSIONS} xdebug \
+ && apt-get clean \
+ && docker-php-source delete \
+ && rm -rf /usr/include/php /usr/lib/php/build /var/lib/apt/lists/*
+
+WORKDIR ${DOCUMENT_ROOT}
+RUN chown www-data:www-data .
+COPY --link . .
+
+RUN mv ./php.dev.ini /usr/local/etc/php/conf.d/user.ini \
+ && chown root:root /usr/local/etc/php/conf.d/user.ini
+
+
+FROM php:8.3-cli AS prod
+
+ARG DOCUMENT_ROOT="/var/www/html"
+
+ENV APP_ENV prod
+ENV APP_DEBUG 0
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends git unzip openssh-client \
+ && apt-get clean
+
+COPY --from=dev /var/www/html/ /var/www/html/
+COPY --from=dev /usr/local/lib/php /usr/local/lib/php/
+COPY --from=dev /usr/local/bin/composer /usr/local/bin/composer
+
+WORKDIR ${DOCUMENT_ROOT}
+
+RUN mv ./php.prod.ini /usr/local/etc/php/conf.d/user.ini \
+ && chown root:root /usr/local/etc/php/conf.d/user.ini \
+ && mkdir -p /var/www/.ssh \
+ && chown www-data:www-data -R /var/www/
+
+USER www-data
+RUN composer install --no-ansi --no-dev --no-interaction --no-progress --no-scripts --optimize-autoloader \
+ && composer dump-autoload --no-scripts --classmap-authoritative --no-dev --optimize

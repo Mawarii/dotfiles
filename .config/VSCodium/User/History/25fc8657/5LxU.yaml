@@ -1,0 +1,11 @@
+---
+# Authorzied SSH keys
+ssh_keys:
+  - add
+  - your
+  - ssh-keys
+
+# Wordpress Helm Chart
+wordpress:
+  version: ""
+  namespace: ""

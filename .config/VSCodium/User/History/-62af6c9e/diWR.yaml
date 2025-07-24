@@ -1,0 +1,13 @@
+---
+- name: Create new non-root user
+  ansible.builtin.user:
+    name: "{{ ssh_user }}"
+    shell: /bin/bash
+    groups: sudo,wheel
+    create_home: true
+    append: true
+
+- name: Assign sudo privileges
+  ansible.builtin.group:
+    name: wheel
+    state: present

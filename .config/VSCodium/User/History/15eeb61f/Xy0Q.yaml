@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: domibus
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  labels:
+    k8s-env: "idp"
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: "domibus.idp.wspdev.de"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: domibus
+                port:
+                  name: http
+  tls:
+    - hosts:
+        - "domibus.idp.wspdev.de"
+      secretName: domibus-tls

@@ -1,0 +1,20 @@
+server:
+  customReadinessProbe:
+    httpGet:
+      path: "/v1/sys/health?standbyok=true&sealedcode=204&uninitcode=204"
+      port: http
+  resourcesPreset: "none"
+  existingConfigMap: ""
+  ingress:
+    enabled: true
+    hostname: vault.efa-stage.owl-it.de
+    ingressClassName: "nginx"
+    annotations:
+      nginx.ingress.kubernetes.io/whitelist-source-range: 213.61.255.112/29
+csiProvider:
+  provider:
+    resourcesPreset: "none"
+  agent:
+    resourcesPreset: "none"
+volumePermissions:
+  resourcesPreset: "none"

@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: empfangsclient-plus-dummy
+  name: empfangsclient-plus-dummy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: empfangsclient-plus-dummy
+  template:
+    metadata:
+      labels:
+        app: empfangsclient-plus-dummy
+    spec:
+      containers:
+        - name: dummy
+          image: ghcr.io/shiftdigital-de/shiftdesk-dummy:canary
+          env:
+            - name: SERVER_URL
+              value: "https://api.canary.empfangsclient-plus.de"
+            - name: CLIENT_URL
+              value: "https://canary.empfangsclient-plus.de"
+            - name: WORKER_URL
+              value: "https://worker.canary.empfangsclient-plus.de"
+            - name: DUMMY_URL
+              value: "https://dummy.canary.empfangsclient-plus.de"
+            - name: RELEASE
+              value: "canary"
+          volumeMounts:
+            - name: secrets
+              mountPath: /run/secrets
+              readOnly: true
+      volumes:
+        - name: secrets
+          secret:
+            secretName: dummy-secrets

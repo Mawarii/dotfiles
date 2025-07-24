@@ -1,0 +1,38 @@
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   finalizers:
+#     - resources-finalizer.argocd.argoproj.io
+#   labels:
+#     app.kubernetes.io/instance: empfangsclient-keycloak
+#   name: empfangsclient-keycloak
+#   namespace: argo-cd
+# spec:
+#   destination:
+#     namespace: empfangsclient-keycloak
+#     server: 'https://kubernetes.default.svc'
+#   project: default
+#   sources:
+#     - chart: keycloak
+#       helm:
+#         valueFiles:
+#           - $values/applications/empfangsclient-keycloak/overlays/staging/values.yaml
+#       repoURL: http://chartmuseum.chartmuseum.svc:8080
+#       targetRevision: "24.0.1"
+#     - ref: values
+#       repoURL: 'https://gitlab.krz.de/customers/publicplan/wsp/staging/app-configs.git'
+#       targetRevision: main
+#     - path: applications/empfangsclient-keycloak/overlays/staging/
+#       repoURL: 'https://gitlab.krz.de/customers/publicplan/wsp/staging/app-configs.git'
+#       targetRevision: main
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
+#   ignoreDifferences:
+#     -   group: admissionregistration.k8s.io
+#         kind: MutatingWebhookConfiguration
+#         jqPathExpressions:
+#           - '.webhooks[]?.clientConfig.caBundle'

@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: monitoring
+spec:
+  timeZone: "Europe/Berlin"
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: monitoring
+          labels:
+            app: monitoring
+          annoations:
+            ciu.enable: "true"
+        spec:
+          securityContext:
+            runAsUser: 10001
+            runAsGroup: 10001
+          containers:
+            - name: monitoring
+              image: alpine/curl:8.8.0
+              command:
+                - sh
+                - -c
+                - ping -c1 files.mawari.eu | grep -oE "time=[0-9]+\.[0-9]+" | grep -oE "[0-9]+\.[0-9]+" && \
+                  curl "https://uptime.mawari.eu/api/push/oodaPFMhOM?status=up&msg=OK"
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                runAsNonRoot: true
+                capabilities:
+                  drop: ["ALL"]
+          restartPolicy: Never
+      backoffLimit: 3
+ping -c1 mawari.eu | grep -oE "time=[0-9]+\.[0-9]+" | grep -oE "[0-9]+\.[0-9]+"

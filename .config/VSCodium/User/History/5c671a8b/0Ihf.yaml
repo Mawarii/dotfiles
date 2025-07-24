@@ -1,0 +1,43 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: matomo-ingress
+  labels:
+    k8s-env: "production"
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: "matomo-old.production.wsp.owl-it.de"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: matomo-service
+                port:
+                  name: http
+          - pathType: Prefix
+            path: "/__version"
+            backend:
+              service:
+                name: matomo-service
+                port:
+                  name: version
+    - host: "matomo-old.service.wirtschaft.nrw"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: matomo-service
+                port:
+                  name: http
+          - pathType: Prefix
+            path: "/__version"
+            backend:
+              service:
+                name: matomo-service
+                port:
+                  name: version

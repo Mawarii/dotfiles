@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  DEBUG: formio.*
+  MONGO_DATABASE: formio
+  MONGO_USERNAME: formio
+  NODE_OPTIONS: --max-old-space-size=5120
+  PORT: "3000"
+  PORTAL_ENABLED: "true"
+  PRIMARY: "1"
+kind: ConfigMap
+metadata:
+  name: formio-config

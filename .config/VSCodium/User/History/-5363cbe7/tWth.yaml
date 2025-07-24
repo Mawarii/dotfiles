@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    app.kubernetes.io/instance: domibus-new
+    gitlab.publicplan.cloud/primary-application-project-release-branch: pre-stage
+  name: domibus-new
+  namespace: argo-cd
+spec:
+  destination:
+    namespace: domibus-new
+    server: 'https://kubernetes.default.svc'
+  project: default
+  source:
+    path: applications/domibus-new/overlays/pre-stage/
+    repoURL: 'git@gitlab.publicplan.cloud:themenwelt-wirtschaft/infrastruktur/common/app-configs.git'
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

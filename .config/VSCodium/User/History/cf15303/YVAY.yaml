@@ -1,0 +1,15 @@
+formio:
+  root_email: admin@example.com
+  database:
+    username: admin
+    database: formio
+
+bpm:
+  database:
+    username: admin
+    database: formsflow-bpm
+
+webapi:
+  database:
+    username: postgres
+    database: webapi

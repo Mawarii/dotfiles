@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  creationTimestamp: null
+  name: efacluster-loki-promtail
+  namespace: argocd
+spec:
+  destination:
+    name: in-cluster
+    namespace: loki-promtail
+  project: efacluster-infra
+  sources:
+  - chart: promtail
+    helm:
+      valueFiles:
+      - $values/applications/promtail/default-values.yaml
+      - $values/applications/promtail/values.yaml
+    repoURL: https://grafana.github.io/helm-charts
+    targetRevision: 6.16.6
+  - ref: values
+    repoURL: git@gitlab.publicplan.cloud:iac/efa/cluster-meta/pre-stage/infrastructure/distributions.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated: {}
+    syncOptions:
+    - CreateNamespace=true

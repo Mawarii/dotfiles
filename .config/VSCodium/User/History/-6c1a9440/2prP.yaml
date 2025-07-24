@@ -1,0 +1,32 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      containers:
+        - name: worker
+          image: ghcr.io/shiftdigital-de/shiftdesk-worker:canary
+          env:
+            - name: SERVER_URL
+              value: "https://api.canary.empfangsclient-plus.de"
+            - name: CLIENT_URL
+              value: "https://canary.empfangsclient-plus.de"
+            - name: WORKER_URL
+              value: "https://worker.canary.empfangsclient-plus.de"
+            - name: DUMMY_URL
+              value: "https://dummy.canary.empfangsclient-plus.de"
+            - name: RELEASE
+              value: "canary"
+          envFrom:
+            - secretRef:
+                name: empfangsclient-plus-secrets

@@ -1,0 +1,95 @@
+auth:
+  rootUser: admin
+  rootPassword: wT3oYoOvK6kE6ASTVQc0JGZ6U1NaTCKJHzUFPNjRMgaBToGh
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
+mode: distributed
+
+provisioning:
+  enabled: true
+  resources:
+    requests:
+      cpu: 200m
+      memory: 256Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+  policies:
+    - name: loki-readwrite
+      statements:
+      - resources:
+        - "arn:aws:s3:::loki-admin"
+        - "arn:aws:s3:::loki-ruler"
+        - "arn:aws:s3:::loki-chunks"
+        actions:
+        - "s3:GetBucketLocation"
+        - "s3:ListBucket"
+        - "s3:ListBucketMultipartUploads"
+        effect: "Allow"
+      - resources:
+        - "arn:aws:s3:::loki-admin/*"
+        - "arn:aws:s3:::loki-ruler/*"
+        - "arn:aws:s3:::loki-chunks/*"
+        effect: "Allow"
+        actions:
+        - "s3:AbortMultipartUpload"
+        - "s3:DeleteObject"
+        - "s3:GetObject"
+        - "s3:ListMultipartUploadParts"
+        - "s3:PutObject"
+  users:
+  - username: loki
+    password: hier3ohFahph8ait0ufai1iiHahng2hohsooqu7xeiyeiphe
+    disabled: false
+    policies:
+    - loki-readwrite
+    setPolicies: true
+  buckets:
+  - name: loki-admin
+    region: eu-west-1
+    versioning: Versioned
+    withLock: true
+    lifecycle:
+    - id: TestPrefix7dRetention
+      prefix: test-prefix
+      disabled: false
+      expiry:
+        days: 7
+        nonconcurrentDays: 3
+  - name: loki-ruler
+    region: eu-west-1
+    versioning: Versioned
+    withLock: true
+    lifecycle:
+    - id: TestPrefix7dRetention
+      prefix: test-prefix
+      disabled: false
+      expiry:
+        days: 7
+        nonconcurrentDays: 3
+  - name: loki-chunks
+    region: eu-west-1
+    versioning: Versioned
+    withLock: true
+    lifecycle:
+    - id: TestPrefix7dRetention
+      prefix: test-prefix
+      disabled: false
+      expiry:
+        days: 7
+        nonconcurrentDays: 3
+    quota:
+      type: clear
+    tags:
+      loki: admin
+  config:
+  - name: region
+    options:
+      name: eu-west-1

@@ -1,0 +1,15 @@
+---
+- name: Ensure keycloak directory exists
+  ansible.builtin.file:
+    path: "{{ keycloak_install_path }}"
+    state: directory
+
+- name: Provide deployment .env file
+  ansible.builtin.template:
+    src: "keycloak.env.j2"
+    dest: "{{ keycloak_install_path }}/.env"
+
+- name: Provide deployment compose file
+  ansible.builtin.template:
+    src: "keycloak-compose.yaml.j2"
+    dest: "{{ keycloak_install_path }}/docker-compose.yml"

@@ -1,0 +1,20 @@
+source:
+  repo:
+    kind: HELM
+    url: http://localhost:8080
+target:
+  # Container images registry authn
+  containers:
+    url: https://charts.bitnami.com/bitnami
+    auth:
+      username: "USERNAME"
+      password: "PASSWORD"
+  repo:
+    kind: LOCAL
+    path: ./charts
+    # Helm repository authentication
+    # auth:
+    #   username: "USERNAME"
+    #   password: "PASSWORD"
+charts:
+  - nginx

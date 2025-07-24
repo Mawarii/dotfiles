@@ -1,0 +1,67 @@
+---
+site_name: Tech Wiki
+repo_url: https://gitlab.publicplan.cloud/core/tech-wiki
+repo_name: 'core/tech-wiki'
+site_url: https://publicplan.wiki/
+site_author: Team KOPS and Cloudical Engineers
+site_description: "Publicplan Tech Wiki"
+use_directory_urls: true
+theme:
+  name: material
+  font: false
+  logo: logo.png
+  palette:
+    - scheme: 'default'
+      primary: 'grey'
+      accent: 'white'
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - scheme: 'slate'
+      primary: 'grey'
+      accent: 'white'
+      toggle:
+        icon: material/toggle-switch
+      name: Switch to light mode
+  admonition:
+    warning: octicons/alert-16
+  features:
+    - content.tabs.link
+    - instant
+    - optimize
+    - navigation.indexes
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - navigation.prune
+    - search.highlight
+    - search.share
+    - search.suggest
+    - tabs
+
+extra_css:
+  - styles/extra.css
+plugins:
+  - tags
+  - search
+  - git-revision-date-localized
+  - mkdocs-nav-weight
+  - minify:
+      minify_html: true
+      minify_js: true
+      htmlmin_opts:
+        remove_comments: true
+  - redirects:
+      redirect_maps: {}
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets

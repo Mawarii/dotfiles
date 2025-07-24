@@ -1,0 +1,20 @@
+wordpressUsername: demo
+wordpressEmail: demo@example.com
+wordpressFirstName: DemoFirstName
+wordpressLastName: DemoLastName
+wordpressBlogName: Demo Blog!
+wordpressTablePrefix: wp_
+wordpressScheme: https
+
+resourcesPreset: "large"
+
+service:
+  type: ClusterIP
+
+ingress:
+  enabled: true
+  ingressClassName: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  hostname: wordpress.mawari.eu
+  tls: true

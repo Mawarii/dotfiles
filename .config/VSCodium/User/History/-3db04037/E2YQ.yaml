@@ -1,0 +1,44 @@
+expose:
+  tls:
+    certSource: secret
+    secret:
+      secretName: "harbor-dev-tls"
+  ingress:
+    hosts:
+      core: harbor.dev.publicplan.cloud
+    className: "nginx"
+
+externalURL: https://harbor.dev.publicplan.cloud
+
+persistence:
+  persistentVolumeClaim:
+    registry:
+      existingClaim: "harbor-registry-dellnas"
+      size: 500Gi
+    jobservice:
+      jobLog:
+        size: 15Gi
+    redis:
+      storageClass: "nfs-client"
+    trivy:
+      storageClass: "nfs-client"
+
+existingSecretAdminPassword: "harbor-credentials"
+existingSecretAdminPasswordKey: HARBOR_ADMIN_PASSWORD
+
+updateStrategy:
+  type: Recreate
+
+existingSecretSecretKey: "harbor-credentials"
+
+registry:
+  credentials:
+    password: "xAytJUAg81ng5sE0lJA6J4WJBnzQfFOngElIItI5EvFsbebcVA4hUMDXe4awl0SC"
+
+database:
+  type: external
+  external:
+    host: "harbor-postgresql.harbor.svc"
+    username: "harbor"
+    existingSecret: "harbor.harbor-postgresql.credentials.postgresql.acid.zalan.do"
+    sslmode: "require"

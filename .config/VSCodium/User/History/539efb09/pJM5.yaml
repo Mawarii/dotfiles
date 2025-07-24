@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: excalidraw
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      kubernetes.io/app: excalidraw
+  template:
+    metadata:
+      labels:
+        kubernetes.io/app: excalidraw
+    spec:
+      containers:
+        - name: excalidraw
+          image: peek1e/excalidraw-arm64:v0.17.3
+          ports:
+            - containerPort: 8080

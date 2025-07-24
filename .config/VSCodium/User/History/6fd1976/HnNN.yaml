@@ -1,0 +1,12 @@
+auth:
+  database: "akeneo_pim"
+  username: "akeneo_pim"
+  existingSecret: "mysql-auth"
+
+resources:
+  requests:
+    cpu: 2
+    memory: 512Mi
+  limits:
+    cpu: 3
+    memory: 1024Mi

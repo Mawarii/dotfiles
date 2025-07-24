@@ -1,0 +1,3 @@
+default_ssh_user: root
+default_ssh_port: 22
+ssh_port: 22222

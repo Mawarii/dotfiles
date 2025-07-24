@@ -1,0 +1,11 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: vaultwarden-smtp
+data:
+  FROM: dmF1bHRAY2xvdWRpY2FsLmlv
+  SMTP_HOST: c210cC5vZmZpY2UzNjUuY29t
+  SMTP_PASSWORD: RGF6MDM1NjQ=
+  SMTP_PORT: NTg3
+  SMTP_USERNAME: dG9vbHNAY2xvdWRpY2FsLmlv

@@ -1,0 +1,19 @@
+---
+# Source: chartmuseum/templates/secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: chartmuseum
+  labels:
+    helm.sh/chart: chartmuseum-3.10.2
+    app.kubernetes.io/name: chartmuseum
+    app.kubernetes.io/instance: chartmuseum
+    app.kubernetes.io/version: "0.16.1"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  AWS_ACCESS_KEY_ID: Y2hhcnRtdXNldW0=
+  #AWS_SECRET_ACCESS_KEY: UjZPTlkyWU5OR1pIQlRLQ3Z2R2FMNFUyM0VzN1dMVFp1MVp4aE1rOQ==
+  AWS_SECRET_ACCESS_KEY: SWREVklyQTRsWW1pd3RsN1FHdXp5cjNqSEVQSUNJVkZyNVpEMnB4UQ==
+  BASIC_AUTH_PASS: eklqYW5INmdQWFZvb2FWMnl2V2pORVlSa2JsamxZNUw=
+  BASIC_AUTH_USER: a3J6LWNoYXJ0bXVzZXVt

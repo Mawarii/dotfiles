@@ -1,0 +1,6 @@
+---
+- name: Run kubeadm init command
+  when: not kubelet_config.stat.exists
+  ansible.builtin.command:
+    cmd: sudo kubeadm init --config /tmp/init.yaml --upload-certs
+  changed_when: true

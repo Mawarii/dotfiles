@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: prometheus-basic-auth
+stringData:
+  auth: 'promadmin:$apr1$/Bqa1MW8$Z5.IbkX9VnaJZjOsNJS4D1' # promadmin:w5QMltDbX08cYmp1XOF5vIJX6hjYQTvt

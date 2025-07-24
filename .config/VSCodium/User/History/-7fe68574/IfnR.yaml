@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: devcluster-twf-govforms2-akeneo
+  namespace: argocd
+spec:
+  destination:
+    namespace: twf-govforms2-akeneo
+    name: publicplan-dev
+  project: devcluster-infra-twf-govforms2-project
+  sources:
+    # - targetRevision: HEAD
+    #   repoURL: git@gitlab.publicplan.cloud:themenwelt-formulare/govforms2/govforms2-akeneo-dist.git
+    #   path: overlays/dev
+    - chart: clops-helm
+      helm:
+        valueFiles:
+        - $values/overlays/dev/elastic-search-values.yaml
+      repoURL: https://charts.bitnami.com/bitnami
+      targetRevision: 1.1.0
+    - ref: values
+      repoURL: git@gitlab.publicplan.cloud:team-kops/infra-internal/pp-dev-cluster.git
+      targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

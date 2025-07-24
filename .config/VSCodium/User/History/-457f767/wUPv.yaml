@@ -1,0 +1,166 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  labels:
+    app.kubernetes.io/component: prometheus
+    app.kubernetes.io/instance: prometheus
+    app.kubernetes.io/name: kube-prometheus
+  name: prometheus
+spec:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - podAffinityTerm:
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/component: prometheus
+              app.kubernetes.io/instance: prometheus
+              app.kubernetes.io/name: kube-prometheus
+          topologyKey: kubernetes.io/hostname
+        weight: 1
+  alerting:
+    alertmanagers: []
+  initContainers:
+  - name: init-config-reloader
+    securityContext:
+      seLinuxOptions: {}
+      runAsUser: 1001
+      runAsGroup: 1001
+      runAsNonRoot: true
+      privileged: false
+      readOnlyRootFilesystem: true
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+      seccompProfile:
+        type: "RuntimeDefault"
+  containers:
+  - livenessProbe:
+      failureThreshold: 10
+      httpGet:
+        path: /-/healthy
+        port: web
+        scheme: HTTP
+      initialDelaySeconds: 0
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 3
+    name: prometheus
+    readinessProbe:
+      failureThreshold: 10
+      httpGet:
+        path: /-/ready
+        port: web
+        scheme: HTTP
+      initialDelaySeconds: 0
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 3
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      privileged: false
+      readOnlyRootFilesystem: true
+      runAsGroup: 1001
+      runAsNonRoot: true
+      runAsUser: 1001
+      seLinuxOptions: {}
+      seccompProfile:
+        type: RuntimeDefault
+    startupProbe:
+      failureThreshold: 60
+      httpGet:
+        path: /-/ready
+        port: web
+        scheme: HTTP
+      initialDelaySeconds: 0
+      periodSeconds: 15
+      successThreshold: 1
+      timeoutSeconds: 3
+  - livenessProbe:
+      failureThreshold: 6
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      successThreshold: 1
+      tcpSocket:
+        port: reloader-web
+      timeoutSeconds: 5
+    name: config-reloader
+    readinessProbe:
+      failureThreshold: 6
+      initialDelaySeconds: 15
+      periodSeconds: 20
+      successThreshold: 1
+      tcpSocket:
+        port: reloader-web
+      timeoutSeconds: 5
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      privileged: false
+      readOnlyRootFilesystem: true
+      runAsGroup: 1001
+      runAsNonRoot: true
+      runAsUser: 1001
+      seLinuxOptions: {}
+      seccompProfile:
+        type: RuntimeDefault
+  enableAdminAPI: false
+  enableRemoteWriteReceiver: false
+  evaluationInterval: 1m
+  externalUrl: https://prometheus.develop.wspdev.de/
+  image: docker.io/bitnami/prometheus:2.52.1-debian-12-r1
+  imagePullPolicy: IfNotPresent
+  listenLocal: false
+  logFormat: logfmt
+  logLevel: info
+  paused: false
+  podMetadata:
+    labels:
+      app.kubernetes.io/component: prometheus
+      app.kubernetes.io/name: prometheus
+      prometheus: prometheus
+  podMonitorNamespaceSelector: {}
+  podMonitorSelector: {}
+  portName: web
+  probeNamespaceSelector: {}
+  probeSelector: {}
+  replicas: 1
+  resources:
+    limits:
+      cpu: 750m
+      ephemeral-storage: 1024Mi
+      memory: 768Mi
+    requests:
+      cpu: 500m
+      ephemeral-storage: 50Mi
+      memory: 512Mi
+  retention: 10d
+  routePrefix: /
+  ruleNamespaceSelector: {}
+  ruleSelector: {}
+  scrapeConfigNamespaceSelector: {}
+  scrapeConfigSelector: {}
+  scrapeInterval: 1m
+  secrets:
+  - prometheus-basic-auth
+  securityContext:
+    fsGroup: 1001
+    fsGroupChangePolicy: Always
+    supplementalGroups: []
+    sysctls: []
+  serviceAccountName: prometheus-kube-prometheus-prometheus
+  serviceMonitorNamespaceSelector: {}
+  serviceMonitorSelector: {}
+  shards: 1
+  volumeMounts:
+  - mountPath: /tmp
+    name: empty-dir
+    subPath: tmp-dir
+  volumes:
+  - emptyDir: {}
+    name: empty-dir

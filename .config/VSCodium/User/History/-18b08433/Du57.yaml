@@ -1,0 +1,23 @@
+---
+- name: Configure firewall
+  hosts: localhost
+  become: false
+  gather_facts: false
+  roles:
+    - configure-firewall
+
+- name: Machine hardening
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - machine-hardening
+
+- name: Close default SSH port
+  hosts: localhost
+  become: false
+  gather_facts: false
+  tasks:
+    - name: Close default SSH port
+      ansible.builtin.import_tasks:
+        file: roles/configure-firewall/tasks/close-default-ssh-port.yaml

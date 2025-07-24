@@ -1,0 +1,103 @@
+---
+# Source: matomo/templates/cronjob.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: matomo-archive
+spec:
+  schedule: "*/5 * * * *"
+  suspend: false
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+        spec:
+          restartPolicy: OnFailure
+          securityContext:
+            fsGroup: 1001
+            fsGroupChangePolicy: Always
+          initContainers:
+            - name: matomo-datacopy
+              image: docker.io/bitnami/matomo:5.0.3-debian-12-r0
+              command: ["sh", "-c", "cp -r /opt/bitnami/* /copydata"]
+              imagePullPolicy: IfNotPresent
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                privileged: false
+                readOnlyRootFilesystem: true
+                runAsNonRoot: true
+                runAsUser: 1001
+                runAsGroup: 1001
+                seccompProfile:
+                  type: RuntimeDefault
+              volumeMounts:
+                - mountPath: /copydata
+                  name: bitnami-data
+          containers:
+            - name: matomo-archive
+              image: docker.io/bitnami/matomo:5.0.3-debian-12-r0
+              imagePullPolicy: "IfNotPresent"
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
+                privileged: false
+                readOnlyRootFilesystem: true
+                runAsNonRoot: true
+                runAsUser: 1001
+                runAsGroup: 1001
+                seccompProfile:
+                  type: RuntimeDefault
+              command:
+                - /bin/bash
+                - -c
+              args:
+                - . /opt/bitnami/scripts/matomo-env.sh &&
+                  . /opt/bitnami/scripts/libbitnami.sh &&
+                  . /opt/bitnami/scripts/liblog.sh &&
+                  /opt/bitnami/scripts/apache/setup.sh &&
+                  /opt/bitnami/scripts/php/setup.sh &&
+                  /opt/bitnami/scripts/mysql-client/setup.sh &&
+                  /opt/bitnami/scripts/matomo/setup.sh &&
+                  /post-init.sh &&
+                  /opt/bitnami/php/bin/php /opt/bitnami/matomo/console core:archive
+              env:
+                - name: BITNAMI_DEBUG
+                  value: "true"
+                - name: MATOMO_DATABASE_HOST
+                  value: "mariadb.matomo-new.svc.cluster.local"
+                - name: MATOMO_DATABASE_PORT_NUMBER
+                  value: "3306"
+                - name: MATOMO_DATABASE_NAME
+                  value: "mariadb"
+                - name: MATOMO_DATABASE_USER
+                  value: "mariadb"
+                - name: MATOMO_DATABASE_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: mariadb-wsp-secret
+                      key: "mariadb-password"
+              volumeMounts:
+                - name: matomo-data
+                  mountPath: /bitnami/matomo
+                - name: bitnami-data
+                  mountPath: /opt/bitnami
+              # Fallback to the main resources request/limit to preserve backwards compatibility. This behaviour might be DEPRECATED
+              # in upcoming versions of the chart
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 1Gi
+                requests:
+                  cpu: 100m
+                  memory: 500Mi
+          volumes:
+            - name: matomo-data
+              emptyDir: {}
+            - name: bitnami-data
+              emptyDir: {}

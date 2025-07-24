@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Current S3 Secret: PSONO -> KOPS -> Infrastruktur -> MoniCore -> Hetzner Cloud S3 Secret (Terraform State)
+export AWS_ACCESS_KEY_ID=""
+export AWS_SECRET_ACCESS_KEY=""

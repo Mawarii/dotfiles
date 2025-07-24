@@ -1,0 +1,6 @@
+---
+- name: Create new non-root user
+  ansible.builtin.user:
+    name: "{{ ssh_user }}"
+    shell: /bin/bash
+    groups: sudo, wheel

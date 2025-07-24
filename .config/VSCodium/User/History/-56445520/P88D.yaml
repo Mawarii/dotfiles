@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chartmuseum
+  labels:
+    k8s-env: staging
+spec:
+  template:
+    spec:
+      containers:
+      - name: chartmuseum
+        env:
+        - name: "CHART_URL"
+          value: "http://chartmuseum.chartmuseum.svc:8080"
+        - name: "STORAGE_AMAZON_ENDPOINT"
+          value: "https://minio-wsp-snsd-api.staging.wsp.owl-it.de"

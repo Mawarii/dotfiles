@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otb-app
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: otb-app
+  template:
+    metadata:
+      labels:
+        app: otb-app
+    spec:
+      containers:
+        - name: otb-app
+          image: gitlab.publicplan.cloud:5050/themenwelt-termine/online-terminbuchung/default:v0.0.98
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9000
+              name: fastcgi
+              protocol: TCP
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 500m
+            limits:
+              memory: 512Mi
+              cpu: 500m
+          env:
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb-secret
+                  key: mariadb-password
+            - name: DATABASE_URL
+              value: mysql://$(DATABASE_USER):$(DATABASE_PASSWORD)@$(DATABASE_HOST)/$(DATABASE_NAME)
+            - name: MAILER_DSN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mailer-password
+                  key: password
+            - name: MAILER_DSN
+              value: smtp://noreply@publicplan.de:$(MAILER_DSN_PASSWORD)@smtp.office365.com:587
+          envFrom:
+            - configMapRef:
+                name: otb-app-config
+          volumeMounts:
+            - mountPath: /usr/src/app/config/custom/cache.yaml
+              subPath: cache.yaml
+              name: cache-config
+            - mountPath: /usr/src/app/config/packages/monolog.yaml
+              subPath: monolog.yaml
+              name: monolog-config
+            - mountPath: /usr/src/app/config/packages/flysystem.yaml
+              subPath: flysystem.yaml
+              name: flysystem-config
+            - mountPath: /usr/src/app/var/uploads
+              name: uploads-volume
+            - mountPath: /usr/src/app/var/log
+              name: log-volume
+            - mountPath: /volume
+              name: otb-nginx-shared
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  ["/bin/bash", "-c", "cp -r /usr/src/app/public/. /volume"]
+          livenessProbe:
+            tcpSocket:
+              port: 9000
+            initialDelaySeconds: 90
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: 9000
+            initialDelaySeconds: 90
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+        - name: nginx
+          image: nginx:1.15.3-alpine
+          ports:
+            - containerPort: 80
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /etc/nginx/conf.d/default.conf
+              subPath: nginx.conf
+              name: nginx-config
+            - mountPath: /usr/src/app/public
+              name: otb-nginx-shared
+      volumes:
+        - name: cache-config
+          configMap:
+            name: cache-config
+        - name: monolog-config
+          configMap:
+            name: monolog-config
+        - name: flysystem-config
+          configMap:
+            name: flysystem-config
+        - name: uploads-volume
+          persistentVolumeClaim:
+            claimName: uploads-pvc
+        - name: log-volume
+          emptyDir:
+            sizeLimit: 500Mi
+        - name: nginx-config
+          configMap:
+            name: nginx-config
+        - name: otb-nginx-shared
+          emptyDir: {}
+      imagePullSecrets:
+        - name: otb-registry-access-token

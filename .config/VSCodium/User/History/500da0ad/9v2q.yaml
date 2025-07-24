@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: vaultwarden-smtp
+data:
+  FROM: dmF1bHRAY2xvdWRpY2FsLmlv
+  SMTP_HOST: c210cC5vZmZpY2UzNjUuY29t
+  SMTP_PASSWORD: RGF6MDM1NjQ=
+  SMTP_PORT: NTg3
+  SMTP_USERNAME: dG9vbHNAY2xvdWRpY2FsLmlv
+---
+kind: Secret
+apiVersion: v1
+metadata:
+  name: admin-token
+stringData:
+  # Encrypted with argon2. Plain Password: Vaultwarden -> DevOps Allgemein -> FinK8s -> Vaultwarden Admin
+  ADMIN_TOKEN: '$argon2id$v=19$m=65540,t=3,p=4$dnpLN0FnYWJqOGtWamhVVFoycDc4S0Y2ZDNzUFNhWXd0alR5b3FUcTRxND0$OgzBXAvMzDTE8ZRdLT7oUNQL4M9sgGarja6dSIFQC08'

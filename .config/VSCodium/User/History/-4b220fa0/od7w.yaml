@@ -1,0 +1,3 @@
+---
+- name: Install ArgoCD
+  ansible.builtin.include_tasks: "install-argocd.yaml"

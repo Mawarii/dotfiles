@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sdg-frontend
+  namespace: argocd
+spec:
+  destination:
+    namespace: sdg-frontend
+    server: 'https://kubernetes.default.svc'
+  project: efacluster-sdg
+  source:
+    path: kustomization/env/dev
+    repoURL: 'git@gitlab.publicplan.cloud:iac/efa/distributions/sdg/sdg-frontend-dist.git'
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

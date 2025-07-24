@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: domibus-mysql
+  labels:
+    app: domibus
+spec:
+  revisionHistoryLimit: 1
+  replicas: 1
+  selector:
+    matchLabels:
+      app: domibus
+      tier: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: domibus
+        tier: mysql
+    spec:
+      containers:
+        - image: code.europa.eu:4567/edelivery/docker/domibus-mysql8:5.1
+          name: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: "secrets"
+                  key: mysql-root-password
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: "secrets"
+                  key: mysql-database
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: "secrets"
+                  key: mysql-user
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: "secrets"
+                  key: mysql-password
+          livenessProbe:
+            exec:
+              command: [ "mysqladmin", "ping" ]
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            exec:
+              # Check we can execute queries over TCP (skip-networking is off).
+              command:
+                - bash
+                - "-c"
+                - |
+                  mysql -u$MYSQL_USER -p$MYSQL_PASSWORD -e "SELECT 1"
+            initialDelaySeconds: 15
+            periodSeconds: 2
+            timeoutSeconds: 1
+          ports:
+            - containerPort: 3306
+              name: mysql
+          volumeMounts:
+            - name: shared-db-file-system
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: shared-db-file-system
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim

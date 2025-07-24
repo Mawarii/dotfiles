@@ -1,0 +1,17 @@
+[all]
+test-machine ansible_host=188.34.187.228 ansible_user=root ansible_port=22
+
+[all:vars]
+keycloak_url=https://keycloak.formsflow.cloudical.in
+formio_url=https://forms.formsflow.cloudical.in
+web_url=https://web.formsflow.cloudical.in
+redash_url=https://redash.formsflow.cloudical.in
+formsflow_api_url=https://api.formsflow.cloudical.in
+camunda_url=https://bpm.formsflow.cloudical.in/camunda
+data_analysis_api_url=https://data-analysis.formsflow.cloudical.in/analysis
+documents_api_url=https://documents-api.formsflow.cloudical.in
+
+formsflow_install_path=$HOME/formsflow
+caddy_install_path=$HOME/caddy
+
+; bpm_keycloak_clientsecret=

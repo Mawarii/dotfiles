@@ -1,0 +1,4 @@
+auth:
+  existingSecret: ""
+  rootUserSecretKey: ""
+  rootPasswordSecretKey: ""

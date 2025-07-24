@@ -1,0 +1,6 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: argo-test
+  labels:
+    k8s-env: develop

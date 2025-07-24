@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: identity-gateway-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/proxy-body-size: 64m
+    nginx.ingress.kubernetes.io/proxy-body-size: 64m
+    nginx.org/client-max-body-size: 64m
+  labels:
+    k8s-env: "develop"
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: "identity-gateway.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: identity-gateway-service
+                port:
+                  name: http
+  tls:
+    - hosts:
+        - "identity-gateway.dev.efa.publicplan.cloud"
+      secretName: identity-gateway-tls

@@ -1,0 +1,46 @@
+---
+# Default SSH user before hardening
+default_ssh_user: "root"
+# Default SSH port before hardening
+default_ssh_port: 22
+# Non-root user
+ssh_user: "shield"
+# Custom SSH port
+ssh_port: 22222
+# Authorzied SSH keys
+ssh_keys:
+  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBhsm+GB6c3YlWLwp+eDz+tlBbxPeJW1TO/baxFQYwwk dmarkovic
+# Hetzner Cloud API token
+hcloud_token: "wfiWWNF306mc9EgwQdFKMLivbz9CBoU5hG26bXe6X0T5CkMopYwSbPrTcAxGfzaA"
+
+# Kubernetes version in major.minor (supported versions: >= 1.31)
+kubernetes_version: "1.31"
+# CRI-O version in major.minor (supported versions: >= 1.28)
+crio_version: "1.31"
+
+# Cluser API URL
+kubernetes_api_url: "efa-test.publicplan.cloud"
+# Local network over which all nodes can communicate
+local_node_network: "172.16.0.0/12"
+
+# Cilium CNI
+cilium:
+  version: "1.17.1"
+  namespace: "kube-system"
+
+# Hetzner Cloud CSI
+hetzner_cloud_csi:
+  version: "2.12.0"
+  namespace: "kube-system"
+  # This should NOT be the same as `hcloud_token`, you should generate a new one
+  token: "wfiWWNF306mc9EgwQdFKMLivbz9CBoU5hG26bXe6X0T5CkMopYwSbPrTcAxGfzaA"
+
+# ArgoCD
+argocd:
+  version: "7.8.10"
+  namespace: "argocd"
+  domain: "argocd.efa-test.publicplan.cloud"
+  keycloak:
+    url: https://keycloak.live.publicplan.cloud/auth/realms/master
+    client_id: "argocd-efa-test"
+    client_secret: "GQgSw4QVzRc728ADuAu731duB8J8jBYm"

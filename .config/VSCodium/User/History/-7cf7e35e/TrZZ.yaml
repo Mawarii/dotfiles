@@ -1,0 +1,31 @@
+auth:
+  adminUser: keycloakAdmin
+  adminPassword: "MlWzk8OAYrPncZJHOiPovlvXIAyo6WYWWtq5rNfl17nmbGKBoPoH0yVIgB90kHNE"
+production: true
+proxyHeaders: "xforwarded"
+replicaCount: 1
+containerPorts:
+  http: 8080
+  https: 8443
+resources:
+  limits:
+    cpu: "750m"
+    memory: "768Mi"
+  requests:
+    cpu: "500m"
+    memory: "512Mi"
+ingress:
+  enabled: true
+  ingressClassName: "nginx"
+  hostname: keycloak.voapp.dev.publicplan.cloud
+  path: /
+serviceAccount:
+  create: true
+postgresql:
+  enabled: false
+externalDatabase:
+  host: keycloak-postgresql
+  database: keycloak
+  existingSecret: keycloak.keycloak-postgresql.credentials.postgresql.acid.zalan.do
+  existingSecretUserKey: username
+  existingSecretPasswordKey: password

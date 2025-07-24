@@ -1,0 +1,414 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: govforms2-workflow-core-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-body-size: "512m"
+    kubernetes.io/proxy-body-size: "512m"
+    nginx.org/client-max-body-size: "512m"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/send_timeout: "300"
+    #    # type of authentication
+    #    nginx.ingress.kubernetes.io/auth-type: basic
+    #    # name of the secret that contains the user/password definitions
+    #    nginx.ingress.kubernetes.io/auth-secret: basic-auth
+    #    # message to display with an appropriate context why the authentication is required
+    #    nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required'
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization,x-jwt-token"
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: "govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "baden-wuerttemberg.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "bayern.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "berlin.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "brandenburg.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "bremen.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "hamburg.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "hessen.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "mecklenburg-vorpommern.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "niedersachsen.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "nordrhein-westfalen.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "rheinland-pfalz.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "saarland.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "sachsen-anhalt.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "sachsen.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "schleswig-holstein.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "thueringen.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "bw.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "by.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "be.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "bb.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "hb.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "hh.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "he.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "mv.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "ni.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "nw.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "rp.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "sl.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "sn.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "st.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "sh.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "th.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: govforms2-workflow-core-service
+                port:
+                  number: 80
+    - host: "minio.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: minio
+                port:
+                  number: 9001
+    - host: "minio-api.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: minio
+                port:
+                  number: 9000
+  tls:
+    - hosts:
+        - "govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "baden-wuerttemberg.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "bayern.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "berlin.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "brandenburg.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "bremen.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "hamburg.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "hessen.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "mecklenburg-vorpommern.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "niedersachsen.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "nordrhein-westfalen.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "rheinland-pfalz.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "saarland.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "sachsen-anhalt.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "sachsen.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "schleswig-holstein.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "thueringen.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "bw.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "by.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "be.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "bb.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "hb.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "hh.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "he.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "mv.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "ni.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "nw.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "rp.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "sl.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "sn.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "st.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "sh.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "th.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      secretName: "govforms2-workflow-core-tls"
+    - hosts:
+        - "minio.govforms2-workflow-core.dev.efa.publicplan.cloud"
+        - "minio-api.govforms2-workflow-core.dev.efa.publicplan.cloud"
+      secretName: "minio-govforms2-workflow-core-tls"

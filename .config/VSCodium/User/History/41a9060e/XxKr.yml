@@ -1,0 +1,48 @@
+# Author: Shibin Thomas
+services:
+  keycloak-db:
+    image: bitnami/postgresql:16.2.0
+    restart: always
+    container_name: forms-flow-idm-keycloak_db
+    volumes:
+      - /storage/main-instance/docker-data/forms-flow-idm-keycloak/postgres/keycloak:/bitnami/postgresql/data/
+    environment:
+      POSTGRES_DB: ${KEYCLOAK_JDBC_DB:-keycloak}
+      POSTGRES_USER: ${KEYCLOAK_JDBC_USER:-admin}
+      POSTGRES_PASSWORD: ${KEYCLOAK_JDBC_PASSWORD:-changeme}
+    ports:
+      - 5431:5431
+    networks:
+      - keycloak-server-network
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:20.0.5
+    restart: unless-stopped
+    container_name: forms-flow-idm-keycloak
+    volumes:
+      - /storage/main-instance/docker-data/forms-flow-idm-keycloak/imports:/opt/keycloak/data/import
+      - /storage/main-instance/docker-data/forms-flow-idm-keycloak/themes/formsflow:/opt/keycloak/themes/formsflow
+    command: "start --http-enabled=true --http-port=8080 --hostname-strict=false --hostname-strict-https=false" 
+    environment:
+      - DB_VENDOR=POSTGRES
+      - DB_ADDR=keycloak-db
+      - DB_DATABASE=${KEYCLOAK_JDBC_DB:-keycloak}
+      - DB_USER=${KEYCLOAK_JDBC_USER-admin}
+      - DB_PASSWORD=${KEYCLOAK_JDBC_PASSWORD:-changeme}
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN_USER:-admin}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD:-changeme}
+      - KC_PROXY=edge
+      - KC_HTTP_RELATIVE_PATH=/auth
+    ports:
+      - 8080:8080
+    depends_on:
+      - keycloak-db
+    networks:
+      - keycloak-server-network
+
+networks:
+  keycloak-server-network:
+    driver: 'bridge'
+
+volumes:
+  keycloak-postgresql-data:

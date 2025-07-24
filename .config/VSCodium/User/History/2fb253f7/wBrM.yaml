@@ -1,0 +1,53 @@
+image:
+  registry: docker.io
+  repository: bitnami/keycloak
+  tag: 24.0.5-debian-12-r8
+auth:
+  adminUser: keycloakAdmin
+  adminPassword: "Bss7r9qL!xP2VbtXs"
+production: true
+proxy: edge
+replicaCount: 1
+containerPorts:
+  http: 8080
+  https: 8443
+resources:
+  limits:
+    cpu: "1000m"
+    memory: "1Gi"
+  requests:
+    cpu: "500m"
+    memory: "512Mi"
+ingress:
+  enabled: true
+  ingressClassName: "nginx"
+  hostname: keycloak.staging.wsp.owl-it.de
+  tls: true
+  extraTls:
+    - hosts:
+        - keycloak.staging.wsp.owl-it.de
+      secretName: empfangsclient-keycloak-tls
+  path: /
+adminIngress:
+  enabled: true
+  ingressClassName: "nginx"
+  hostname: keycloak.staging.wsp.owl-it.de
+  tls: true
+  extraTls:
+    - hosts:
+        - keycloak.staging.wsp.owl-it.de
+      secretName: empfangsclient-keycloak-tls
+  path: /auth
+serviceAccount:
+  create: true
+postgresql:
+  enabled: false
+externalDatabase:
+  host: postgres-wsp-postgresql
+  database: keycloak
+  existingSecret: postgres-wsp-postgresql
+  existingSecretUserKey: POSTGRES_USER
+  existingSecretPasswordKey: password
+logging:
+  output: default
+  level: INFO

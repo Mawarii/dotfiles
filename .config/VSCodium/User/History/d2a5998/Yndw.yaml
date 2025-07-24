@@ -1,0 +1,14 @@
+source:
+  repo:
+    kind: HELM
+    url: https://charts.bitnami.com/bitnami
+
+target:
+  repo:
+    kind: OCI
+    url: https://charts.develop.wspdev.de
+    auth:
+      username: "krz-chartmuseum"
+      password: "zIjanH6gPXVooaV2yvWjNEYRkbljlY5L"
+charts:
+  - nginx

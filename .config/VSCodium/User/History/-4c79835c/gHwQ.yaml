@@ -1,0 +1,13 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+spec:
+  template:
+    spec:
+      containers:
+        - name: mongodb
+          env:
+            - name: YES_I_DONT_NEED_BACKUPS_AND_DOCUMENTED_THIS_SOMEWHERE
+              value: UNDERSTOOD

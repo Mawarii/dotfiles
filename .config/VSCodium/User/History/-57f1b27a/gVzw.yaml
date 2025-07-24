@@ -1,0 +1,25 @@
+---
+- name: Ensure {{ installation_path }}/{{ folder.formsflow }} directory exists
+  ansible.builtin.file:
+    path: "{{ installation_path }}/{{ folder.formsflow }}"
+    state: directory
+
+- name: Check whether .env already exists so that the passwords are not overwritten
+  ansible.builtin.stat:
+    path: "{{ installation_path }}/{{ folder.formsflow }}/.env"
+  register: env_file
+
+- name: Generate forms-flow-ai .env file if it does not exist
+  ansible.builtin.template:
+    src: "./forms-flow-ai/forms-flow-ai.env.j2"
+    dest: "{{ installation_path }}/{{ folder.formsflow }}/.env"
+  when: not env_file.stat.exists
+
+- name: Generate forms-flow-ai compose file
+  ansible.builtin.template:
+    src: "./forms-flow-ai/forms-flow-ai-compose.yaml.j2"
+    dest: "{{ installation_path }}/{{ folder.formsflow }}/compose.yaml"
+
+- name: Create and start forms-flow-ai services
+  community.docker.docker_compose_v2:
+    project_src: "{{ installation_path }}/{{ folder.formsflow }}"

@@ -1,0 +1,26 @@
+---
+all:
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+k3s_cluster:
+  children:
+    server:
+      hosts:
+        12.34.56.78:
+    agent:
+      hosts:
+        12.34.56.78:
+        12.34.56.78:
+
+  vars:
+    k3s_version: v1.32.3+k3s1
+    # the playbook will install ingress-nginx instead
+    extra_server_args: "--disable=traefik"
+    api_endpoint: "{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}"
+    kubeconfig: ~/.kube/demo
+    
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBhsm+GB6c3YlWLwp+eDz+tlBbxPeJW1TO/baxFQYwwk dmarkovic
+    ssh_user: debian
+    ssh_port: 22222

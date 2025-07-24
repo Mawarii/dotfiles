@@ -1,0 +1,3 @@
+- name: create random but idempotent password
+  ansible.builtin.debug:
+    msg: "{{ lookup('ansible.builtin.password', '/dev/null') }}"

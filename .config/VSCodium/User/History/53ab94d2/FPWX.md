@@ -1,0 +1,364 @@
+# Hardening Docker Deployments
+
+## Table of Contents
+- [NodeJS](#dockerfile)
+- [Symfony](#symfony)
+- [Nginx](#nginx)
+- [Apache2](#apache2)
+- [Kubernetes](#kubernetes)
+
+## NodeJS
+
+### Dockerfile
+
+Add a non-root user and group with an ID greater than 10000. After that change the ownership for the app files while copying them.
+
+Non-alpine-based image:
+
+```Dockerfile
+FROM node:18 # pick the version you need
+
+RUN groupmod -g 10001 node && usermod -u 10001 -g 10001 node
+
+COPY --chown=node:node ./app /usr/src/app
+
+... # add root steps
+
+USER node
+
+WORKDIR /usr/src/app
+
+... # add non-root steps
+
+RUN npm init -y
+
+RUN npm install
+
+CMD ["node", "index.js"]
+```
+
+Alpine-based image:
+
+```Dockerfile
+FROM node:18-alpine # pick the version you need
+
+RUN deluser --remove-home node \
+  && addgroup -S node -g 10001 \
+  && adduser -S -G node -u 10001 node
+
+COPY --chown=node:node ./app /usr/src/app
+
+... # add root steps
+
+USER node
+
+WORKDIR /usr/src/app
+
+... # add non-root steps
+
+RUN npm init -y
+
+RUN npm install
+
+CMD ["node", "index.js"]
+```
+
+For Dockerfiles that's all you can do, at least within the file:
+
+To limit the memory usage:
+
+`docker run -m "300M" --memory-swap "1G" ...`
+
+To make the filesystem read-only:
+
+`docker run --read-only ...`
+
+and to mount folders with read-write permissions:
+
+`docker run --read-only --tmpfs /tmp ...`
+
+To drop NET_RAW packages:
+
+`docker run --cap-drop=NET_RAW ...`
+
+### docker-compose
+
+With docker-compose it looks like this:
+
+```yaml
+version: "3.7"
+  
+services:
+  app:
+    ...
+    container_name: nextjs
+    restart: unless-stopped
+    cap_drop: # drop NET_RAW packages
+      - NET_RAW
+    security_opt: # secure privileges
+      - no-new-privileges:true
+    read_only: true # read-only filesystem
+    tmpfs: # mount folders with read-write permission, only if needed
+      - /tmp:uid=10001,gid=10001
+    ...
+```
+
+Best practice would be to combine both: Creating a non-root user inside the Dockerfile and run the application with docker-compose and all security options.
+
+## Symfony
+
+Symfony is a litte bit more tricky, because there is no official Symfony Docker image. So we need to create our own based on the [PHP Docker image](https://hub.docker.com/_/php).
+
+But if you are a little bit more experienced and want to use a complete docker environment with Caddy you can have a look at [this](https://github.com/dunglas/symfony-docker) repo.
+
+This doc shows a very simple Dockerfile, because depending on the use case it has to be configured differently, e.g. adding PHP modules, etc.
+
+### Dockerfile
+
+```Dockerfile
+FROM php:8.2-fpm # pick the version you need
+
+RUN groupadd -g 10001 symfony
+
+RUN useradd -u 10001 -g 10001 symfony
+
+...
+
+USER symfony
+
+...
+
+CMD ["php-fpm", "--nodaemonize"]
+```
+
+### docker-compose
+
+```yaml
+version: "3.7"
+  
+services:
+  db:
+    ...
+    image: mariadb # just an example
+    ....
+  app:
+    ...
+    container_name: symfony
+    restart: unless-stopped
+    cap_drop: # drop NET_RAW packages
+      - NET_RAW
+    security_opt: # secure privileges
+      - no-new-privileges:true
+    read_only: true # read-only filesystem
+    tmpfs: # mount folders with read-write permission, only if needed
+      - /tmp
+    ...
+```
+
+## NGINX
+
+Nginx doesn't need to be hardened, because there is already an offical one that is unprivileged: `docker.io/nginxinc/nginx-unprivileged`
+
+Just use this image with user 10001, add your additional nginx.conf to the `/etc/nginx/conf.d` folder and you are good to go.
+
+### docker-compose
+
+```yaml
+version: "3.7"
+
+services:
+  nginx:
+    image: docker.io/nginxinc/nginx-unprivileged
+    container_name: nginx
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp:uid=10001,gid=10001
+      - /etc/nginx/conf.d:uid=10001,gid=10001
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf:rw,uid=10001,gid=10001
+    cap_drop:
+      - NET_RAW
+```
+
+### default.conf
+
+```conf
+server {
+    listen       8080;
+    server_name  localhost;
+
+    #access_log  /var/log/nginx/host.access.log  main;
+
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+
+    #error_page  404              /404.html;
+
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
+    # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+    #
+    #location ~ \.php$ {
+    #    proxy_pass   http://127.0.0.1;
+    #}
+
+    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+    #
+    #location ~ \.php$ {
+    #    root           html;
+    #    fastcgi_pass   127.0.0.1:9000;
+    #    fastcgi_index  index.php;
+    #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+    #    include        fastcgi_params;
+    #}
+
+    # deny access to .htaccess files, if Apache's document root
+    # concurs with nginx's one
+    #
+    #location ~ /\.ht {
+    #    deny  all;
+    #}
+}
+```
+
+## Apache2
+
+### Dockerfile
+
+```Dockerfile
+FROM httpd:alpine
+
+RUN addgroup -g 10001 apache && \
+    adduser -D -u 10001 -G apache apache
+
+RUN sed -i 's/User daemon/User apache/g' /usr/local/apache2/conf/httpd.conf && \
+    sed -i 's/Group daemon/Group apache/g' /usr/local/apache2/conf/httpd.conf
+
+RUN chown -R apache:apache /usr/local/apache2/logs /usr/local/apache2/conf
+
+USER apache
+
+CMD ["httpd-foreground"]
+```
+
+### docker-compose
+
+```yaml
+version: '3.7'
+
+services:
+  apache:
+    build: .
+    container_name: apache2
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /usr/local/apache2/logs:uid=10001,gid=10001
+    cap_drop:
+      - NET_RAW
+```
+
+## Kubernetes
+
+This is an example for hardening K8s deployments:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application-name
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      k8s-app: application-name
+  template:
+    metadata:
+      labels:
+        k8s-app: application-name
+    spec:
+      containers:
+        - name: application
+          image: IMAGE
+          env:
+            - name: APP_ENV
+              value: "dev"
+          envFrom:
+            - configMapRef:
+                name: application-name-configmap
+          readinessProbe:
+            exec:
+              command: [ "./symfony"]
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+            periodSeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 15
+            timeoutSeconds: 10
+            periodSeconds: 15
+          ports:
+            - containerPort: 80
+          # set securityContext
+          securityContext:
+            # set user id > 10000
+            runAsUser: 10001
+            # set group id > 10000
+            runAsGroup: 10001
+            # disable PrivilegeEscalation
+            allowPrivilegeEscalation: false
+            # set root filesystem read only
+            readOnlyRootFilesystem: true
+            # set non root user
+            runAsNonRoot: true
+            # disable raw network manipulation
+            capabilities:
+              drop: [ "NET_RAW" ]
+          # if you want to have write permissions you have to mount those folders as emptyDir
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+            - mountPath: /var/log
+              name: log
+            - mountPath: /var/run
+              name: run
+            - mountPath: /var/www/application/var/
+              name: cache
+          # set resource limits as needed
+          resources:
+            limits:
+              cpu: "2000m"
+              memory: "512Mi"
+            requests:
+              cpu: "1000m"
+              memory: "512Mi"
+      imagePullSecrets:
+        - name: gitlab-registry
+      # set security context ids > 10000
+      securityContext:
+        fsGroup: 10001
+        runAsGroup: 10001
+        runAsUser: 10001
+      # mount read-write folders as emptyDir
+      volumes:
+        - emptyDir: { }
+          name: tmp
+        - emptyDir: { }
+          name: log
+        - emptyDir: { }
+          name: run
+        - emptyDir: { }
+          name: cache
+```

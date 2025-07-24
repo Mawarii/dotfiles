@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: efacluster-govforms2
+  namespace: argocd
+spec:
+  clusterResourceWhitelist:
+    - group: ''
+      kind: 'Namespace'
+    # - group: '*'
+    #   kind: '*'
+  destinations:
+    - name: in-cluster
+      namespace: 'govforms2-*'
+      server: '*'
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  sourceNamespaces:
+    - govforms2-*
+  sourceRepos:
+    - '*'

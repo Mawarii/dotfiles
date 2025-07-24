@@ -1,0 +1,24 @@
+---
+- name: Get local IP address
+  ansible.builtin.set_fact:
+    local_ip_address: "{{ ansible_all_ipv4_addresses | ansible.utils.ipaddr(local_node_network) }}"
+
+- name: Check if node is already joined
+  block:
+    - name: Verify the existence of the kubelet config file
+      ansible.builtin.stat:
+        path: /var/lib/kubelet/config.yaml
+      register: kubelet_config
+
+- name: Generate join template
+  when: not local_ip_address[0] in node_ips.stdout and not kubelet_config.stat.exists
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/join-{{ group_names[0] }}.yaml.j2"
+    dest: "/tmp/join-{{ group_names[0] }}.yaml"
+    mode: '0700'
+
+- name: Run join command
+  when: not local_ip_address[0] in node_ips.stdout and not kubelet_config.stat.exists
+  ansible.builtin.command:
+    cmd: sudo kubeadm join --config /tmp/join-{{ group_names[0] }}.yaml
+  changed_when: false

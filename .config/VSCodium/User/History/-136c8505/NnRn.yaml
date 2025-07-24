@@ -1,0 +1,10 @@
+---
+- name: Open default SSH port
+  ansible.builtin.include_tasks: "open-default-ssh-port.yaml"
+
+- name: Configure Hetzner firewall
+  when: hcloud_token != ""
+  ansible.builtin.include_tasks: "configure-hetzner-firewall.yaml"
+
+- name: Close default SSH port
+  ansible.builtin.include_tasks: "close-default-ssh-port.yaml"

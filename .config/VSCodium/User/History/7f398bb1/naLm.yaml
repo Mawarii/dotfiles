@@ -1,0 +1,6 @@
+---
+- name: Install Helm package
+  ansible.builtin.include_tasks: "install-helm-package.yaml"
+
+- name: Install Wordpress via Helm
+  ansible.builtin.include_tasks: "install-wordpress.yaml"

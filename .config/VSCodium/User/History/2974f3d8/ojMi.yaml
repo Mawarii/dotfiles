@@ -1,0 +1,9 @@
+---
+- name: Run debug tasks
+  hosts: controlplanes[1]
+  gather_facts: false
+  become: true
+  tasks:
+    - name: DEBUG
+      ansible.builtin.debug:
+        msg: "{{ playbook_dir }}"

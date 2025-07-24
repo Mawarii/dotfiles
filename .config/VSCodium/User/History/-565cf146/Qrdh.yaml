@@ -1,0 +1,32 @@
+---
+- name: Generate Nginx default values file
+  ansible.builtin.copy:
+    src: "{{ role_path }}/templates/default-values.yaml"
+    dest: /tmp/nginx-default-values.yaml
+    mode: '0640'
+
+- name: Generate Nginx values file
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/values.yaml.j2"
+    dest: /tmp/nginx-values.yaml
+    mode: '0640'
+
+- name: Add ingress-nginx chart repo
+  kubernetes.core.helm_repository:
+    name: ingress-nginx
+    repo_url: "https://kubernetes.github.io/ingress-nginx"
+
+- name: Install Nginx via Helm
+  kubernetes.core.helm:
+    atomic: true
+    kubeconfig: /etc/rancher/k3s/k3s.yaml
+    chart_ref: ingress-nginx/ingress-nginx
+    chart_version: "{{ wordpress.chart_version }}"
+    release_state: present
+    release_name: nginx
+    release_namespace: "{{ wordpress.namespace }}"
+    create_namespace: true
+    values_files:
+      - /tmp/nginx-default-values.yaml
+      - /tmp/nginx-values.yaml
+    wait: true

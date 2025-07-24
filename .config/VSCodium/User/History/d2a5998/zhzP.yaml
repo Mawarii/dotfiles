@@ -1,0 +1,11 @@
+source:
+  repo:
+    kind: HELM
+    url: https://charts.bitnami.com/bitnami
+
+target:
+  repo:
+    kind: OCI
+    url: https://charts.develop.wspdev.de
+charts:
+  - nginx

@@ -1,0 +1,70 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+commonLabels:
+  env: dev
+
+resources:
+  - ../../base/
+  - ../../../../databases/bitnami-mariadb-10.11.4-debian-11-r0/overlays/develop
+  - ./empfangsclient-ecc-secrets.yaml
+  - ./empfangsclient-eco-secrets.yaml
+  - ./empfangsclient-eco-configmap.yaml
+  - ./empfangsclient-eco-version-ingress.yaml
+  - ./empfangsclient-eco-service-account.yaml
+  - ./empfangsclient-eco-role.yaml
+  - ./empfangsclient-eco-role-binding.yaml
+
+images:
+  - name: DOCKER_IMAGE_1
+    newName: gitlab.publicplan.cloud:5050/themenwelt-portalverbund/empfangs-client/eco
+    newTag: v2.13.3
+  - name: DOCKER_IMAGE_1_ORIGIN
+    newName: gitlab.publicplan.cloud:5050/themenwelt-portalverbund/empfangs-client/eco
+    newTag: v2.13.3
+  - name: DOCKER_IMAGE_2
+    newName: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/tools/version-sidecar
+    newTag: v1.3.1
+  - name: DOCKER_IMAGE_2_ORIGIN
+    newName: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/tools/version-sidecar
+    newTag: v1.3.1
+
+patches:
+  - path: empfangsclient-eco-ingress.patch.yaml
+    target:
+      kind: Ingress
+      name: empfangsclient-eco-ingress
+  - path: mariadb-secret.patch.yaml
+    target:
+      kind: Secret
+      name: mariadb-wsp-secret
+  - path: empfangsclient-eco.patch.yaml
+    target:
+      kind: Deployment
+      name: empfangsclient-eco
+
+replacements: #version sidecar replacements
+  - source:
+      kind: Deployment
+      name: empfangsclient-eco
+      fieldPath: spec.template.spec.containers.[name=empfangsclient-eco].image
+    targets:
+    - select:
+        kind: Deployment
+        name: empfangsclient-eco
+      fieldPaths:
+        - spec.template.spec.containers.[name=version-sidecar].env.[name=DOCKER_IMAGE_1].value
+      options:
+        create: true
+  - source:
+      kind: Deployment
+      name: empfangsclient-eco
+      fieldPath: spec.template.spec.containers.[name=version-sidecar].image
+    targets:
+    - select:
+        kind: Deployment
+        name: empfangsclient-eco
+      fieldPaths:
+        - spec.template.spec.containers.[name=version-sidecar].env.[name=DOCKER_IMAGE_2].value
+      options:
+        create: true

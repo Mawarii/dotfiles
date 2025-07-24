@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sdg-frontend
+spec:
+  revisionHistoryLimit: 1
+  replicas: 2
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      k8s-app: sdg-frontend
+  template:
+    metadata:
+      labels:
+        k8s-app: sdg-frontend
+    spec:
+      containers:
+        - name: application
+          image: DOCKER_IMAGE_1
+          securityContext:
+            runAsUser: 10001
+            runAsGroup: 10001
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop: ["NET_RAW"]
+          env:
+            - name: NEXT_PUBLIC_BACKEND_URL
+              value: "https://sdg-backend.regmo.dev.publicplan.cloud"
+            - name: NEXT_PUBLIC_BACKEND_JWT_SECRET
+              value: "TopSecret"
+            - name: NEXT_PUBLIC_BACKEND_JWT_ALGORITHM
+              value: "HS256"
+            - name: NEXT_PUBLIC_INDEX_ALLOWED
+              value: "true"
+            - name: NEXT_PUBLIC_SENTRY_DSN
+              value: "https://5d827b70a12030c353054955f6d1c333@sentry.live.publicplan.cloud/23"
+            - name: NEXT_PUBLIC_SENTRY_ENVIRONMENT
+              value: "dev"
+            - name: SENTRY_AUTH_TOKEN
+              value: "d1f4d9e1717a6547d56c8e95c73ca39c3e4511713e259c1a5cbc3768eaab9030"
+            - name: NEXT_PUBLIC_REAUTH_LOCAL
+              value: "false"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+            periodSeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 15
+            timeoutSeconds: 1
+            periodSeconds: 15
+          ports:
+            - containerPort: 3000
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp
+      imagePullSecrets:
+        - name: gitlab-registry
+      volumes:
+        - name: tmp
+          emptyDir: {}

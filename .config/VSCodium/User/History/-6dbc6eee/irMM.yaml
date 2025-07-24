@@ -1,0 +1,11 @@
+---
+- name: Run debug tasks
+  hosts: all
+  gather_facts: false
+  become: false
+  tasks:
+    - name: DEBUG
+      ansible.builtin.command:
+        msg: "{{ inventory_hostname }}"
+      delegate_to: localhost
+      changed_when: true

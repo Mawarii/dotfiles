@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: drupal
+spec:
+    selector:
+        matchLabels:
+            app: drupal
+    template:
+        spec:
+            imagePullSecrets:
+                -   name: image-pull-secret
+            containers:
+                -   name: drupal
+#                    lifecycle: null # Temporarily disabled lifecycle as it prevented the deployment from coming up. You can re-enable it by removing this line
+                    env:
+                        -   name: MYSQL_USER
+                            value: pflegewegweiser
+                        -   name: MYSQL_DATABASE
+                            value: pflegewegweiser
+                        -   name: MYSQL_HOST
+                            value: customercluster-pflegewegweiser-stage-mariadb
+                        -   name: MYSQL_PASSWORD
+                            valueFrom:
+                                secretKeyRef:
+                                    key: mariadb-password
+                                    name: customercluster-pflegewegweiser-stage-mariadb
+                        -   name: SEARCH_API_SOLR_HOST
+                            value: customercluster-pflegewegweiser-stage-solr
+                        -   name: SEARCH_API_SOLR_USER
+                            value: admin
+                        -   name: SEARCH_API_SOLR_PASS
+                            valueFrom:
+                                secretKeyRef:
+                                    key: PASSWORD
+                                    name: drupal-solr
+                    volumeMounts:
+                        -   mountPath: /var/www/html/web/sites/default/settings.cluster.php
+                            name: settings
+                            subPath: settings.cluster.php
+            volumes:
+                -   name: settings
+                    configMap:
+                        name: settings

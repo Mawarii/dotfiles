@@ -1,0 +1,2 @@
+2025-07-17 15:13:54.161 [error] status error(undefined): + Error: spawn /opt/vscodium-bin/bin/code-tunnel ENOENT 
+2025-07-17 15:13:54.161 [error] undefined

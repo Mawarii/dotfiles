@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: govforms2-admin-client-version-ingress
+  labels:
+    k8s-env: "pre-stage"
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: "version.pre-stage.efa.publicplan.cloud"
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/govforms2-admin-client"
+            backend:
+              service:
+                name: govforms2-admin-client-service
+                port:
+                  name: version

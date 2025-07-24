@@ -1,0 +1,91 @@
+---
+# In dieser Vorlage enthalten die Domains einen Platzhalter uc2-dp
+# Bitte ersetzen Sie alle Vorkommnisse von uc2-dp durch den vom Support bereitgestellten Namen
+
+app:
+  name: sak-dp-server
+
+  # Das bereitgestelle Image muss in eine eigene Registry importiert werden.
+  # Hier wird das Image angegeben.
+  image: gitlab.publicplan.cloud:5050/regmo/dpa/hr-dpa/sak-dp:1.2.0
+
+  # Sollte ein imagePullSecret nötig sein, muss dieses hier angegeben werden.
+  imagePullSecrets:
+    - name: noots-sak-gitlab-registry
+
+  # Für die mTLS Terminierung muss ein keystore mit dem Server Zertifikat vorliegen. z.B. als dp_tls_keystore.p12
+  # Der Keystore dp_tls_keystore.p12 muss in den Namespace als Secret mit den Namen noots-sak-dp-server-tls-secret importiert werden.
+  # Hierbei wird die Datei als keystore.p12 hinterlegt.
+  # Beispiel Import:
+  # kubectl -n SAKMAMESPACE create secret generic noots-sak-dp-server-tls-secret --from-file=keystore.p12=dp_tls_keystore.p12
+  #
+  # Passwort des Keystores sowie des Zertifikats im Keystore
+  tlsKeyPassword: p33ioyMk0X64Hd2MgNGv4zrc1E62STJJ
+
+  envs:
+    sakdp:
+      # Log-Level des SAKs; Es kann zwischen den folgenden Level unterschieden werden:
+      # OFF   - A special level used in configuration to turn off logging.
+      # FATAL - A critical service failure or total inability to handle any requests.
+      # ERROR - A major issue in processing or an inability to complete a request.
+      # WARN  - A non-critical service error or problem that might not require immediate correction.
+      # INFO  - Service lifecycle events or other important infrequent information.
+      # DEBUG - Additional information about lifecycle events or events not tied to specific requests, useful for debugging.
+      # TRACE - Detailed per-request debugging information, potentially at a very high frequency.
+      # ALL - A special level to turn on logging for all messages, including custom levels.
+      log:
+        level: info
+
+      accesstoken:
+        verify:
+          # Schnittstelle des IAM-B Issuers
+          issuer: "https://noots-iam-b.uc2-dp.noref.dsecurecloud.de/realms/noots-ref"
+          publickey:
+            # Ort des IAM-B Public-Keys
+            location: https://noots-iam-b.uc2-dp.noref.dsecurecloud.de/realms/noots-ref/protocol/openid-connect/certs
+            proxy:
+              # Proxy-Host für HTTP-Zugriffe auf IAM-B Zertifikatsendpunkt; leer, wenn kein Proxy benötigt wird.
+              host: ""
+              # Proxy-Port für HTTP-Zugriffe auf IAM-B Zertifikatsendpunkt; Standardwert: 80
+              port: "80"
+
+      dp:
+        # Schnittstelle der Data-Providers
+        url: https://hr-dpa.dev.efa.publicplan.cloud
+        # Proxy-Konfiguration für Zugriffe auf den Data-Provider; "none", wenn kein Proxy gesetzt wird.
+        # Wenn ein Proxy gesetzt wird, muss dies im Format "hostname:port" konfiguriert werden
+        proxy: none
+      vs:
+        # Proxy-Konfiguration für Zugriffe auf die Vermittlungsstelle; "none", wenn kein Proxy gesetzt wird.
+        # Wenn ein Proxy gesetzt wird, muss dies im Format "hostname:port" konfiguriert werden
+        proxy: none
+      otel:
+        # Endpunkt für Telemetry-Daten
+        endpoint: https://otel-collector.uc2-dp.noref.dsecurecloud.de
+        proxy:
+          # Flag für Aktivierung von Proxy-Verwendung beim Versenden von Telemetry-Daten.
+          enabled: "false"
+          # Proxy-Host für Versenden von Telemetry-Daten.
+          host: localhost
+          # Proxy-Port für Versenden von Telemetry-Daten.
+          port: "80"
+
+    # Wenn eigene CAs nötig sind müssen diese als configmap mit dem Namen noots-ref-ca-bundle abgelegt werden.
+    # Diese Configmap wird dann innerhalb des Pods als Verzeichnis  /etc/noots-ref-certs gemountet.
+    #
+    # Beispiel mit der CA PEM Datei: ca-bundle-datei-im-configmap.pem
+    # QUARKUS_HTTP_SSL_CERTIFICATE_TRUST_STORE_FILES: /etc/noots-ref-certs/ca-bundle-datei-im-configmap.pem
+    QUARKUS_HTTP_SSL_CERTIFICATE_TRUST_STORE_FILES: "/etc/noots-ref-certs/ca.crt"
+
+  # Einstellungen für das Anlegen eines Kubernetes Ingresses
+  host: sak-dpa.dev.efa.publicplan.cloud
+  ingress:
+    className: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    tls:
+      enabled: true
+
+  # Konfiguration für den Servicemonitor von Kubernetes
+  servicemonitor:
+    enabled: false

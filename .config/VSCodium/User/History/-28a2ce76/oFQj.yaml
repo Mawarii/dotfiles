@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oots-preview-space
+spec:
+  revisionHistoryLimit: 1
+  replicas: 2
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      k8s-app: oots-preview-space
+  template:
+    metadata:
+      labels:
+        k8s-app: oots-preview-space
+    spec:
+      containers:
+        - name: application
+          env:
+            - name: NEXT_PUBLIC_OOTS_BACKEND_URL
+              value: "https://oots-projectathon.dev.efa.publicplan.cloud"
+      imagePullSecrets:
+        - name: gitlab-registry

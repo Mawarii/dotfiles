@@ -1,0 +1,13 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-cronjob
+spec:
+  template:
+    spec:
+      containers:
+        - name: postgresql
+          env:
+            - name: YES_I_DONT_NEED_BACKUPS_AND_DOCUMENTED_THIS_SOMEWHERE
+              value: UNDERSTOOD

@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: devcluster-twf-govforms2-akeneo
+  namespace: argocd
+spec:
+  destination:
+    namespace: twf-govforms2-akeneo
+    name: publicplan-dev
+  project: devcluster-infra-twf-govforms2-project
+  source:
+    targetRevision: HEAD
+    repoURL: git@gitlab.publicplan.cloud:themenwelt-formulare/govforms2/govforms2-akeneo-dist.git
+    path: overlays/dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

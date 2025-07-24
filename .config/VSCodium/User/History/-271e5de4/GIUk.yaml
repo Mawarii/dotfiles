@@ -1,0 +1,78 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: backup-cronjob
+spec:
+  schedule: "0 */3 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: backup-cronjob
+        spec:
+          securityContext:
+            fsGroup: 10001
+            runAsGroup: 10001
+            runAsNonRoot: true
+            runAsUser: 10001
+          restartPolicy: OnFailure
+          containers:
+            - name: backup
+              image: "harbor.cloudical.net/cci-tools/backup-jobs:v1.3.0"
+              securityContext:
+                runAsGroup: 10001
+                runAsNonRoot: true
+                runAsUser: 10001
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - "ALL"
+                seccompProfile:
+                  type: RuntimeDefault
+                readOnlyRootFilesystem: true
+                privileged: false
+              env:
+                - name: YES_I_DONT_NEED_BACKUPS_AND_DOCUMENTED_THIS_SOMEWHERE
+                  value: "UNDERSTOOD"
+                - name: CLUSTER_STAGE_S3_BUCKET_NAME_BACKUP
+                  value: "fink8s-mongodb-backups"
+                - name: CLUSTER_STAGE_S3_ACCESS_KEY
+                  value: "fin-k8s-mongodb"
+                - name: CLUSTER_STAGE_S3_SECRET_KEY
+                  value: "2CuFwz0BEjbgLgBd7XSx0e1D89sDuDUF"
+                - name: CLUSTER_STAGE_S3_URL_PROTOCOL
+                  value: "https"
+                - name: CLUSTER_STAGE_S3_URL
+                  value: "s3storage.cloudical.in"
+                - name: CLUSTER_STAGE_NAME
+                  value: "production"
+                #? possible values postgres / mariadb / mysql / mongodb / pvc
+                - name: DB_TYPE
+                  value: "mongodb"
+                - name: DB_USER
+                  value: "root"
+                - name: DB_HOST
+                  value: "rs0/rocketchat-external-redis-0.rocketchat-external-redis-headless.rocketchat.svc,rocketchat-external-redis-1.rocketchat-external-redis-headless.rocketchat.svc,rocketchat-external-redis-2.rocketchat-external-redis-headless.rocketchat.svc"
+                #! You must set the port
+                #! on non Postgres DB's
+                - name: DB_PORT
+                  value: "27017"
+                - name: DB_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: "rocketchat-external-redis"
+                      key: "mongodb-root-password"
+                - name: BUCKET_SUBDIR
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: "metadata.namespace"
+              volumeMounts:
+                - mountPath: "/tmp"
+                  name: tmp
+                - mountPath: "/home/tools"
+                  name: home
+          volumes:
+            - name: tmp
+              emptyDir: {}
+            - name: home
+              emptyDir: {}

@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flatnotes
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      kubernetes.io/app: flatnotes
+  template:
+    metadata:
+      labels:
+        kubernetes.io/app: flatnotes
+      annotations:
+        backup.velero.io/backup-volumes: "flatnotes-pvc"
+        ciu.enable: "true"
+    spec:
+      containers:
+        - name: flatnotes
+          image: dullage/flatnotes:v5.5.1
+          env:
+            - name: FLATNOTES_PORT
+              value: "8080"
+            - name: FLATNOTES_AUTH_TYPE
+              value: password
+            - name: FLATNOTES_PASSWORD
+              value: "P&LQhM#mH7Ld+52n5!nx"
+            - name: FLATNOTES_SECRET_KEY
+              value: gechee3saixo6eiquigaotaingievai5ahpooNee9dooC0ooloob2ohxaeh2lahngo6shijafi8aiVaejahVoos5zewa8xu4iJeix2junei6Fae3ahK1wiekohhiemag
+            - name: FLATNOTES_SESSION_EXPIRY_DAYS
+              value: "180"
+            - name: FLATNOTES_USERNAME
+              value: mawari
+            - name: GUID
+              value: "1000"
+            - name: PUID
+              value: "1000"
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "150Mi"
+            limits:
+              cpu: "100m"
+              memory: "300Mi"
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: /data
+              name: flatnotes-pvc
+      volumes:
+        - name: flatnotes-pvc
+          persistentVolumeClaim:
+            claimName: flatnotes-pvc

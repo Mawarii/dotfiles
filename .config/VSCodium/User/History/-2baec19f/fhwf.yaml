@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ip-regrep-message-service
+spec:
+  revisionHistoryLimit: 1
+  replicas: 2
+  selector:
+    matchLabels:
+      k8s-app: ip-regrep-message-service
+  template:
+    metadata:
+      labels:
+        k8s-app: ip-regrep-message-service
+    spec:
+      containers:
+        - name: application
+          image: gitlab.publicplan.cloud:5050/regmo/intermediaryplatform_regrep-message-service:latest
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+              ephemeral-storage: "1Gi"
+            limits:
+              memory: "512Mi"
+              cpu: "250m"
+              ephemeral-storage: "2Gi"
+          ports:
+            - containerPort: 8089
+          securityContext:
+            runAsUser: 10003
+            runAsGroup: 10003
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+        - name: validator
+          image: gitlab.publicplan.cloud:5050/regmo/intermediaryplatform_regrep-message-service/validator:latest
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "100m"
+              ephemeral-storage: "512Mi"
+            limits:
+              memory: "1Gi"
+              cpu: "250m"
+              ephemeral-storage: "1Gi"
+          ports:
+            - containerPort: 8080
+          securityContext:
+            runAsUser: 10003
+            runAsGroup: 10003
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+      imagePullSecrets:
+        - name: gitlab-registry-regprep

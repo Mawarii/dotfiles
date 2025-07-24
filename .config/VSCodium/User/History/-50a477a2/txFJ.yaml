@@ -1,0 +1,99 @@
+Domain: forms-flow-bpm-ppmt.c.dev.publicplan.cloud   #<DEFINE_ME>
+
+# postgresql:
+#   host: forms-flow-bpm-postgresql
+#   port: 5432
+
+#   database: formsflowbpm
+
+#   externalSecret:
+#     name: formsflowbpm.forms-flow-bpm-postgresql.credentials.postgresql.acid.zalan.do
+#     usernameKey: username
+#     passwordKey: password
+
+camunda:
+  analytics:
+    database: forms-flow-analytics
+  auth:
+    enabled: true
+    revokeCheck: auto
+  database:
+    name: forms-flow-bpm
+    port: 5432
+  historyLevel: auto
+  securityOrigin: '*'
+  logLevel: INFO
+  formBuilder:
+    password: fWXpX94L2wH1MoB5zMpp8EpRnFGehuxh # CAMUNDA_FORMBUILDER_PIPELINE_PASSWORD
+    username: demo # CAMUNDA_FORMBUILDER_PIPELINE_USERNAME
+  hikari:
+    timeout:
+      connection: 30000 #CAMUNDA_HIKARI_CONNECTION_TIMEOUT
+      idle: 600000 #CAMUNDA_HIKARI_IDLE_TIMEOUT
+      valid: 5000 #CAMUNDA_HIKARI_VALID_TIMEOUT
+    poolsize:
+      max: 10 #CAMUNDA_HIKARI_MAX_POOLSIZE
+  jdbc:
+    driver: org.postgresql.Driver
+    username: formsflowbpm
+    password: VIpCzPqkE9OaehxNkr9XH8VXHYqSip0HQhKnx1C3wOsCoktGaY6r3w5aV90bljLX
+    url: "jdbc:postgresql://${CAMUNDA_DATABASE_SERVICE_NAME}:${CAMUNDA_DATABASE_PORT}/${CAMUNDA_DATABASE_NAME}"
+  websocket:
+    messageType: TASK_EVENT #WEBSOCKET_MESSAGE_TYPE
+    securityOrigin: https://forms-flow-web-ppmt.c.dev.publicplan.cloud #WEBSOCKET_SECURITY_ORIGIN
+  externalDatabase:
+    existingDatabaseHostKey: ""
+    existingDatabasePortKey: ""
+    existingDatabaseNameKey: ""
+    existingSecretName: "" #name of the existing secret
+
+image:
+  registry: docker.io
+  repository: formsflow/forms-flow-bpm-ee
+  tag: v6.0.2 #The image tag to pull from
+
+formsflow:
+  configmap: forms-flow-ai # name of formsflow.ai configmap
+  secret: forms-flow-ai #name of formsflow.ai secret
+  auth: forms-flow-ai-auth # imagePullSecret (manual secret can be named here)
+
+ingress:
+  ingressClassName: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/whitelist-source-range: "213.61.255.112/29, 78.138.64.211/32, 78.138.66.143/32"
+  enabled: true # create an ingress for this component
+  hostname: "forms-flow-bpm-ppmt.c.dev.publicplan.cloud"
+  port: 8080
+  tls: true
+  selfSigned: false
+  extraTls:
+    - {}
+
+mail: {}
+  # from: "mail@test.publicplan.de"
+  # password: "!4test23"
+  # user: "mail@test.publicplan.de"
+  # smtp:
+  #   auth: true
+  #   port: 465
+  #   server: "smtp.1und1.de"
+  #   ssl:
+  #     enable: true
+
+resources:
+  limits:
+    cpu: 600m
+    memory: 1Gi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+waitFor: "${CAMUNDA_DATABASE_SERVICE_NAME}:${CAMUNDA_DATABASE_PORT}"
+
+# used to add extra environment variables
+# extraEnv:
+#   key: value
+
+extraEnv:
+  BPM_CLIENT_CONN_TIMEOUT: "30000"

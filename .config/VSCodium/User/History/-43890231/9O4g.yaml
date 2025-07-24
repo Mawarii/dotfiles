@@ -1,0 +1,16 @@
+---
+- name: Initialize first controlplane
+  ansible.builtin.include_tasks: "initialize-first-controlplane.yaml"
+
+- name: Upgrade first controlplane
+  ansible.builtin.include_tasks: "upgrade-first-controlplane.yaml"
+
+- name: Reboot machine
+  when: kube_upgrade_needed or crio_upgrade_needed or reboot_required_file.stat.exists
+  ansible.builtin.include_tasks: "{{ playbook_dir }}/utils/reboot-machine.yaml"
+
+- name: Generate join secrets
+  ansible.builtin.include_tasks: "generate-join-secrets.yaml"
+
+- name: Add Helm apt packages
+  ansible.builtin.include_tasks: "add-helm-apt-resources.yaml"

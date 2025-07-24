@@ -1,0 +1,83 @@
+apiVersion: mariadb.mmontes.io/v1alpha1
+kind: MariaDB
+metadata:
+    name: mariadb
+spec:
+    replicas: 0
+    rootPasswordSecretKeyRef:
+        key: ROOT_PASSWORD
+        name: mariadb
+    passwordSecretKeyRef:
+        key: PASSWORD
+        name: mariadb
+
+    database: pflegewegweiser
+    username: pflegewegweiser
+
+    image:
+        repository: mariadb
+        tag: "10.6.17"
+        pullPolicy: Always
+
+    port: 3306
+
+    env:
+        - name: TZ
+          value: SYSTEM
+    envFrom:
+        - configMapRef:
+              name: mariadb
+    livenessProbe:
+        exec:
+            command:
+                - bash
+                - -c
+                - mariadb -u root -p"${MARIADB_ROOT_PASSWORD}" -e "SELECT 1;"
+        initialDelaySeconds: 20
+        periodSeconds: 10
+        timeoutSeconds: 5
+    myCnf: |
+        [mariadb]
+        bind-address=0.0.0.0
+        default_storage_engine=InnoDB
+        binlog_format=row
+        innodb_autoinc_lock_mode=2
+        max_allowed_packet=256M
+    podSecurityContext:
+        runAsUser: 0
+    securityContext:
+        allowPrivilegeEscalation: false
+
+    podDisruptionBudget:
+        maxUnavailable: 50%
+    readinessProbe:
+        exec:
+            command:
+                - bash
+                - -c
+                - mariadb -u root -p"${MARIADB_ROOT_PASSWORD}" -e "SELECT 1;"
+        initialDelaySeconds: 20
+        periodSeconds: 10
+        timeoutSeconds: 5
+    resources:
+        limits:
+            cpu: 300m
+            memory: 512Mi
+        requests:
+            cpu: 100m
+            memory: 128Mi
+    updateStrategy:
+        type: RollingUpdate
+    volumeClaimTemplate:
+        accessModes:
+            - ReadWriteOnce
+        resources:
+            requests:
+                storage: 1Gi
+    volumeMounts:
+        - mountPath: /tmp
+          name: tmp
+    volumes:
+        - emptyDir: {}
+          name: tmp
+

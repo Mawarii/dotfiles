@@ -1,0 +1,68 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: prometheus
+spec:
+  ### S3-Integration
+  # thanos:
+  #   image: quay.io/thanos/thanos:v0.28.1
+  serviceAccountName: prometheus
+  ## Container Hardening
+  containers:
+    - name: prometheus
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+        capabilities:
+          drop:
+            - ALL
+    - name: config-reloader
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+        capabilities:
+          drop:
+            - ALL
+    ### S3-Integration
+    # - name: thanos-sidecar
+    #   securityContext:
+    #     allowPrivilegeEscalation: false
+    #     readOnlyRootFilesystem: true
+    #     runAsNonRoot: true
+    #     runAsUser: 1000
+    #     seccompProfile:
+    #       type: RuntimeDefault
+    #     capabilities:
+    #       drop:
+    #         - ALL
+  initContainers:
+    - name: init-config-reloader
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        runAsUser: 1000
+        seccompProfile:
+          type: RuntimeDefault
+        capabilities:
+          drop:
+            - ALL
+  ## Selectors - Empty Object ("{}") means match all, null ("null" or unset) means match none.
+  probeNamespaceSelector: {}
+  probeSelector: {}
+  podMonitorNamespaceSelector: {}
+  podMonitorSelector: {}
+  ruleNamespaceSelector: {}
+  ruleSelector: {}
+  scrapeConfigNamespaceSelector: {}
+  scrapeConfigSelector: {}
+  serviceMonitorNamespaceSelector: {}
+  serviceMonitorSelector: {}

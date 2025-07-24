@@ -1,0 +1,71 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+  - ../../../../databases/bitnami-mariadb-10.11.4-debian-11-r0/overlays/develop
+  # - matomo-version-ingress.yaml
+
+patches:
+  - path: mariadb-secret.patch.yaml
+    target:
+      kind: Secret
+      name: mariadb-wsp-secret
+  - path: mariadb-configmap.patch.yaml
+    target:
+      kind: ConfigMap
+      name: mariadb
+  - path: mariadb-sts.patch.yaml
+    target:
+      kind: StatefulSet
+      name: mariadb
+  - path: matomo-ingress.patch.yaml
+    target:
+      kind: Ingress
+      name: matomo
+
+images:
+  - name: DOCKER_IMAGE_1
+    newName: gitlab.krz.de:4567/customers/publicplan/wsp/staging/images/matomo
+    newTag: 5.0.3-debian-12-r0
+  - name: DOCKER_IMAGE_1_ORIGIN
+    newName: bitnami/matomo
+    newTag: 5.0.3-debian-12-r0
+  - name: DOCKER_IMAGE_2
+    newName: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/tools/version-sidecar
+    newTag: v1.3.1
+  - name: DOCKER_IMAGE_2_ORIGIN
+    newName: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/tools/version-sidecar
+    newTag: v1.3.1
+  - name: DOCKER_IMAGE_3
+    newName: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/tools/backup-jobs
+    newTag: v1.3.0
+  - name: DOCKER_IMAGE_3_ORIGIN
+    newName: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/tools/backup-jobs
+    newTag: v1.3.0
+
+# replacements: #version sidecar replacements
+#   - source:
+#       kind: Deployment
+#       name: matomo
+#       fieldPath: spec.template.spec.containers.[name=matomo].image
+#     targets:
+#     - select:
+#         kind: Deployment
+#         name: matomo
+#       fieldPaths:
+#         - spec.template.spec.containers.[name=version-sidecar].env.[name=DOCKER_IMAGE_1].value
+#       options:
+#         create: true
+#   - source:
+#       kind: Deployment
+#       name: matomo
+#       fieldPath: spec.template.spec.containers.[name=version-sidecar].image
+#     targets:
+#     - select:
+#         kind: Deployment
+#         name: matomo
+#       fieldPaths:
+#         - spec.template.spec.containers.[name=version-sidecar].env.[name=DOCKER_IMAGE_3].value
+#       options:
+#         create: true

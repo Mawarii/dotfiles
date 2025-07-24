@@ -1,0 +1,4 @@
+---
+- name: create random but idempotent password
+  ansible.builtin.set_fact:
+    one_fact: "{{ formio.database.password }}"

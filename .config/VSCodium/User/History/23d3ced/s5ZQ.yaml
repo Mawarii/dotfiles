@@ -1,0 +1,21 @@
+controller:
+  config:
+    allow-snippet-annotations: "true"
+    use-forwarded-headers: "true"
+    compute-full-forwarded-for: "true"
+    annotations-risk-level: "Critical"
+    strict-validate-path-type: false
+  allowSnippetAnnotations: true
+  kind: DaemonSet
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+  service:
+    type: NodePort
+    nodePorts:
+      http: "32080"
+      https: "32443"

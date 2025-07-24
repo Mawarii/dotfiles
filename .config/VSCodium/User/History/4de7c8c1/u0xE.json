@@ -1,0 +1,14 @@
+{
+    "yaml.schemas": {
+        "/home/dmarkovic/.yamllint.yaml": "*.patch.yaml",
+        "https://json.schemastore.org/yamllint.json": [
+            "file:///home/dmarkovic/git-projects/publicplan/wsp/app-configs/applications/domibus-test/overlays/develop/domibus-ingress.patch.yaml",
+            "file:///home/dmarkovic/git-projects/publicplan/wsp/app-configs/templates/applications-disabled/prometheus/base/prometheus.yaml",
+            "file:///home/dmarkovic/git-projects/publicplan/wsp/app-configs/templates/applications-disabled/prometheus/overlays/develop/prometheus.patch.yaml",
+            "file:///home/dmarkovic/prom-clean.yaml",
+            "file:///home/dmarkovic/git-projects/publicplan/wsp/app-configs/applications/argo-test/overlays/develop/argo-test-enc-secret.yaml",
+            "file:///home/dmarkovic/git-projects/publicplan/wsp/app-configs/applications/argo-test/overlays/develop/argo-test-ingress.patch.yaml",
+            "file:///home/dmarkovic/git-projects/publicplan/wsp/app-configs/applications/argo-test/overlays/develop/argo-test.patch.yaml"
+        ]
+    }
+}

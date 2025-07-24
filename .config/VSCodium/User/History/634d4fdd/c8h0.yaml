@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drupal
+spec:
+  selector:
+    matchLabels:
+      app: drupal
+      layer: hsi-intranet
+  template:
+    spec:
+      containers:
+        - name: drupal
+          env:
+            - name: MYSQL_USER
+              value: rechtnrw
+            - name: MYSQL_DATABASE
+              value: rechtnrw
+            - name: MYSQL_HOST
+              value: hsi-intranet-mariadb
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: PASSWORD
+                  name: mariadb
+            - name: HTTP_BASIC_USER
+              value: stage
+            - name: HTTP_BASIC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: PASSWORD
+                  name: http-basic
+            - name: OPENSEARCH_URL
+              value: https://opensearch.rnrw.stage.publicplan.cloud:443
+            - name: STATIC_SITE_BASE_URL
+              value: https://static.public.rnrw.stage.publicplan.cloud
+            - name: OPENSEARCH_MIDDLEWARE_URL
+              value: https://drupal.hsi-intranet.rnrw.stage.publicplan.cloud/search-middleware
+            - name: SEARCH_MIDDLEWARE_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: TOKEN
+                  name: search-middleware-token
+            - name: STATIC_SITE_BASE_URL_INTRANET
+              value: https://drupal.hsi-intranet.rnrw.stage.publicplan.cloud
+          volumeMounts:
+            - mountPath: /var/www/html/web/sites/default/settings.cluster.php
+              name: settings
+              subPath: settings.cluster.php
+            - mountPath: /var/www/html/web/search-middleware/settings/settings.php
+              name: opensearch-middleware-settings
+              subPath: settings.php
+        - name: cron
+          env:
+            - name: MYSQL_USER
+              value: rechtnrw
+            - name: MYSQL_DATABASE
+              value: rechtnrw
+            - name: MYSQL_HOST
+              value: hsi-intranet-mariadb
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: PASSWORD
+                  name: mariadb
+            - name: HTTP_BASIC_USER
+              value: stage
+            - name: HTTP_BASIC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: PASSWORD
+                  name: http-basic
+            - name: OPENSEARCH_URL
+              value: https://opensearch.rnrw.stage.publicplan.cloud:443
+            - name: OPENSEARCH_MIDDLEWARE_URL
+              value: https://drupal.hsi-intranet.rnrw.stage.publicplan.cloud/search-middleware
+            - name: STATIC_SITE_BASE_URL
+              value: https://static.public.rnrw.stage.publicplan.cloud
+            - name: STATIC_SITE_BASE_URL_INTRANET
+              value: https://drupal.hsi-intranet.rnrw.stage.publicplan.cloud
+          volumeMounts:
+            - mountPath: /var/www/html/web/sites/default/settings.cluster.php
+              name: settings
+              subPath: settings.cluster.php
+      volumes:
+        - name: settings
+          configMap:
+            name: settings
+        - name: opensearch-middleware-settings
+          configMap:
+            name: opensearch-middleware-settings

@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- empfangsclient-vault-backup-cronjob.yaml
+
+images:
+- name: DOCKER_IMAGE_1
+  newName: gitlab.publicplan.cloud:5050/themenwelt-portalverbund/empfangs-client/ecc
+  newTag: v2.0.1-sid
+- name: DOCKER_IMAGE_1_ORIGIN
+  newName: gitlab.publicplan.cloud:5050/themenwelt-portalverbund/empfangs-client/ecc
+  newTag: 542ec550

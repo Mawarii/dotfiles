@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: regmocluster-domibus
+  namespace: argocd-applications-regmo
+spec:
+  destination:
+    namespace: domibus
+    name: publicplan-regmo
+  project: regmocluster-projects-regmo
+  sources:
+    - path: env/dev
+      repoURL: "git@gitlab.publicplan.cloud:regmo/infrastructure/domibus-dist.git"
+      targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

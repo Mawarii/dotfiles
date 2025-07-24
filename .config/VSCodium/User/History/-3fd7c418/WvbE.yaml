@@ -1,0 +1,7 @@
+---
+- name: Upgrade to newer Kubernetes version
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - upgrade-kubernetes

@@ -1,0 +1,4 @@
+auth:
+  database: ecc
+  existingSecret: mariadb-auth
+  username: ecc

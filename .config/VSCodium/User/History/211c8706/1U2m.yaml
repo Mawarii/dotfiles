@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: opensearch-middleware-settings
+data:
+  settings.php: |
+    <?php
+    $settings['opensearch'] = [
+      'hosts' => [$_ENV['OPENSEARCH_URL']],
+      'sslVerification' => FALSE,
+    ];
+
+    $settings['trustedOrigins'] = $_ENV['SEARCH_MIDDLEWARE_TRUSTED_ORIGINS'];
+
+    $settings['infoToken'] = $_ENV['SEARCH_MIDDLEWARE_TOKEN'];

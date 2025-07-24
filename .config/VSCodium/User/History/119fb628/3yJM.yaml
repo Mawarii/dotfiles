@@ -1,0 +1,62 @@
+apiVersion: batch/v11001
+kind: CronJob
+metadata:
+  name: backup-pvc-cronjob
+spec:
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          name: backup-pvc-cronjob
+        spec:
+          securityContext:
+            fsGroup: 1001
+            runAsGroup: 1001
+            runAsNonRoot: true
+            runAsUser: 1001
+          imagePullSecrets:
+            - name: gitlab-registry
+          restartPolicy: OnFailure
+          containers:
+            - name: backup
+              image: DOCKER_IMAGE_4
+              securityContext:
+                runAsGroup: 1001
+                runAsNonRoot: true
+                runAsUser: 1001
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop: ["ALL"]
+                seccompProfile:
+                  type: RuntimeDefault
+                readOnlyRootFilesystem: true
+                privileged: false
+              envFrom:
+                - secretRef:
+                    name: cluster-stage-vars
+              env:
+                #? possible values postgres / mariadb / mysql / mongodb / pvc
+                - name: DB_TYPE
+                  value: "pvc"
+                - name: BUCKET_SUBDIR
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: "metadata.namespace"
+                - name: PVC_DATA_LOCATION
+                  value: "/bitnami/matomo"
+              volumeMounts:
+                - mountPath: "/tmp"
+                  name: tmp
+                - mountPath: "/home/tools"
+                  name: home
+                - mountPath: "/bitnami/matomo"
+                  name: matomo-data
+          volumes:
+            - name: tmp
+              emptyDir: {}
+            - name: home
+              emptyDir: {}
+            - name: matomo-data
+              persistentVolumeClaim:
+                claimName: matomo-pvc

@@ -1,0 +1,14 @@
+---
+- name: Machine preparation and hardening
+  hosts: all
+  become: true
+  gather_facts: false
+  roles:
+    - role: prepare-machine
+
+- name: Install K3s
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - role: install-k3s

@@ -1,0 +1,26 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ./empfangsclient/fitko/keycloak
+- ./empfangsclient/zdi/keycloak
+
+secretGenerator:
+- envs:
+  - ./cluster-stage-vars.env
+  name: cluster-stage-vars
+  options:
+    disableNameSuffixHash: true
+    annotations:
+      replicator.v1.mittwald.de/replicate-to: '*'
+      replicator.v1.mittwald.de/strip-labels: "true"
+  type: Opaque
+- name: gitlab-registry
+  options:
+    disableNameSuffixHash: true
+    annotations:
+      replicator.v1.mittwald.de/replicate-to: 'empfangsclient-vault'
+      replicator.v1.mittwald.de/strip-labels: "true"
+  files:
+  - .dockerconfigjson=backup-cronjob-image-pull-secret.json
+  type: kubernetes.io/dockerconfigjson

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kitchenowl
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      kubernetes.io/app: kitchenowl
+  template:
+    metadata:
+      labels:
+        kubernetes.io/app: kitchenowl
+      annotations:
+        backup.velero.io/backup-volumes: "kitchenowl-data"
+    spec:
+      containers:
+        - name: kitchenowl
+          image: tombursch/kitchenowl:v0.5.1
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: JWT_SECRET_KEY
+              value: "xTdMRkvpQw3H7ccd6QKogN5kS95waOqeEs9Tj4cyZHhDWtp9ZbNFjURJ6lbjxERI"
+            - name: DB_DRIVER
+              value: "postgresql"
+            - name: DB_HOST
+              value: "kitchenowl-pg.kitchenowl.svc"
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  key: username
+                  name: kitchenowl.kitchenowl-pg.credentials.postgresql.acid.zalan.do
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: kitchenowl.kitchenowl-pg.credentials.postgresql.acid.zalan.do
+            - name: DB_NAME
+              value: "kitchenowl"
+          volumeMounts:
+            - mountPath: /data
+              name: kitchenowl-data
+      volumes:
+        - name: kitchenowl-data
+          persistentVolumeClaim:
+            claimName: kitchenowl-data

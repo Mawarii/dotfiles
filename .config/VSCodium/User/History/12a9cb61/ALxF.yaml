@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: efacluster-empfangsclient
+  namespace: argocd
+spec:
+  clusterResourceWhitelist:
+    # - group: ''
+    #   kind: 'Namespace'
+    - group: "*"
+      kind: "*"
+  destinations:
+    - name: in-cluster
+      namespace: "empfangsclient-fitko"
+      server: "*"
+    - name: in-cluster
+      namespace: "empfangsclient-zdi"
+      server: "*"
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  sourceNamespaces:
+    - empfangsclient-zdi
+    - empfangsclient-fitko
+  sourceRepos:
+    - "*"

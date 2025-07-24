@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dca-backend-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: "dca-backend.regmo.dev.publicplan.cloud"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: dca-backend-service
+                port:
+                  number: 8080
+  tls:
+    - hosts:
+        - "dca-backend.regmo.dev.publicplan.cloud"
+      secretName: "dca-backend-tls"

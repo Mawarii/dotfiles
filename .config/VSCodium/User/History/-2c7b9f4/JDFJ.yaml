@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    k8s.publicplan.cloud/contact: Team KOPS
+  creationTimestamp: null
+  name: velero
+  namespace: argocd
+spec:
+  destination:
+    namespace: velero
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+    - chart: velero
+      helm:
+        valueFiles:
+          - $values/applications/velero/default-values.yaml
+          - $values/applications/velero/values.yaml
+      repoURL: https://vmware-tanzu.github.io/helm-charts
+      targetRevision: 10.0.1
+    - ref: values
+      repoURL: git@gitlab.publicplan.cloud:team-kops/infra-internal/terraform/pp-core-cluster.git
+      targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

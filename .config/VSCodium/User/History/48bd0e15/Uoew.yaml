@@ -1,0 +1,87 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: customercluster-sbhh-forms-flow-dev
+  namespace: argocd
+  annotations:
+    k8s.publicplan.cloud/contact: "Juliya Rajasingam"
+spec:
+  destination:
+    namespace: sbhh-forms-flow-dev
+    name: publicplan-customer
+  project: customercluster-projects-sbhh
+  sources:
+    - targetRevision: HEAD
+      repoURL: git@gitlab.publicplan.cloud:programm-lowcode/sb-hamburg/sbhh-formsflow-helm-config.git
+      path: sbhh-dev/resources
+    - targetRevision: HEAD
+      repoURL: git@gitlab.publicplan.cloud:programm-lowcode/sb-hamburg/sbhh-formsflow-helm-config.git
+      ref: values
+    - chart: forms-flow-ai
+      helm:
+        valueFiles:
+          - $values/sbhh-dev/forms-flow-ai-values.yaml
+      repoURL: https://chartmuseum.internal.publicplan.cloud
+      targetRevision: v5.0.0
+    - chart: forms-flow-api
+      helm:
+        valueFiles:
+          - $values/sbhh-dev/forms-flow-api-values.yaml
+      repoURL: https://chartmuseum.internal.publicplan.cloud
+      targetRevision: v5.0.0
+    - chart: forms-flow-analytics
+      helm:
+        valueFiles:
+          - $values/sbhh-dev/forms-flow-analytics-values.yaml
+      repoURL: https://chartmuseum.internal.publicplan.cloud
+      targetRevision: v5.0.0
+    - chart: forms-flow-bpm
+      helm:
+        valueFiles:
+          - $values/sbhh-dev/forms-flow-bpm-values.yaml
+      repoURL: https://chartmuseum.internal.publicplan.cloud
+      targetRevision: v5.0.0
+    - chart: forms-flow-data-analysis
+      helm:
+        valueFiles:
+          - $values/sbhh-dev/forms-flow-data-analysis-values.yaml
+      repoURL: https://chartmuseum.internal.publicplan.cloud
+      targetRevision: v5.0.0
+    - chart: forms-flow-documents-api
+      helm:
+        valueFiles:
+          - $values/sbhh-dev/forms-flow-documents-api-values.yaml
+      repoURL: https://chartmuseum.internal.publicplan.cloud
+      targetRevision: v5.0.0
+    - chart: forms-flow-forms
+      helm:
+        valueFiles:
+          - $values/sbhh-dev/forms-flow-forms-values.yaml
+      repoURL: https://chartmuseum.internal.publicplan.cloud
+      targetRevision: v5.0.0
+    - chart: forms-flow-idm
+      helm:
+        valueFiles:
+          - $values/sbhh-dev/forms-flow-idm-values.yaml
+        releaseName: forms-flow-idm
+      repoURL: https://chartmuseum.internal.publicplan.cloud
+      targetRevision: v5.0.0
+    - chart: forms-flow-web
+      helm:
+        valueFiles:
+          - $values/sbhh-dev/forms-flow-web-values.yaml
+      repoURL: https://chartmuseum.internal.publicplan.cloud
+      targetRevision: v5.0.0
+    - chart: nocodb
+      helm:
+        valueFiles:
+          - $values/sbhh-dev/nocodb-values.yaml
+      repoURL: https://chartmuseum.internal.publicplan.cloud
+      targetRevision: 0.3.0
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

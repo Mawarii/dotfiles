@@ -1,0 +1,712 @@
+# Default values for CLOPS-helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+global:
+  domain: clops.mawari.eu
+
+# Kube-Prometheus-Stack Config
+kube-prometheus-stack:
+  # -- Enable the whole component
+  enabled: true
+  # -- Override the full names of all resources
+  fullnameOverride: prometheus-stack
+  # Disable grafana, so we can deploy it by our conditions
+  grafana:
+    enabled: false
+  # Flag to disable all the kubernetes component scrapers
+  kubernetesServiceMonitors:
+    enabled: true
+  # Create default rules for monitoring the cluster
+  defaultRules:
+    # Labels for default rules
+    labels:
+      role: alert-rules
+  # Alertmanager Config
+  alertmanager:
+    # -- Enable PDB for the alertmanager
+    podDisruptionBudget:
+      enabled: true
+    # Alertmanager ingress configuration
+    extraSecret:
+      # -- If not set, name will be auto generated
+      name: "alertmanager-basic-auth"
+      data:
+        # -- generated with htpasswd (PLEASE CHANGE!)
+        auth: "alertadmin:$apr1$hOEnAU/5$oUPG09ECJimjkeoA1mOe41" # alertadmin:yu7eikiepookohKi7ahl
+    ingress:
+      # -- Specifies whether an ingress should be created
+      enabled: true
+      # -- Ingress Class Name. MAY be required for Kubernetes versions >= 1.18
+      ingressClassName: nginx
+      # -- Annotations for the ingress
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        kubernetes.io/tls-acme: "true"
+        # -- Enable Basic Auth
+        nginx.ingress.kubernetes.io/auth-type: basic
+        nginx.ingress.kubernetes.io/auth-secret: alertmanager-basic-auth
+        nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
+      # -- Hosts configuration for the ingress
+      hosts:
+        - "alertmanager.{{ .Values.global.domain }}"
+      # -- TLS configuration for the ingress
+      tls:
+        - secretName: alertmanager-general-tls
+          hosts:
+            - "alertmanager.{{ .Values.global.domain }}"
+    # Webhook Config
+    config:
+      global:
+        resolve_timeout: 1m
+      inhibit_rules:
+        - equal:
+            - namespace
+            - alertname
+          source_match:
+            severity: critical
+          target_match_re:
+            severity: warning|info
+        - equal:
+            - namespace
+            - alertname
+          source_match:
+            severity: warning
+          target_match_re:
+            severity: info
+      receivers:
+        - name: Default
+        - name: Watchdog
+        - name: Warning
+          webhook_configs:
+            - send_resolved: true
+              url: http://alertmanager-gotify-bridge:8080/gotify_webhook
+        - name: Critical
+          webhook_configs:
+            - send_resolved: true
+              url: http://alertmanager-gotify-bridge:8080/gotify_webhook
+      route:
+        group_by:
+          - namespace
+        group_interval: 5m
+        group_wait: 30s
+        receiver: Default
+        repeat_interval: 6h
+        routes:
+          - match:
+              alertname: Watchdog
+            receiver: Watchdog
+          - match:
+              severity: warning
+            receiver: Warning
+          - match:
+              severity: critical
+            receiver: Critical
+    templates:
+      - "/etc/alertmanager/config/*.tmpl"
+    alertmanagerSpec:
+      # -- Number of alertmanager replicas
+      replicas: 1
+      # -- The external URL the Alertmanager instances will be available under
+      externalUrl: "https://alertmanager.{{ .Values.global.domain }}"
+      # -- TODO: OAUTH
+      containers: []
+  # KubeControllerManager Config
+  kubeControllerManager:
+    service:
+      # -- define port
+      port: 10257
+      targetPort: 10257
+      selector:
+        component: kube-controller-manager
+        tier: control-plane
+    # KubeControllerManager service monitor configuration
+    serviceMonitor:
+      https: true
+      insecureSkipVerify: true
+  # KubeScheduler Config
+  kubeScheduler:
+    service:
+      # -- define port
+      port: 10259
+      targetPort: 10259
+    # KubeScheduler service monitor configuration
+    serviceMonitor:
+      https: true
+      insecureSkipVerify: true
+  # KubeProxy Config
+  kubeProxy:
+    # -- Specifies whether the kubeProxy scraping should be enabled
+    enabled: false
+  kubeEtcd:
+    # kube-etcd, kube-scheduler & kube-controller-manager down fix (https://github.com/prometheus-community/helm-charts/issues/204#issuecomment-1003558431)
+    service:
+      port: 2381
+      targetPort: 2381
+  # Kube-state-metrics Config
+  kube-state-metrics:
+    # -- Override the full names of all resources
+    fullnameOverride: prometheus-kube-state-metrics
+  # Prometheus-Node-Exporter Config
+  prometheus-node-exporter:
+    # -- Override the full names of all resources
+    fullnameOverride: prometheus-node-exporter
+    extraArgs:
+      - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
+      - --collector.filesystem.fs-types-exclude=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$
+      - --collector.textfile
+      - --collector.textfile.directory=/var/lib/node_exporter
+    extraHostVolumeMounts:
+      - name: var-lib-node-exporter
+        hostPath: /var/lib/node_exporter
+        mountPath: /var/lib/node_exporter
+        readOnly: true
+  # PrometheusOperator Config
+  prometheusOperator:
+    # -- TLS configuration (do not change: https://github.com/helm/charts/issues/21080#issuecomment-596958610)
+    tls:
+      enabled: false
+    # -- TLS proxy configuration (do not change: https://github.com/helm/charts/issues/21080#issuecomment-596958610)
+    tlsProxy:
+      enabled: false
+    # -- Admission webhooks configuration (do not change: https://github.com/helm/charts/issues/21080#issuecomment-596958610)
+    admissionWebhooks:
+      enabled: false
+      # -- Define failure policy
+      failurePolicy: Ignore
+      # -- (do not change: https://github.com/helm/charts/issues/21080#issuecomment-596958610)
+      patch:
+        enabled: false
+  # Prometheus Config
+  prometheus:
+    service:
+      # targetPort: 4180 # used for OauthProxContainer (Keycloak)
+      targetPort: 9090
+      # -- Additional ports for the service
+      additionalPorts:
+        - name: prometheus
+          port: 9191
+          protocol: TCP
+          targetPort: 9090
+    # -- Enable PDB for prometheus
+    podDisruptionBudget:
+      enabled: true
+    # -- Set Basic Auth Secret
+    extraSecret:
+      # -- If not set, name will be auto generated
+      name: "prometheus-basic-auth"
+      data:
+        # -- generated with htpasswd (PLEASE CHANGE!)
+        auth: "promadmin:$apr1$Yap4ePGO$dArJEFVHD6aMjMQqmI7PQ0" # promadmin:kai5Chohr7aede1zaem9
+    # Prometheus ingress configuration
+    ingress:
+      # -- Specifies whether an ingress should be created
+      enabled: true
+      # -- Ingress Class Name. MAY be required for Kubernetes versions >= 1.18
+      ingressClassName: nginx
+      # -- Annotations for the ingress
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        kubernetes.io/tls-acme: "true"
+        # -- Enable Basic Auth
+        nginx.ingress.kubernetes.io/auth-type: basic
+        nginx.ingress.kubernetes.io/auth-secret: prometheus-basic-auth
+        nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
+      # -- Hosts configuration for the ingress
+      hosts:
+        - "prometheus.{{ .Values.global.domain }}"
+      # -- TLS configuration for the ingress
+      tls:
+        - secretName: prometheus-general-tls
+          hosts:
+            - "prometheus.{{ .Values.global.domain }}"
+    prometheusSpec:
+      # -- enable --web.enable-remote-write-receiver flag on prometheus-server
+      enableRemoteWriteReceiver: true
+      # -- The external URL prometheus will be available under
+      externalUrl: "https://prometheus.{{ .Values.global.domain }}"
+      ruleSelectorNilUsesHelmValues: false
+      # -- PrometheusRules to be selected for target discovery
+      ruleSelector:
+        matchLabels:
+          role: alert-rules
+      serviceMonitorSelectorNilUsesHelmValues: false
+      podMonitorSelectorNilUsesHelmValues: false
+      # -- How long to retain metrics
+      retention: 7d
+      ## Enable compression of the write-ahead log using Snappy
+      walCompression: false
+      # -- Number of prometheus replicas
+      replicas: 1
+      # Resource limits & requests
+      resources:
+        requests:
+          memory: 400Mi
+
+# Metrics-Server Config
+metrics-server:
+  # -- Enable the whole component
+  enabled: true
+  # -- Override the full names of all resources
+  fullnameOverride: metrics-server
+  # -- Number of metrics-server replicas
+  replicas: 2
+  # ServiceMonitor configuration
+  serviceMonitor:
+    enabled: true
+  defaultArgs:
+    - --cert-dir=/tmp
+    - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+    - --kubelet-use-node-status-port
+    - --metric-resolution=15s
+    # Needed. See this issue: https://github.com/kubernetes-sigs/metrics-server/issues/1221
+    - --kubelet-insecure-tls
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - metrics-server
+          topologyKey: kubernetes.io/hostname
+
+# Grafana Config
+grafana:
+  # -- Enable the whole component
+  enabled: true
+  # -- Override the full names of all resources
+  fullnameOverride: grafana
+  # Default grafana login credentials
+  adminUser: grafanaAdmin
+  adminPassword: fahC9rohcheiWifei4si
+  # ServiceMonitor configuration
+  serviceMonitor:
+    enabled: true
+  # Grafana ingress configuration
+  ingress:
+    # -- Specifies whether an ingress should be created
+    enabled: true
+    # -- Ingress Class Name. MAY be required for Kubernetes versions >= 1.18
+    ingressClassName: nginx
+    # -- Annotations for the ingress
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-body-size: 1024m
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+      kubernetes.io/tls-acme: "true"
+    # -- Hosts configuration for the ingress
+    hosts:
+      - grafana.clops.mawari.eu
+    # -- TLS configuration for the ingress
+    tls:
+      - hosts:
+          - grafana.clops.mawari.eu
+        secretName: grafana-ingress-tls
+  # Storage configuration
+  persistence:
+    # -- Specifies whether the storage should be enabled
+    enabled: false
+    # storageClassName: default
+    size: 15Gi
+  # Data source configuration
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          type: prometheus
+          url: "http://prometheus-stack-prometheus.{{ .Release.Namespace }}.svc:9090"
+          isDefault: true
+        - name: Loki
+          type: loki
+          url: "http://loki-gateway.{{ .Release.Namespace }}.svc:80"
+          isDefault: false
+          basicAuth: true
+          basicAuthUser: lokiAdmin
+          jsonData:
+            httpHeaderName1: X-Scope-OrgID
+          secureJsonData:
+            basicAuthPassword: Xoor0aicha1fo2rei0tu
+            httpHeaderValue1: "1"
+          withCredentials: true
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: "default"
+          orgId: 1
+          folder: ""
+          type: file
+          disableDeletion: false
+          allowUiUpdates: true
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/default
+        - name: "prometheus"
+          orgId: 1
+          folder: "Prometheus"
+          type: file
+          disableDeletion: false
+          allowUiUpdates: true
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/prometheus
+        - name: "kubernetes"
+          orgId: 1
+          folder: "Kubernetes"
+          type: file
+          disableDeletion: false
+          allowUiUpdates: true
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/kubernetes
+  dashboards:
+    default: {} # add custom dashboards once they are public
+    prometheus:
+      blackbox-exporter:
+        gnetId: 13659
+        revision: 1
+        datasource: Prometheus
+    kubernetes:
+      k8s-system-api-server:
+        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-api-server.json
+        token: ""
+      k8s-system-coredns:
+        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-coredns.json
+        token: ""
+      k8s-views-global:
+        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-global.json
+        token: ""
+      k8s-views-namespaces:
+        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-namespaces.json
+        token: ""
+      k8s-views-nodes:
+        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-nodes.json
+        token: ""
+      k8s-views-pods:
+        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-pods.json
+        token: ""
+
+# Loki Config
+loki:
+  # -- Enable the whole component
+  enabled: false
+  # -- Override the full names of all resources
+  fullnameOverride: loki
+  # Loki Configuration
+  loki:
+    # -- Tenants / Users
+    tenants:
+      - name: lokiAdmin
+        password: Xoor0aicha1fo2rei0tu
+    # -- Storage config. Providing this will automatically populate all necessary storage configs in the templated config.
+    storage:
+      bucketNames:
+        chunks: loki-clops-chunks
+        ruler: loki-clops-ruler
+        admin: loki-clops-admin
+      type: s3
+      s3:
+        s3: null
+        endpoint: "https://s3.mawari.eu"
+        region: "eu-mid-hel-1"
+        accessKeyId: "loki-access-key"
+        secretAccessKey: "6kfvftbLGn6DXju6tahcZjwPCwzdUe3Zwdx2UOUR"
+        s3ForcePathStyle: true
+        insecure: false
+      gcs:
+        chunkBufferSize: 0
+        requestTimeout: "0s"
+        enableHttp2: true
+      azure:
+        accountName: null
+        accountKey: null
+        useManagedIdentity: false
+        userAssignedId: null
+        requestTimeout: null
+      filesystem:
+        chunks_directory: /var/loki/chunks
+        rules_directory: /var/loki/rules
+  # Configuration for the gateway
+  gateway:
+    # -- Specifies whether the gateway should be enabled
+    enabled: true
+    # -- Number of replicas for the gateway
+    replicas: 1
+    # Gateway ingress configuration
+    ingress:
+      # -- Specifies whether an ingress for the gateway should be created
+      enabled: true
+      # -- Ingress Class Name. MAY be required for Kubernetes versions >= 1.18
+      ingressClassName: nginx
+      # -- Annotations for the gateway ingress
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+      # -- Hosts configuration for the gateway ingress
+      hosts:
+        - host: loki.clops.mawari.eu
+          paths:
+            - path: /
+              # -- pathType (e.g. ImplementationSpecific, Prefix, .. etc.) might also be required by some Ingress Controllers
+              pathType: Prefix
+      # -- TLS configuration for the gateway ingress
+      tls:
+        - secretName: loki-gateway-tls
+          hosts:
+            - loki.clops.mawari.eu
+    # Basic auth configuration
+    basicAuth:
+      enabled: true
+      htpasswd: >-
+        {{ if .Values.loki.tenants }}
+          {{- range $t := .Values.loki.tenants }}
+          {{ htpasswd (required "All tenants must have a 'name' set" $t.name) (required "All tenants must have a 'password' set" $t.password) }}
+          {{- end }}
+        {{ else }} 
+          {{ htpasswd (required "'gateway.basicAuth.username' is required" .Values.gateway.basicAuth.username) (required "'gateway.basicAuth.password' is required" .Values.gateway.basicAuth.password) }}
+        {{ end }}
+  # disabling self monitoring componets
+  # breaking grafana etc.
+  monitoring:
+    selfMonitoring:
+      enabled: false
+      grafanaAgent:
+        installOperator: false
+    lokiCanary:
+      enabled: false
+  grafana-agent-operator:
+    # -- Override the full names of all resources
+    fullnameOverride: loki-grafana-agent-operator
+  # need to disable helm chart test since we disable the self monitoring
+  # and the chart tests depends on them
+  test:
+    enabled: false
+
+# Promtail Config
+promtail:
+  # -- Enable the whole component
+  enabled: false
+  # -- Override the full names of all resources
+  fullnameOverride: promtail
+  # -- Resource requests and limits
+  resources:
+    limits:
+      cpu: 200m
+      memory: 375Mi
+    requests:
+      cpu: 100m
+      memory: 135Mi
+  # Extra args for the Promtail container.
+  extraArgs:
+    - -client.external-labels=environment=clops,hostname=$(HOSTNAME)
+  # ServiceMonitor configuration
+  serviceMonitor:
+    enabled: true
+  # Promtail config file options
+  config:
+    enabled: true
+    # -- The log level of the Promtail server
+    logLevel: warn
+    # -- The config of clients of the Promtail server
+    clients:
+      - url: "http://loki-gateway.{{ .Release.Namespace }}.svc/loki/api/v1/push"
+    file: |
+      server:
+        log_level: {{ .Values.config.logLevel }}
+        http_listen_port: {{ .Values.config.serverPort }}
+        {{- with .Values.httpPathPrefix }}
+        http_path_prefix: {{ . }}
+        {{- end }}
+        {{- tpl .Values.config.snippets.extraServerConfigs . | nindent 2 }}
+
+      clients:
+        ## CARE FOR INDENTATION
+        {{- tpl (toYaml .Values.config.clients) . | nindent 2 }}
+          tenant_id: 1
+          basic_auth:
+              username: 'lokiAdmin'
+              password: 'Xoor0aicha1fo2rei0tu'
+
+      positions:
+        filename: /run/promtail/positions.yaml
+
+      scrape_configs:
+        {{- tpl .Values.config.snippets.scrapeConfigs . | nindent 2 }}
+        {{- tpl .Values.config.snippets.extraScrapeConfigs . | nindent 2 }}
+
+      limits_config:
+        {{- tpl .Values.config.snippets.extraLimitsConfig . | nindent 2 }}
+
+      tracing:
+        enabled: {{ .Values.config.enableTracing }}
+
+# Prometheus Blackbox Exporter Config
+prometheus-blackbox-exporter:
+  # -- Enable the whole component
+  enabled: false
+  # -- Override the full names of all resources
+  fullnameOverride: prometheus-blackbox-exporter
+  # if the configuration is managed as secret outside the chart, using SealedSecret for example,
+  # provide the name of the secret here. If secretConfig is set to true, configExistingSecretName will be ignored
+  # in favor of the config value.
+  configExistingSecretName: ""
+  # Store the configuration as a `Secret` instead of a `ConfigMap`, useful in case it contains sensitive data
+  secretConfig: false
+  config:
+    modules:
+      http_2xx:
+        prober: http
+        timeout: 5s
+        http:
+          valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+          follow_redirects: true
+          preferred_ip_protocol: "ip4"
+          tls_config:
+            insecure_skip_verify: true
+      # client.example
+      ## ENV
+      # http_2xx_application_name:
+      #   prober: http
+      #   timeout: 5s
+      #   http:
+      #     method: GET
+      #     valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+      #     no_follow_redirects: false
+      #     preferred_ip_protocol: "ip4"
+      #     tls_config:
+      #       insecure_skip_verify: true
+      #     basic_auth:
+      #       username: "username"
+      #       password: "userpassword"
+      # GitLab and others when "healthy" do a redirect to the login provider
+      http_redirect_location_set:
+        prober: http
+        timeout: 5s
+        http:
+          method: GET
+          valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+          no_follow_redirects: true
+          preferred_ip_protocol: "ip4"
+          tls_config:
+            insecure_skip_verify: false
+          valid_status_codes: [302]
+          fail_if_header_not_matches:
+            - header: Location
+              # We are fine if it isn't empty
+              regexp: "^.+$"
+      http_2xx_content_ok:
+        prober: http
+        timeout: 8s
+        http:
+          method: GET
+          valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+          no_follow_redirects: false
+          preferred_ip_protocol: "ip4"
+          tls_config:
+            insecure_skip_verify: true
+          fail_if_body_not_matches_regexp:
+            - "OK"
+  # ServiceMonitor configuration
+  serviceMonitor:
+    ## If true, a ServiceMonitor CRD is created for a prometheus operator
+    ## https://github.com/coreos/prometheus-operator for each target
+    ##
+    enabled: true
+
+    ## If true, a ServiceMonitor CRD is created for a prometheus operator
+    ## https://github.com/coreos/prometheus-operator for blackbox-exporter itself
+    ##
+    selfMonitor:
+      enabled: true
+      additionalMetricsRelabels: {}
+      additionalRelabeling: []
+      labels: {}
+      interval: 30s
+      scrapeTimeout: 30s
+
+    # Default values that will be used for all ServiceMonitors created by `targets`
+    defaults:
+      additionalMetricsRelabels: {}
+      additionalRelabeling: []
+      labels: {}
+      interval: 30s
+      scrapeTimeout: 30s
+      module: http_2xx
+    ## scheme: HTTP scheme to use for scraping. Can be used with `tlsConfig` for example if using istio mTLS.
+    scheme: http
+    ## tlsConfig: TLS configuration to use when scraping the endpoint. For example if using istio mTLS.
+    ## Of type: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#tlsconfig
+    tlsConfig: {}
+    bearerTokenFile:
+
+    targets:
+      #    - name: example                    # Human readable URL that will appear in Prometheus / AlertManager
+      #      url: http://example.com/healthz  # The URL that blackbox will scrape
+      #      hostname: example.com            # HTTP probes can accept an additional `hostname` parameter that will set `Host` header and TLS SNI
+      #      labels: {}                       # Map of labels for ServiceMonitor. Overrides value set in `defaults`
+      #      interval: 60s                    # Scraping interval. Overrides value set in `defaults`
+      #      scrapeTimeout: 60s               # Scrape timeout. Overrides value set in `defaults`
+      #      module: http_2xx                 # Module used for scraping. Overrides value set in `defaults`
+      #      additionalMetricsRelabels: {}    # Map of metric labels and values to add
+      #      additionalRelabeling: []         # List of metric relabeling actions to run
+
+      - name: loki.clops.mawari.eu
+        url: https://loki.clops.mawari.eu
+        module: http_2xx
+        additionalMetricsRelabels:
+          customer: "CLOPS"
+
+  ## Custom PrometheusRules to be defined
+  ## ref: https://github.com/coreos/prometheus-operator#customresourcedefinitions
+  prometheusRule:
+    enabled: true
+    additionalLabels:
+      prometheus: k8s
+      role: alert-rules
+    namespace: ""
+    rules:
+      - alert: EndpointDown
+        expr: probe_success == 0
+        # If a service is down for 45 seconds and more something **might** be wrong or just a short blip,
+        # so let's cause a warning first for "documentation purposes".
+        for: 45s
+        labels:
+          severity: "warning"
+        annotations:
+          # https://github.com/helm/helm/issues/2798#issuecomment-467319526
+          summary: "Endpoint {{`{{ $labels.instance }}`}} down (45s)"
+      - alert: EndpointDown
+        expr: probe_success == 0
+        # If a service is down for more 2-3+ minutes something is definitely wrong
+        # either the service is down / broken, blackbox exporter has some issues,
+        # the K8S clusters internet access has issues or some other problem (probably
+        # network related issue).
+        for: 180s
+        labels:
+          severity: "critical"
+        annotations:
+          summary: "Endpoint {{`{{ $labels.instance }}`}} down (3 minutes)"
+      - alert: CertificateExpiry
+        # 14 days warning
+        expr: (probe_ssl_earliest_cert_expiry - (604800 * 2)) <= time()
+        labels:
+          severity: "warning"
+        annotations:
+          summary: "Certificate {{`{{ $labels.instance }}`}} expires in less than 14 days."
+      - alert: CertificateExpiry
+        # 7 days warning
+        expr: (probe_ssl_earliest_cert_expiry - 604800) <= time()
+        labels:
+          severity: "critical"
+        annotations:
+          summary: "Certificate {{`{{ $labels.instance }}`}} expires in less than 7 days."
+  ## dnsPolicy and dnsConfig for Deployments and Daemonsets if you want non-default settings.
+  ## These will be passed directly to the PodSpec of same.
+  dnsPolicy: "None"
+  dnsConfig:
+    nameservers:
+      - 1.1.1.1
+      - 1.0.0.1
+      - 9.9.9.9
+    searches: []
+    options: []

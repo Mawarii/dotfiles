@@ -1,0 +1,7 @@
+---
+- name: Add or update all Kubernetes packages
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - common

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: problem
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      kubernetes.io/app: problem
+  template:
+    metadata:
+      labels:
+        kubernetes.io/app: problem
+    spec:
+      containers:
+        - name: problem
+          image: mawari/problem:latest
+          ports:
+            - containerPort: 8080
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir: {}

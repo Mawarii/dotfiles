@@ -1,0 +1,32 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+resources:
+  - ../../base
+
+images:
+  - name: DOCKER_IMAGE_1
+    newName: gitlab.publicplan.cloud:5050/regmo/oots-projectathon
+    newTag: 3d23323b
+
+patches:
+  - path: deployment.patch.yaml
+    target:
+      kind: Deployment
+      name: oots-preview-space
+  - path: ingress.patch.yaml
+    target:
+      kind: Ingress
+      name: oots-projectathon-ingress
+  - path: mariadb-secrets.patch.yaml
+    target:
+      kind: Secret
+      name: mariadb
+
+secretGenerator:
+  - name: gitlab-registry-oots-projectathon
+    type: kubernetes.io/dockerconfigjson
+    files:
+      - .dockerconfigjson
+    options:
+      disableNameSuffixHash: true

@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: govforms2-workflow-core-service
+spec:
+  selector:
+    k8s-app: govforms2-workflow-core
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: http
+    - port: 3030
+      targetPort: 3030
+      name: version
+    - port: 8090
+      targetPort: 8090
+      name: kosit-validator

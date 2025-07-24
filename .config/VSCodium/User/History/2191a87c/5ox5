@@ -1,0 +1,2 @@
+*/6 * * * * * * /var/www/project/bin/console oots:domibus-worker
+0 0 * * * * /var/www/project/bin/console oots:delete-log-file

@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: govforms2-admin-client
+  labels:
+    k8s-env: pre-stage
+spec:
+  template:
+    spec:
+      imagePullSecrets:
+        - name: gitlab-registry-govforms2-admin-client
+        - name: gitlab-registry-version-sidecar

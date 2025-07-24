@@ -1,0 +1,16 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 'empfangsclient-eco'
+spec:
+  template:
+    spec:
+      imagePullSecrets:
+        - name: gitlab-registry-eco
+        - name: gitlab-registry-version-sidecar
+      serviceAccount: empfangsclient-eco-service-account
+      containers:
+        - name: 'empfangsclient-eco'
+          env:
+            - name: 'SPRING_DATASOURCE_URL'
+              value: 'jdbc:mariadb://${MARIADB_HOSTNAME}/${MARIADB_DATABASE}'

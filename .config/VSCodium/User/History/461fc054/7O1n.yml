@@ -1,0 +1,228 @@
+stages:
+  - build
+  - version_update
+  - sync
+  - validate
+  - extract
+  - monitoring
+  - cache
+  - release
+  - staging
+  - production
+
+build-sync-script:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug
+    entrypoint: [""]
+  script:
+    - echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$(echo -n $DOCKERHUB_USER:$DOCKERHUB_TOKEN | base64)\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor
+        --cache=true
+        --cache-repo "${CI_REGISTRY}/${CI_PROJECT_PATH}/cache"
+        --context "${CI_PROJECT_DIR}"
+        --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
+        --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}"
+        --destination "${CI_REGISTRY_IMAGE}:latest"
+  only:
+    variables:
+      - ($PROVIDER == "pp" && $CI_COMMIT_TAG == null)
+    # changes:
+    #   - "Dockerfile"
+    #   - "reqirements.txt"
+    #   - "minio-config.json"
+
+version-update:
+  stage: version_update
+  image: "${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}"
+  script:
+    - cd ./scripts/version/
+    - python update_application_version.py --application $APPLICATION
+    - bash commit_application_version.sh
+  only:
+    variables:
+      - ($PROVIDER == "pp" && $ACTION == "version-update" && $APPLICATION && $TAG)
+
+mirror-sync-script:
+  stage: sync
+  image: gitlab.krz.de:4567/k8s/wsp-test/skopeo-executor:52f5046f
+  variables:
+    PP_CLUSTER_CONFIG_REGISTRY_IMAGE: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/common/app-configs
+  script:
+    - skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds "${CRED_GITLAB_PUBLICPLAN_USERNAME}:${CRED_GITLAB_PUBLICPLAN_PASSWORD}" --dest-creds "${CRED_GITLAB_KRZ_K8S_USERNAME}:${CRED_GITLAB_KRZ_K8S_PASSWORD}" "docker://${PP_CLUSTER_CONFIG_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}" "docker://${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}"
+  only:
+    variables:
+      - ($PROVIDER == "krz" && $CI_COMMIT_TAG && $ACTION == null)
+
+sync-init-files:
+  stage: sync
+  image: "${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}"
+  script:
+    - cd ./scripts/sync/ && python sync_s3_init_files.py
+  only:
+    variables:
+      - ($PROVIDER == "krz" && $CI_COMMIT_TAG && $ACTION == null)
+  needs:
+    - "mirror-sync-script"
+
+validate-configurations:
+  stage: validate
+  image: "${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}"
+  script:
+    - /usr/bin/bash ${CI_PROJECT_DIR}/scripts/validate/validate.sh
+  only:
+    variables:
+      - ($PROVIDER == "pp" && $CI_COMMIT_TAG == null && $ACTION == null)
+  allow_failure: true
+  when: manual
+
+extract-ingress-list:
+  stage: extract
+  image: "${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}"
+  variables:
+    CLUSTER_EXTERNAL_TRAFFIC_CONFIG_AUTH: "${CLUSTER_EXTERNAL_TRAFFIC_CONFIG_USER}:${CLUSTER_EXTERNAL_TRAFFIC_CONFIG_ACCESS_TOKEN}"
+  before_script:
+    - git clone https://${CLUSTER_EXTERNAL_TRAFFIC_CONFIG_AUTH}@gitlab.publicplan.cloud/themenwelt-wirtschaft/infrastruktur/cluster-external-traffic-config.git ./tmp/cluster-external-traffic-config
+  script:
+    - cd ./scripts/extract/ && python extract_ingress_configuration.py
+  after_script:
+    - pwd
+    - cd ./tmp/cluster-external-traffic-config
+    - git config user.name "${GITLAB_USER_NAME}"
+    - git config user.email "${GITLAB_USER_EMAIL}"
+    - git add .
+    - git commit -m "Commit from GitLab CI/CD (cluster-config)"
+    - git push origin HEAD
+  only:
+    variables:
+      - ($PROVIDER == "pp" && $CI_COMMIT_TAG == null && $ACTION == null)
+
+extract-manifest:
+  stage: extract
+  image: "${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}"
+  script:
+    - cd ./scripts/extract/ && python extract_image_list.py
+  artifacts:
+    paths:
+      - ./tmp/image-lists/
+  only:
+    variables:
+      - ($PROVIDER == "pp" && $CI_COMMIT_TAG == null && $ACTION == null) || ($PROVIDER == "krz" && $CI_COMMIT_TAG && $ACTION == null)
+
+monitoring-prepare-files:
+  stage: extract
+  image: "${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}"
+  script:
+    - cd ./scripts/monitoring/
+    - python prepare_monitoring.py
+  artifacts:
+    paths:
+      - ${CI_PROJECT_DIR}/tmp/monitoring/
+  only:
+    variables:
+      - ($PROVIDER == "pp" && $CI_COMMIT_TAG == null && $ACTION == null)
+    changes:
+      - "applications/**/overlays/**/monitoring.yaml"
+      - "scripts/monitoring/**"
+
+monitoring-build-containers:
+  stage: monitoring
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug
+    entrypoint: [""]
+  before_script:
+    - echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$(echo -n $DOCKERHUB_USER:$DOCKERHUB_TOKEN | base64)\"}}}" > /kaniko/.docker/config.json
+  script:
+    - /kaniko/executor --context "${CI_PROJECT_DIR}" --dockerfile "${CI_PROJECT_DIR}/Gatus.Dockerfile" --build-arg STAGE=develop --destination "${CI_REGISTRY}/themenwelt-wirtschaft/infrastruktur/common/app-configs/gatus:develop-${CI_COMMIT_SHORT_SHA}" --destination "${CI_REGISTRY}/themenwelt-wirtschaft/infrastruktur/common/app-configs/gatus:develop-latest"
+    - /kaniko/executor --context "${CI_PROJECT_DIR}" --dockerfile "${CI_PROJECT_DIR}/Gatus.Dockerfile" --build-arg STAGE=pre-stage --destination "${CI_REGISTRY}/themenwelt-wirtschaft/infrastruktur/common/app-configs/gatus:pre-stage-${CI_COMMIT_SHORT_SHA}" --destination "${CI_REGISTRY}/themenwelt-wirtschaft/infrastruktur/common/app-configs/gatus:pre-stage-latest"
+    - /kaniko/executor --context "${CI_PROJECT_DIR}" --dockerfile "${CI_PROJECT_DIR}/Gatus.Dockerfile" --build-arg STAGE=staging --destination "${CI_REGISTRY}/themenwelt-wirtschaft/infrastruktur/common/app-configs/gatus:stage-${CI_COMMIT_SHORT_SHA}" --destination "${CI_REGISTRY}/themenwelt-wirtschaft/infrastruktur/common/app-configs/gatus:stage-latest"
+    - /kaniko/executor --context "${CI_PROJECT_DIR}" --dockerfile "${CI_PROJECT_DIR}/Gatus.Dockerfile" --build-arg STAGE=production --destination "${CI_REGISTRY}/themenwelt-wirtschaft/infrastruktur/common/app-configs/gatus:production-${CI_COMMIT_SHORT_SHA}" --destination "${CI_REGISTRY}/themenwelt-wirtschaft/infrastruktur/common/app-configs/gatus:production-latest"
+  only:
+    variables:
+      - ($PROVIDER == "pp" && $CI_COMMIT_TAG == null && $ACTION == null)
+    changes:
+      - "applications/**/overlays/**/monitoring.yaml"
+      - "scripts/monitoring/**"
+  dependencies:
+    - monitoring-prepare-files
+
+sync-to-pre_stage-images:
+  stage: cache
+  image: "${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}"
+  script:
+    - cd ./scripts/sync/ && python sync_to_pre_stage.py
+  artifacts:
+    paths:
+      - ./tmp/image-lists/
+  dependencies:
+    - extract-manifest
+  only:
+    variables:
+      - ($PROVIDER == "pp" && $CI_COMMIT_TAG == null && $ACTION == null)
+
+.create-new-tag:
+  stage: release
+  image: alpine/git
+  script:
+    - GIT_TAG=$(date +%Y-%m-%d-%H%M%S)
+    - git config --global user.name "$GITLAB_USER_NAME"
+    - git config --global user.email "$GITLAB_USER_EMAIL"
+    - git tag $GIT_TAG
+    - git push "https://${CRED_GITLAB_PUBLICPLAN_USERNAME}:${CRED_GITLAB_PUBLICPLAN_PASSWORD}@gitlab.publicplan.cloud/themenwelt-wirtschaft/infrastruktur/common/app-configs.git" $GIT_TAG
+
+promote-manifests-to-krz:
+  stage: release
+  extends: .create-new-tag
+  when: manual
+  only:
+    variables:
+      - ($PROVIDER == "pp" && $CI_COMMIT_TAG == null && $ACTION == null)
+
+tag-repository:
+  stage: release
+  extends: .create-new-tag
+  only:
+    variables:
+      - $ACTION == "create-tag"
+
+sync-staging-images:
+  stage: staging
+  image: "${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}"
+  script:
+    - cd ./scripts/sync/ && python sync_to_staging.py
+  artifacts:
+    paths:
+      - ./tmp/image-lists/
+  dependencies:
+    - extract-manifest
+  only:
+    variables:
+      - ($PROVIDER == "krz" && $CI_COMMIT_TAG && $ACTION == null)
+
+sync-production-images:
+  stage: production
+  image: "${CI_REGISTRY_IMAGE}:${CI_COMMIT_SHORT_SHA}"
+  script:
+    - cd ./scripts/sync/ && python sync_to_production.py
+  artifacts:
+    paths:
+      - ./tmp/image-lists/
+  dependencies:
+    - extract-manifest
+  when: manual
+  only:
+    variables:
+      - ($PROVIDER == "krz" && $PROVIDER_ENV == "staging" && $CI_COMMIT_TAG && $ACTION == null)
+
+merge-production-manifest:
+  stage: production
+  image:
+    name: gitlab.krz.de:4567/k8s/wsp-test/alpine/curl:8.2.1
+    entrypoint: [""]
+  script:
+    - curl --fail --request POST -F token=$PROVIDER_DEPLOY_TOKEN -F variables[MANIFEST_TAG]=$CI_COMMIT_TAG -F ref=main https://gitlab.krz.de/api/v4/projects/38/trigger/pipeline
+  needs:
+    - sync-production-images
+  only:
+    variables:
+      - ($PROVIDER == "krz" && $PROVIDER_ENV == "staging" && $CI_COMMIT_TAG && $ACTION == null)

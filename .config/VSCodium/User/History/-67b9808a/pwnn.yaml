@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- domibus-pvc-config.yaml
+- domibus-pvc-mysql.yaml
+- domibus-mysql-secret.yaml
+- domibus-mysql.yaml
+- domibus.yaml
+- domibus-service-mysql.yaml
+- domibus-service.yaml
+- domibus-ingress.yaml
+- domibus-mysql-cronjob-backup.yaml
+
+configMapGenerator:
+  - name: domibus-config
+    files:
+      - 'logback.xml=./config/logback.xml'
+  # - name: domibus-config-clientauthentication
+  #   files:
+  #     - 'clientauthentication.xml=./config/clientauthentication.xml'

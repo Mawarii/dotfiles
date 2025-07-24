@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: empfangsclient-plus-server
+  name: empfangsclient-plus-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: empfangsclient-plus-server
+  template:
+    metadata:
+      labels:
+        app: empfangsclient-plus-server
+    spec:
+      containers:
+        - name: server
+          image: ghcr.io/shiftdigital-de/shiftdesk-server:canary
+          env:
+            - name: SERVER_URL
+              value: "https://api.canary.empfangsclient-plus.de"
+            - name: CLIENT_URL
+              value: "https://canary.empfangsclient-plus.de"
+            - name: WORKER_URL
+              value: "https://worker.canary.empfangsclient-plus.de"
+            - name: DUMMY_URL
+              value: "https://dummy.canary.empfangsclient-plus.de"
+            - name: RELEASE
+              value: "canary"
+            - name: DB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: shiftdesk-postgresql-app
+                  key: uri

@@ -1,0 +1,47 @@
+#!/bin/bash
+
+if [[ -z "$1" ]]; then
+    echo "Usage: ./close_gitlab_mrs.sh <search_query>"
+    exit 1
+fi
+
+if [[ -z "$GITLAB_ACCESS_TOKEN" ]]
+
+SEARCH_QUERY=$1
+ENCODED_QUERY=$(printf '%s' "$SEARCH_QUERY" | jq -sRr @uri)
+page=1
+
+echo "Fetching merge request IDs for search: $SEARCH_QUERY"
+
+ids=()
+while true; do
+    result=$(curl --silent --request GET \
+        "https://gitlab.publicplan.cloud/api/v4/projects/706/merge_requests?search=$ENCODED_QUERY&per_page=100&page=$page&state=opened" --header "PRIVATE-TOKEN: $GITLAB_ACCESS_TOKEN")
+
+    current_ids=($(echo "$result" | jq '.[] | .iid'))
+    ids+=("${current_ids[@]}")
+
+    if [ "$(echo "$result" | jq 'length')" -lt 100 ]; then
+        break
+    fi
+
+    page=$((page + 1))
+done
+
+if [ ${#ids[@]} -eq 0 ]; then
+    echo "No open merge requests found matching query: $SEARCH_QUERY"
+    exit 0
+fi
+
+printf "Found ${#ids[@]} merge requests. Do you want to close them? [y/N] "
+read answer
+answer=${answer,,}
+
+if [[ "$answer" != "y" && "$answer" != "yes" ]]; then
+    echo "Aborted."
+    exit 0
+fi
+
+for id in "${ids[@]}"; do
+    curl --silent --output /dev/null --write-out "%{http_code}" --request PUT "https://gitlab.publicplan.cloud/api/v4/projects/706/merge_requests/$id" --header "PRIVATE-TOKEN: $GITLAB_ACCESS_TOKEN" --form "state_event=close"
+done

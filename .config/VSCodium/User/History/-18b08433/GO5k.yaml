@@ -1,0 +1,39 @@
+---
+- name: Configure firewall
+  hosts: localhost
+  become: false
+  gather_facts: false
+  roles:
+    - role: configure-firewall
+      custom_action: open-default-ssh-port
+    - role: configure-firewall
+      custom_action: configure-hetzner-firewall
+      when: hcloud_token != ""
+
+- name: Machine hardening and preparation
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - role: prepare-machines
+  vars:
+    ansible_user: "{{ default_ssh_user }}"
+    ansible_port: "{{ default_ssh_port }}"
+
+- name: Close default SSH port
+  hosts: localhost
+  become: false
+  gather_facts: false
+  roles:
+    - role: configure-firewall
+      custom_action: close-default-ssh-port
+
+- name: Add Kubernetes apt packages
+  hosts: all
+  become: true
+  gather_facts: true
+  roles:
+    - role: common
+      custom_action: install-kubernetes-apt-packages
+    - role: common
+      custom_action: reboot

@@ -1,0 +1,19 @@
+formio:
+  email: admin@example.com
+  password: changeme
+  jwt_secret: shouldbeagoodsecret
+  database:
+    username: admin
+    password: changeme
+    database: formio
+
+bpm:
+  database:
+    image: bitnami/postgresql:16.2.0-debian-12-r15
+    environment:
+      username: admin
+      password: changeme
+      database: formsflow-bpm
+  application:
+    image: formsflow/forms-flow-bpm
+    environment:

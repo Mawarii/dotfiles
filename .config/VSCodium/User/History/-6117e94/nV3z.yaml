@@ -1,0 +1,3 @@
+---
+- name: Add non-root user
+  ansible.builtin.include_tasks: "add-non-root-user.yaml"

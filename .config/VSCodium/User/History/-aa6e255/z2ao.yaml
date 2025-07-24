@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: devcluster-baukasten-tp03-dev-staging
+  namespace: argocd
+spec:
+  destination:
+    namespace: tp03-dev-staging
+    name: publicplan-dev
+  project: devcluster-projects-baukasten-tp03
+  sources:
+    - targetRevision: HEAD
+      repoURL: git@gitlab.publicplan.cloud:themenwelt-kommunales/infrastructure/baukasten-tp03-dist.git
+      path: k8s-deployment/overlays/dev-staging
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

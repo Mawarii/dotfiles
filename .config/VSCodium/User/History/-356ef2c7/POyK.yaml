@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: matomo-archive-job
+spec:
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: matomo-archive-job
+            env:
+              - name: MATOMO_URL
+                value: https://matomo-old.pre-stage.wspdev.de

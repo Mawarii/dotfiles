@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  creationTimestamp: null
+  name: devcluster-de-he-2
+  namespace: argocd
+spec:
+  destination:
+    name: publicplan-dev
+    namespace: de-he-2
+  project: devcluster-projects-de-he-2
+  sources:
+  - chart: chartmuseum
+    helm:
+      valueFiles:
+      - $values/applications/de-he-2/chartmuseum/values.yaml
+    repoURL: https://chartmuseum.github.io/charts
+    targetRevision: "3.10.3"
+  - path: applications/de-he-2/harbor/resources
+    repoURL: git@gitlab.publicplan.cloud:team-kops/infra-internal/pp-dev-cluster.git
+    targetRevision: HEAD
+  - chart: harbor
+    helm:
+      valueFiles:
+      - $values/applications/de-he-2/harbor/values.yaml
+    repoURL: https://helm.goharbor.io
+    targetRevision: "1.15.0"
+  - ref: values
+    repoURL: git@gitlab.publicplan.cloud:team-kops/infra-internal/pp-dev-cluster.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

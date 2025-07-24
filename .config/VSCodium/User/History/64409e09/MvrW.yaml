@@ -1,0 +1,20 @@
+alertmanager:
+  enabled: false
+
+grafana:
+  enabled: false
+  forceDeployDashboards: true
+  namespaceOverride: "grafana"
+
+prometheus:
+  thanosService:
+    enabled: true
+  prometheusSpec:
+    enableRemoteWriteReceiver: true
+    disableCompaction: true
+    retention: 1d
+    thanos:
+      objectStorageConfig:
+        existingSecret:
+          name: ""
+          key: ""

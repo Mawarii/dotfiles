@@ -1,0 +1,48 @@
+##redis
+#framework:
+#cache:
+## Name of the cache adapter to use. Currently supported cache.adapter.redis, cache.adapter.filesystem and cache.adapter.doctrine_dbal.
+#app: cache.adapter.redis
+## The redis provider to use if app is set to cache.adapter.redis.
+#default_redis_provider: redis://redis:6379
+
+##doctrine
+#framework:
+#    cache:
+#        # Name of the cache adapter to use. Currently supported cache.adapter.redis, cache.adapter.filesystem and cache.adapter.doctrine_dbal.
+#        app: cache.adapter.doctrine_dbal
+#        # The redis provider to use if app is set to cache.adapter.redis.
+##        default_redis_provider: redis://redis-cache.internal:6379
+
+#chain with doctrine and apcu and array
+framework:
+    cache:
+        app: cache.chain
+        pools:
+            cache.chain:
+                adapter: cache.adapter.psr6 # ProxyAdapter
+                provider: my_chain_provider
+
+            cache.apcu:
+                adapter: cache.adapter.apcu
+
+            cache.array:
+                adapter: cache.adapter.array
+
+            cache.filesystem:
+                adapter: cache.adapter.filesystem
+
+            cache.redis:
+                adapter: cache.adapter.redis
+                provider: redis://redis-master:6379
+
+            cache.doctrine:
+                adapter: cache.adapter.doctrine_dbal
+services:
+    my_chain_provider:
+        class: Symfony\Component\Cache\Adapter\ChainAdapter
+        arguments:
+            - ["@cache.array", "@cache.apcu", "@cache.doctrine"]
+            #            - ['@cache.apcu', '@cache.filesystem']
+            - 2419200 # One month
+

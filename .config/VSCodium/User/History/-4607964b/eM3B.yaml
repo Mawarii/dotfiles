@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: devcluster-infra
+  namespace: argocd
+spec:
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+    - group: "*"
+      kind: ClusterRole
+    - group: "*"
+      kind: ClusterRoleBinding
+  destinations:
+    - name: "*"
+      namespace: "*"
+      server: https://213.61.255.114:6443
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  sourceRepos:
+    - git@gitlab.publicplan.cloud:team-kops/infra-internal/pp-dev-cluster.git
+    - "*"

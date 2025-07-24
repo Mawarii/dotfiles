@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: drupal
+spec:
+  selector:
+    matchLabels:
+      app: drupal
+      layer: public
+  template:
+    spec:
+      containers:
+        - name: drupal
+          env:
+            - name: MYSQL_USER
+              value: rechtnrw
+            - name: MYSQL_DATABASE
+              value: rechtnrw
+            - name: MYSQL_HOST
+              value: hsi-intranet-drupal-mariadb
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: PASSWORD
+                  name: mariadb
+          volumeMounts:
+            - mountPath: /var/www/html/web/sites/default/settings.cluster.php
+              name: settings
+              subPath: settings.cluster.php
+      volumes:
+        - name: settings
+          configMap:
+            name: settings

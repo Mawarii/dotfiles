@@ -1,0 +1,14 @@
+formio:
+  email: admin@example.com
+  password: "{{ lookup('ansible.builtin.password', '/dev/null', chars=['ascii_letters', 'digits'], length=32) }}"
+  jwt_secret: shouldbeagoodsecret
+  database:
+    username: admin
+    password: "{{ lookup('ansible.builtin.password', '/dev/null', chars=['ascii_letters', 'digits'], length=32) }}"
+    database: formio
+
+bpm:
+  database:
+    username: admin
+    password: changeme
+    database: formsflow-bpm

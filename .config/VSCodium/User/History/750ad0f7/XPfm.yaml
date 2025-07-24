@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: identity-gateway
+  namespace: argocd
+spec:
+  destination:
+    namespace: identity-gateway
+    server: "https://kubernetes.default.svc"
+  project: efacluster-idmercery
+  sources:
+    - path: kustomization/overlays/pre-stage
+      repoURL: "git@gitlab.publicplan.cloud:iac/efa/distributions/idmercery/identity-gateway.git"
+      targetRevision: HEAD
+    - chart: redis
+      helm:
+        releaseName: redis
+        valueFiles:
+          - $values/helm/redis/pre-stage/default-values.yaml
+          - $values/helm/redis/pre-stage/values.yaml
+      repoURL: https://charts.bitnami.com/bitnami
+      targetRevision: 17.15.2
+    - ref: values
+      repoURL: "git@gitlab.publicplan.cloud:iac/efa/distributions/idmercery/identity-gateway.git"
+      targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

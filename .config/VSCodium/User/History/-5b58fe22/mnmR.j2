@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Backing up all formsflow.ai PostgreSQLs and MongoDBs
+
+# Set current timestamp
+BACKUPDATE=$(date +"%Y-%m-%dT%H%M%S-%Z")
+printf "%s\n" "-----------------------------------------"
+printf "%s\n" "Found databases (postgreSQL and mongoDB):"
+printf "%s\n\n" "-----------------------------------------"
+
+# list all container names build with image including "postgres" or "mongo"
+docker ps --format "\{\{.Image\}\}: \{\{.Names\}\}" | grep -E "postgres|mongo" | awk '\{ print $2 \}'
+printf "\n%s\n" "=> Backup results:"
+printf "%s\n\n" "------------------"
+
+# run loop to backup postgreSQL and mongoDB using their ENV variables
+for LINE in $(docker ps --format "\{\{.Image\}\}: \{\{.Names\}\}" | grep -E "postgres|mongo" | awk '\{ print $2 \}'); do
+  FILENAME="$LINE"_"$BACKUPDATE.dump"
+  if docker inspect --format="\{\{.Config.Image\}\}" $LINE | grep postgres
+  then
+    printf "%s\n" "$FILENAME" && \
+    docker exec -i "$LINE" sh -c 'PGPASSWORD="$POSTGRES_PASSWORD" pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB"' > "$FILENAME"
+  elif docker inspect --format="\{\{.Config.Image\}\}" $LINE | grep mongo
+  then
+    printf "%s.\n" "$FILENAME" && \
+    docker exec -i "$LINE" sh -c 'mongodump --username="$MONGO_INITDB_ROOT_USERNAME" --password="$MONGO_INITDB_ROOT_PASSWORD" -d "$MONGO_INITDB_DATABASE" --authenticationDatabase="$MONGO_INITDB_ROOT_USERNAME" --archive="/tmp/backupscript_mongo.dump" --gzip' && \
+    docker cp "$LINE":/tmp/backupscript_mongo.dump ./"$FILENAME" && \
+    docker exec -i "$LINE" sh -c 'rm /tmp/backupscript_mongo.dump'
+  fi
+done

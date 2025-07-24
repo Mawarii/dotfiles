@@ -1,0 +1,62 @@
+---
+- name: Remove known repos
+  ansible.builtin.file:
+    state: absent
+    path: "/etc/apt/sources.list.d/{{ item }}"
+  loop: "{{ repo_list }}"
+
+- name: Add Kubernetes repository
+  block:
+    - name: Download Kubernetes signing key
+      ansible.builtin.apt_key:
+        url: https://pkgs.k8s.io/core:/stable:/v{{ kube_version }}/deb/Release.key
+        keyring: /usr/share/keyrings/kubernetes-key.gpg
+        state: present
+
+    - name: Add Kubernetes sources
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/kubernetes-key.gpg] https://pkgs.k8s.io/core:/stable:/v{{ kube_version }}/deb/ /"
+        state: present
+        filename: kubernetes
+
+- name: Add crio repository (crio < 1.28)
+  when: "crio_version is version('1.28', '<', strict=true)"
+  block:
+    - name: Download CRI-O signing key
+      ansible.builtin.apt_key:
+        url: https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ crio_version }}/{{ debian_version }}/Release.key
+        keyring: /usr/share/keyrings/libcontainers-crio-archive-keyring.gpg
+        state: present
+
+    - name: Add CRI-O sources
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/libcontainers-crio-archive-keyring.gpg] \
+              https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/{{ crio_version }}/{{ debian_version }}/ /"
+        state: present
+        filename: "devel:kubic:libcontainers:stable:cri-o:{{ crio_version }}"
+
+- name: Add crio repository (crio >= 1.28)
+  when: "crio_version is version('1.28', '>=', strict=true)"
+  block:
+    - name: Download CRI-O signing key
+      ansible.builtin.apt_key:
+        url: https://pkgs.k8s.io/addons:/cri-o:/stable:/v{{ crio_version }}/deb/Release.key
+        keyring: /usr/share/keyrings/libcontainers-crio-archive-keyring.gpg
+        state: present
+
+    - name: Add CRI-O sources
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/libcontainers-crio-archive-keyring.gpg] https://pkgs.k8s.io/addons:/cri-o:/stable:/v{{ crio_version }}/deb/ /"
+        state: present
+        filename: "cri-o:stable:v{{ crio_version }}"
+
+# - name: Add libcontainer repository
+#   block:
+#     - name: libcontainer | apt key
+#       ansible.builtin.shell: "curl -fsSL https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ debian_version }}/Release.key | gpg --yes --dearmor -o /usr/share/keyrings/libcontainers-archive-keyring.gpg"
+
+#     - name: libcontainer | apt source
+#       ansible.builtin.apt_repository:
+#         repo: "deb [signed-by=/usr/share/keyrings/libcontainers-archive-keyring.gpg] https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/{{ debian_version }}/ /"
+#         state: present
+#         filename: devel:kubic:libcontainers:stable

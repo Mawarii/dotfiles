@@ -1,0 +1,15 @@
+---
+- name: Join new node
+  ansible.builtin.include_tasks: "join-node.yaml"
+
+- name: Upgrade node
+  when: auto_upgrades and kube_upgrade_needed
+  ansible.builtin.include_tasks: "upgrade-node.yaml"
+
+- name: Reboot machine
+  when: kube_upgrade_needed or crio_upgrade_needed or reboot_required_file.stat.exists
+  ansible.builtin.include_tasks: "{{ playbook_dir }}/roles/utils/tasks/reboot-machine.yaml"
+
+- name: Uncordon node
+  when: auto_upgrades and kube_upgrade_needed
+  ansible.builtin.include_tasks: "{{ playbook_dir }}/roles/utils/tasks/uncordon-node.yaml"

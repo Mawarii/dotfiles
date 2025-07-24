@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdfreactor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pdfreactor
+  template:
+    metadata:
+      labels:
+        app: pdfreactor
+    spec:
+      containers:
+        - name: pdfreactor
+          image: realobjects/pdfreactor
+          ports:
+            - containerPort: 9423
+          resources:
+            limits:
+              memory: "2Gi"
+              cpu: "1"
+            requests:
+              memory: "1Gi"
+              cpu: "500m"
+        volumeMounts:
+          - name: license
+            mountPath: /ro/config/licensekey.txt
+            subPath: licensekey.txt
+            readOnly: true
+      volumes:
+        - name: license
+          secret:
+            secretName: pdfreactor-license
+            items:
+              - key: licensekey.txt
+                path: licensekey.txt

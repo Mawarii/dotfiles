@@ -1,0 +1,58 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: empfangsclient-plus-server
+  name: empfangsclient-plus-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: empfangsclient-plus-server
+  template:
+    metadata:
+      labels:
+        app: empfangsclient-plus-server
+    spec:
+      containers:
+        - name: server
+          image: busybox
+          env:
+            # - name: SERVER_URL
+            #   value: "https://server-ecp.dev.efa.publicplan.cloud"
+            # - name: CLIENT_URL
+            #   value: "https://client-ecp.dev.efa.publicplan.cloud"
+            # - name: WORKER_URL
+            #   value: "http://empfangsclient-plus-worker:8001"
+            # - name: DUMMY_URL
+            #   value: "http://empfangsclient-plus-worker:8002"
+            # - name: RELEASE
+            #   value: "canary"
+            # - name: DB_URL
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: shiftdesk-postgresql-app
+            #       key: uri
+            # - name: CIPHER_KEY
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: empfangsclient-plus-secret
+            #       key: cipher-key
+            # - name: AUTHORIZATION_KEY
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: empfangsclient-plus-secret
+            #       key: authorization-key
+            - name: S3_USER
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secret
+                  key: root-user
+            - name: S3_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: minio-secret
+                  key: root-password
+            - name: S3_URL
+              value: "//$(S3_USER):$(S3_PASSWORD)@minio:9000"

@@ -1,0 +1,16 @@
+---
+all:
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+nodes:
+  children:
+    server:
+      hosts:
+        157.90.161.231:
+    agent:
+      hosts:
+
+  vars:
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBhsm+GB6c3YlWLwp+eDz+tlBbxPeJW1TO/baxFQYwwk dmarkovic

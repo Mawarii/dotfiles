@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: empfangsclient-vault
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/whitelist-source-range: 213.61.255.112/29
+  labels:
+    k8s-env: "develop"
+spec:
+  ingressClassName: "nginx"
+  rules:
+    - host: "vault.develop.wspdev.de"
+      http:
+        paths:
+          - pathType: ImplementationSpecific
+            path: "/"
+            backend:
+              service:
+                name: empfangsclient-vault-server
+                port:
+                  name: http
+  tls:
+    - hosts:
+        - "vault.develop.wspdev.de"
+      secretName: vault-unseal-tls

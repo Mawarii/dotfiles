@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: empfangsclient-eco-ingress-rate-limited
+spec:
+  rules:
+    - host: "eco-fitko.staging.efa.owl-it.de"
+      http:
+        paths:
+          - pathType: Exact
+            path: /admin/organizations/create
+            backend:
+              service:
+                name: empfangsclient-eco
+                port:
+                  name: http

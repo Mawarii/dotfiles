@@ -1,0 +1,29 @@
+---
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: wsp-akeneo-elastic-search
+spec:
+  version: 8.4.1
+  http:
+    service:
+      spec:
+        type: ClusterIP
+    tls:
+      selfSignedCertificate:
+          disabled: true
+  nodeSets:
+  - name: dev
+    count: 2
+    config:
+      node.store.allow_mmap: false
+    # podTemplate:
+    #   spec:
+    #     containers:
+    #     - name: elasticsearch
+    #       resources:
+    #         requests:
+    #           memory: 4Gi
+    #           cpu: 8
+    #         limits:
+    #           memory: 4Gi

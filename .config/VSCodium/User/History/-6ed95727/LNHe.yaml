@@ -1,0 +1,27 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: keycloak-postgresql
+spec:
+  instances: 2
+  postgresUID: 10001
+  postgresGID: 10001
+  primaryUpdateStrategy: unsupervised
+  bootstrap:
+    initdb:
+      database: keycloak
+      owner: keycloak
+  storage:
+    size: 15Gi
+  backup:
+    barmanObjectStore:
+      destinationPath: "s3://BUCKETNAME/" # Replace BUCKETNAME with the name of your S3 bucket
+      endpointURL: https://your-public-s3-address.com
+      s3Credentials:
+        accessKeyId:
+          name: cluster-stage-vars # Name of the secret containing the credentials
+          key: CLUSTER_STAGE_S3_ACCESS_KEY # Key within the secret for the S3 access key
+        secretAccessKey:
+          name: cluster-stage-vars # Name of the secret containing the credentials
+          key: CLUSTER_STAGE_S3_SECRET_KEY # Key within the secret for the S3 secret key
+    retentionPolicy: "14d"

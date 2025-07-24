@@ -1,0 +1,5 @@
+adminPassword: "wmryyLsgX7gOCxfaQv8h9GjpaJWqIk9oiFE99zIRBSSG8ihjzb4oRGKvsvjz653m"
+externalURL: https://harbor.dev.efa.publicplan.cloud
+exposureType: ingress
+service:
+  type: ClusterIP

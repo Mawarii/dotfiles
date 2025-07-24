@@ -1,0 +1,16 @@
+expose:
+  tls:
+    certSource: secret
+    secret:
+      secretName: "harbor.pre-stage.efa.publicplan.cloud-tls"
+  ingress:
+    hosts:
+      core: harbor.pre-stage.efa.publicplan.cloud
+    className: "nginx"
+externalURL: https://harbor.pre-stage.efa.publicplan.cloud
+persistence:
+  imageChartStorage:
+    type: s3
+    s3:
+      region: us-west-1
+      bucket: bucketname

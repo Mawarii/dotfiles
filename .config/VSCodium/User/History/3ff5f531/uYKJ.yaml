@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: govforms2-akeneo-import-job
+  labels:
+    k8s-env: production
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: akeneo-import-job
+              env:
+                - name: IMPORT_WORKFLOW_STAGE
+                  value: "prod"
+                - name: AKENEO_BASEURL
+                  value: "https://govforms2-akeneo.efa-stage.owl-it.de"
+                - name: IMPORT_WORKFLOW_USERNAME
+                  value: "govforms2_9817"
+                - name: IMPORT_WORKFLOW_CLIENT_ID
+                  value: "2_3gvt5w521aucg4owkcgw8gccg00wwk4ggg8wgs4og00cowgs0c"
+                - name: IMPORT_WORKFLOW_SECRET
+                  value: "3euzcx1i6pics0o84ok88osscow4kskok4ksc44cs80wos4g8g"
+                - name: IMPORT_WORKFLOW_PASSWORD
+                  value: "316074f90"

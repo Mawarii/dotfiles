@@ -1,0 +1,25 @@
+clusterSize: 0
+
+autoSetup:
+  enabled: false
+  image:
+    repository: curlimages/curl
+    tag: latest
+    pullPolicy: Always
+  defaultDatabases:
+    - conversations
+    - credentials
+
+adminPassword: WpoTGkBvOvkLd63nKzu8jGOymzLq07INexdPqwvgONP16qZT7IsL7q8O4FurTzoc
+cookieAuthSecret: k9qrqkAVmv1nieahaxUWZsEpFaNS5AGf5rPYANtgRZLq2VwRQswliwcJB0pJEW0f
+
+persistentVolume:
+  enabled: true
+
+erlangFlags:
+  name: couchdb
+  setcookie: aQwph0AxeRtNzl4w1xVAM0NO8pEhGUjzoxbGlI74yMaRS33di0rkj1XGQdxsVOaJ
+
+couchdbConfig:
+  couchdb:
+    uuid: 47492869-4fad-4d50-ac95-cb55d08abc1e

@@ -1,0 +1,38 @@
+expose:
+  tls:
+    certSource: secret
+    secret:
+      secretName: "harbor.dev.efa.publicplan.cloud-tls"
+  ingress:
+    hosts:
+      core: harbor.dev.efa.publicplan.cloud
+    className: "nginx"
+    annotations:
+      ingress.kubernetes.io/ssl-redirect: "true"
+      ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      cert-manager.io/cluster-issuer: letsencrypt
+externalURL: https://harbor.dev.efa.publicplan.cloud
+persistence:
+  imageChartStorage:
+    type: s3
+    s3:
+      region: hel1
+      bucket: efa-pre-stage-harbor
+      accesskey: KFLMC56QH7PL1UWHOKWZ
+      secretkey: ZBK0L2UO3ZV2q6CrUnrvO5hbGpLxoQBWIYNL3QLz
+      regionendpoint: https://nbg1.your-objectstorage.com
+harborAdminPassword: "lUeiUuQxMoiEqDl5xZCDozNDdBEFSIYFdxompmt7kl2y8Lz6WuZYp36UyMoVjUIl"
+secretKey: "z91ufdKwLh6jKzmc"
+metrics:
+  enabled: true
+cache:
+  enabled: true
+registry:
+  credentials:
+    htpasswdString: "harbor_registry_user:$2y$10$yvbhi6emEJO6S.jf2bwOA.aArMPORPSClbUqfz4k1lJg4I053BIdm"
+database:
+  type: internal
+  internal:
+    password: "p7KUalUNU9OwSohlt0FCvsWpoHp6vNdalodARNolOdP3DiNwglaaNJQ7M36SdWES"

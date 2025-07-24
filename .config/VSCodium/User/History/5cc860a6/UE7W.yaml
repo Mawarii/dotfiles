@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: empfangsclient-plus-secret
+  annotations:
+    secret-generator.v1.mittwald.de/autogenerate: mariadb-password,mariadb-root-password
+type: Opaque

@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: clickhouse-backup
+spec:
+  schedule: "*/30 * * * *"
+  jobTemplate:
+    spec:
+      backoffLimit: 5
+      template:
+        spec:
+          containers:
+            - name: clickhouse-backup
+              image: clickhouse/clickhouse-server:23.8.2-alpine
+              command: ["clickhouse", "backup", "create", "--s3"]
+              envFrom:
+                - secretRef:
+                    name: clickhouse-s3-secret
+          restartPolicy: OnFailure

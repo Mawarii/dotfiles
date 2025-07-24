@@ -1,0 +1,21 @@
+stages:
+  - no-proxy
+  - proxy
+
+no-proxy:
+  stage: no-proxy
+  image:
+    name: mongo:6.0.13
+  script:
+    - echo hi
+  only:
+    - main
+
+proxy:
+  stage: proxy
+  image:
+    name: harbor.dev.publicplan.cloud/docker_proxy/mongo:4
+  script:
+    - echo hi
+  only:
+    - main

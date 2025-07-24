@@ -1,0 +1,6 @@
+kind: Secret
+apiVersion: v1
+metadata:
+  name: hcloud
+stringData:
+  token: "rCg9m1NLWkCN6LdvYTwU06itprpZgjSyg7l2wKwsI7chwyO9rK4tXXXwnlxrUske"

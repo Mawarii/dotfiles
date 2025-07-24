@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: empfangsclient-plus
+  namespace: argocd
+spec:
+  destination:
+    namespace: empfangsclient-plus
+    server: "https://kubernetes.default.svc"
+  project: efacluster-empfangsclient
+  sources:
+    - path: kustomization/overlays/develop
+      repoURL: "git@gitlab.publicplan.cloud:iac/efa/distributions/empfangsclient-plus/empfangsclient-plus-dist.git"
+      targetRevision: main
+    - path: helm/keycloak/develop/resources
+      repoURL: "git@gitlab.publicplan.cloud:iac/efa/distributions/empfangsclient-plus/empfangsclient-plus-dist.git"
+      targetRevision: main
+    - chart: keycloak
+      helm:
+        valueFiles:
+          - $values/helm/keycloak/develop/default-values.yaml
+          - $values/helm/keycloak/develop/values.yaml
+      repoURL: registry-1.docker.io/bitnamicharts
+      targetRevision: "24.4.14"
+    - chart: minio
+      helm:
+        valueFiles:
+          - $values/helm/minio/develop/default-values.yaml
+          - $values/helm/minio/develop/values.yaml
+        releaseName: minio
+      repoURL: registry-1.docker.io/bitnamicharts
+      targetRevision: "15.0.3"
+    - ref: values
+      repoURL: "git@gitlab.publicplan.cloud:iac/efa/distributions/empfangsclient-plus/empfangsclient-plus-dist.git"
+      targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

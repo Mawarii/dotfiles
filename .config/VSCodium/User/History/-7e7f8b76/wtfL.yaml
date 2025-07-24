@@ -1,0 +1,5 @@
+ingress:
+  enabled: true
+  hostname: pma.voapp.dev.publicplan.cloud
+  annotations:
+    

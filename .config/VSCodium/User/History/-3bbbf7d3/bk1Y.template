@@ -1,0 +1,2 @@
+# Get your API token (Read + Write) for Hetzner Cloud in the Hetzner Console: https://console.hetzner.cloud/projects/<id>/security/tokens
+hcloud_token = "PASTE_YOUR_HETZNER_CLOUD_TOKEN_HERE"

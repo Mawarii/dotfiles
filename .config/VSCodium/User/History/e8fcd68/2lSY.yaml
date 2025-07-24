@@ -1,0 +1,27 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: kitchenowl-postgresql
+spec:
+  instances: 2
+  storage:
+    size: 10Gi
+    storageClass: smb-cnpg-operator
+  bootstrap:
+    initdb:
+      import:
+        type: microservice
+        databases:
+          - kitchenowl
+        source:
+          externalCluster: kitchenowl-pg
+  externalClusters:
+    - name: kitchenowl-pg
+      connectionParameters:
+        # Use the correct IP or host name for the source database
+        host: kitchenowl-pg
+        user: postgres
+        dbname: kitchenowl
+      password:
+        name: postgres.kitchenowl-pg.credentials.postgresql.acid.zalan.do
+        key: password

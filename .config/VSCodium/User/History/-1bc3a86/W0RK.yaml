@@ -1,0 +1,87 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+  - ../../../../databases/bitnami-redis-standalone-7.2.1-debian-11-r26/overlays/production
+  - wsp-api-layer-version-ingress.yaml
+  - job/wsp-api-layer-cronjob.yaml
+  - job/clear-cache.yaml
+  - ../../../../databases/bitnami-mongodb-6.0.10-debian-11-r8/overlays/production
+
+patches:
+  # - path: mongodb-secret.patch.yaml
+  #   target:
+  #     kind: Secret
+  #     name: mongodb
+  - path: mongodb-pvc.patch.yaml
+    target:
+      kind: PersistentVolumeClaim
+      name: mongodb
+  - path: wsp-api-layer.patch.yaml
+    target:
+      kind: Deployment
+      name: wsp-api-layer
+  - path: wsp-api-layer-ingress.patch.yaml
+    target:
+      kind: Ingress
+      name: wsp-api-layer-ingress
+  - path: wsp-api-layer-configmap.patch.yaml
+    target:
+      kind: ConfigMap
+      name: wsp-api-layer-configmap
+  - path: wsp-api-layer-secrets.patch.yaml
+    target:
+      kind: Secret
+      name: wsp-api-layer-secrets
+
+images:
+  - name: DOCKER_IMAGE_1
+    newName: gitlab.krz.de:4567/customers/publicplan/wsp/production/images/wsp-api-layer
+    newTag: v3.2.0
+  - name: DOCKER_IMAGE_1_ORIGIN
+    newName: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/wsp-app/wsp-api-layer
+    newTag: v3.2.0
+  - name: DOCKER_IMAGE_2
+    newName: gitlab.krz.de:4567/customers/publicplan/wsp/production/images/version-sidecar
+    newTag: v1.3.1
+  - name: DOCKER_IMAGE_2_ORIGIN
+    newName: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/tools/version-sidecar
+    newTag: v1.3.1
+
+replacements: #version sidecar replacements
+  - source:
+      kind: Deployment
+      name: wsp-api-layer
+      fieldPath: spec.template.spec.containers.[name=application].image
+    targets:
+      - select:
+          kind: Deployment
+          name: wsp-api-layer
+        fieldPaths:
+          - spec.template.spec.containers.[name=version-sidecar].env.[name=DOCKER_IMAGE_1].value
+        options:
+          create: true
+  - source:
+      kind: Deployment
+      name: wsp-api-layer
+      fieldPath: spec.template.spec.containers.[name=version-sidecar].image
+    targets:
+      - select:
+          kind: Deployment
+          name: wsp-api-layer
+        fieldPaths:
+          - spec.template.spec.containers.[name=version-sidecar].env.[name=DOCKER_IMAGE_2].value
+        options:
+          create: true
+  - source:
+      kind: StatefulSet
+      name: redis-standalone-master
+      fieldPath: spec.template.spec.containers.[name=redis].image
+    targets:
+      - select:
+          kind: Deployment
+          name: wsp-api-layer
+        fieldPaths:
+          - spec.template.spec.containers.[name=version-sidecar].env.[name=DATABASE_DOCKER_IMAGE_1].value
+        options:
+          create: true

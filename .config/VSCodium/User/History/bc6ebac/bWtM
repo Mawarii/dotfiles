@@ -1,0 +1,31 @@
+---
+all:
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+nodes:
+  children:
+    server:
+      hosts:
+        91.99.62.108:
+    agent:
+      hosts:
+        91.99.59.90:
+        157.90.161.231:
+
+  #  vars:
+  #    ssh_keys:
+  #      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBhsm+GB6c3YlWLwp+eDz+tlBbxPeJW1TO/baxFQYwwk dmarkovic
+
+  vars:
+    ansible_port: 22
+    ansible_user: debian
+    k3s_version: v1.30.2+k3s1
+    # The token should be a random string of reasonable length. You can generate
+    # one with the following commands:
+    # - openssl rand -base64 64
+    # - pwgen -s 64 1
+    # You can use ansible-vault to encrypt this value / keep it secret.
+    # Or you can omit it if not using Vagrant and let the first server automatically generate one.
+    token: "changeme!"
+    api_endpoint: "{{ hostvars[groups['server'][0]]['ansible_host'] | default(groups['server'][0]) }}"

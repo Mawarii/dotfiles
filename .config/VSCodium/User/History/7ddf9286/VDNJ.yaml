@@ -1,0 +1,13 @@
+controller:
+  enableAnnotationValidations: false
+  config:
+    use-proxy-protocol: "true"
+  allowSnippetAnnotations: true
+  ingressClassResource:
+    default: true
+  replicaCount: 2
+  service:
+    type: NodePort
+    nodePorts:
+      http: "30080"
+      https: "30443"

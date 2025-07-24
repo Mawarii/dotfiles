@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flatnotes
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      kubernetes.io/app: flatnotes
+  template:
+    metadata:
+      labels:
+        kubernetes.io/app: flatnotes
+      annotations:
+        backup.velero.io/backup-volumes: "flatnotes-pvc"
+        ciu.enable: "true"
+    spec:
+      containers:
+        - name: flatnotes
+          image: dullage/flatnotes:v5.3.0
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "500m"
+            limits:
+              cpu: "200m"
+              memory: "700m"
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: /data
+              name: flatnotes-pvc
+      volumes:
+        - name: flatnotes-pvc
+          persistentVolumeClaim:
+            claimName: flatnotes-pvc

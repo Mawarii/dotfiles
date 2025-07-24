@@ -1,0 +1,18 @@
+deschedulerPolicy:
+  profiles:
+    - name: DescheduleOrphanedRunnerPods
+      pluginConfig:
+        - name: "PodLifeTime"
+          args:
+            namespaces:
+              include:
+                - gitlab-runner
+            labelSelector:
+              matchExpressions:
+                - {key: 'app', operator: NotIn, values: ['devcluster-gitlab-runner-gitlab-runner']}
+                - {key: 'app.kubernetes.io/name', operator: NotIn, values: ['minio']}
+            maxPodLifeTimeSeconds: 86400
+      plugins:
+        deschedule:
+          enabled:
+            - "PodLifeTime"

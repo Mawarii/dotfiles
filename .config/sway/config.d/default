@@ -106,11 +106,6 @@ set $menu fuzzel
     bindsym $mod+b splith
     bindsym $mod+v splitv
 
-    # Switch the current container between different layout styles
-    bindsym $mod+s layout stacking
-    bindsym $mod+w layout tabbed
-    bindsym $mod+e layout toggle split
-
     # Make the current focus fullscreen
     bindsym $mod+f fullscreen
 
@@ -215,3 +210,7 @@ bindsym $mod+r mode "resize"
 # Exit Sway
 #
     bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+#
+# Password generation
+#
+    bindsym $mod+p exec pwgen -s 32 1 | wl-copy -n

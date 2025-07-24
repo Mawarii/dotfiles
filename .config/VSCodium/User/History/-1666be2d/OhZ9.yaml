@@ -1,0 +1,14 @@
+---
+- name: Check if default SSH port is available
+  ansible.builtin.wait_for:
+    port: "{{ default_ssh_port }}"
+    host: "{{ ansible_host }}"
+    timeout: 3
+  register: ssh_port_22
+  ignore_errors: true
+  delegate_to: localhost
+  become: false
+
+- name: "Set ansible_port to the detected value"
+  ansible.builtin.set_fact:
+    ansible_port: "{{ 22 if ssh_port_22.failed == false else 22222 }}"

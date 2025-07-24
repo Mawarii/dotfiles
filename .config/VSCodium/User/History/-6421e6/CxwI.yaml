@@ -1,0 +1,14 @@
+apiVersion: mariadb.mmontes.io/v1alpha1
+kind: MariaDB
+metadata:
+  name: mariadb
+spec:
+  rootPasswordSecretKeyRef:
+    key: ROOT_PASSWORD
+    name: public-drupal-mariadb
+  passwordSecretKeyRef:
+    key: PASSWORD
+    name: public-drupal-mariadb
+  envFrom:
+    - configMapRef:
+        name: config-public-drupal-mariadb

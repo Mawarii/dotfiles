@@ -1,0 +1,152 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: govforms2-akeneo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: govforms2-akeneo
+  template:
+    metadata:
+      labels:
+        k8s-app: govforms2-akeneo
+    spec:
+      initContainers:
+        - name: copy-public-files
+          image: DOCKER_IMAGE_1
+          command: [ "sh", "-c", "cp -r /srv/pim/public/* /copydata" ]
+          volumeMounts:
+            - name: public
+              mountPath: /copydata
+          securityContext:
+            runAsUser: 10001
+            runAsGroup: 10001
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop: [ "ALL" ]
+            seccompProfile:
+              type: RuntimeDefault
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+      containers:
+        - name: application
+          image: DOCKER_IMAGE_1
+          env:
+            - name: APP_DATABASE_HOST
+              value: "$(MYSQL_WSP_SERVICE_HOST)"
+            - name: APP_DATABASE_NAME
+              value: "akeneo_pim"
+            - name: APP_DATABASE_USER
+              value: "akeneo_pim"
+            - name: APP_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: mysql-password
+                  name: mysql-auth
+          readinessProbe:
+            exec:
+              command:
+                - "sh"
+                - "-c"
+                - "(echo 'quit') | telnet localhost 9000 > /dev/null 2>&1 && exit 0 || exit 1"
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+            periodSeconds: 15
+          livenessProbe:
+            exec:
+              command:
+                - "sh"
+                - "-c"
+                - "(echo 'quit') | telnet localhost 9000 > /dev/null 2>&1 && exit 0 || exit 1"
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+            periodSeconds: 15
+          ports:
+            - containerPort: 9000
+          securityContext:
+            runAsUser: 10001
+            runAsGroup: 10001
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+          volumeMounts:
+            - name: public
+              mountPath: /srv/pim/public
+            - name: tmp
+              mountPath: /tmp
+            - name: symfony-logs
+              mountPath: /srv/pim/var/logs
+            - name: symfony-file-storage
+              mountPath: /srv/pim/var/file_storage
+            - name: cache
+              mountPath: /srv/pim/var/cache
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+        - name: nginx
+          image: DOCKER_IMAGE_2
+          securityContext:
+            runAsUser: 10001
+            runAsGroup: 10001
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+          volumeMounts:
+            - name: nginx-conf
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: nginx.conf
+            - name: nginx-logs
+              mountPath: /var/log/nginx
+            - name: tmp
+              mountPath: /tmp
+            - name: public
+              mountPath: /srv/pim/public
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+      securityContext:
+        fsGroup: 10001
+        runAsGroup: 10001
+        runAsUser: 10001
+      volumes:
+        - name: tmp
+          emptyDir: { }
+        - name: public
+          emptyDir: { }
+        - name: symfony-logs
+          emptyDir: { }
+        - name: symfony-file-storage
+          emptyDir: { }
+        - name: cache
+          emptyDir: { }
+        - name: nginx-logs
+          emptyDir: { }
+        - name: nginx-conf
+          configMap:
+            name: govforms2-akeneo-nginx-configmap

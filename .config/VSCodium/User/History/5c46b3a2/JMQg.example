@@ -1,0 +1,5 @@
+[control-plane]
+poc-cp-1 ansible_host=12.34.45.78 ansible_user=ryuko ansible_port=1337
+
+[nodes]
+poc-worker-1 ansible_host=12.34.45.78 ansible_user=ryuko ansible_port=1337

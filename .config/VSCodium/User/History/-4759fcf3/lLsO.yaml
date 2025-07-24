@@ -1,0 +1,57 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- chartmuseum-secrets.yaml
+- ../../base
+- chartmuseum-version-ingress.yaml
+
+patches:
+- path: chartmuseum.patch.yaml
+  target:
+    kind: Deployment
+    name: chartmuseum
+- path: chartmuseum-ingress.patch.yaml
+  target:
+    kind: Ingress
+    name: chartmuseum
+
+images:
+- name: DOCKER_IMAGE_1
+  newName: ghcr.io/helm/chartmuseum
+  newTag: "v0.16.1"
+- name: DOCKER_IMAGE_1_ORIGIN
+  newName: ghcr.io/helm/chartmuseum
+  newTag: "v0.16.1"
+- name: DOCKER_IMAGE_2
+  newName: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/tools/version-sidecar
+  newTag: v1.3.1
+- name: DOCKER_IMAGE_2_ORIGIN
+  newName: gitlab.publicplan.cloud:5050/themenwelt-wirtschaft/infrastruktur/tools/version-sidecar
+  newTag: v1.3.1
+
+replacements: #version sidecar replacements
+  - source:
+      kind: Deployment
+      name: chartmuseum
+      fieldPath: spec.template.spec.containers.[name=chartmuseum].image
+    targets:
+    - select:
+        kind: Deployment
+        name: chartmuseum
+      fieldPaths:
+        - spec.template.spec.containers.[name=version-sidecar].env.[name=DOCKER_IMAGE_1].value
+      options:
+        create: true
+  - source:
+      kind: Deployment
+      name: chartmuseum
+      fieldPath: spec.template.spec.containers.[name=version-sidecar].image
+    targets:
+    - select:
+        kind: Deployment
+        name: chartmuseum
+      fieldPaths:
+        - spec.template.spec.containers.[name=version-sidecar].env.[name=DOCKER_IMAGE_2].value
+      options:
+        create: true

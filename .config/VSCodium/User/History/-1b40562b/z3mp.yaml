@@ -1,0 +1,59 @@
+---
+- name: Ensure forms-flow {{ item }} directory exists
+  ansible.builtin.file:
+    path: "{{ formsflow_install_path }}/{{ item }}"
+    state: directory
+
+- name: Check whether .env already exists so that the passwords are not overwritten
+  ansible.builtin.stat:
+    path: "{{ formsflow_install_path }}/{{ item }}/.env"
+  register: stat_res
+
+# - name: Regenerate forms-flow-bpm Keycloak client secret if Keycloak is deployed for the first time
+#   community.general.keycloak_clientsecret_regenerate:
+#     client_id: 'forms-flow-bpm'
+#     realm: "{{ keycloak.realm }}"
+#     auth_client_id: "admin-cli"
+#     auth_keycloak_url: "{{ keycloak_url }}/auth"
+#     auth_realm: master
+#     auth_username: "{{ keycloak.admin_username }}"
+#     auth_password: "{{ keycloak_admin_password }}"
+#   when:
+#     - not stat_res.stat.exists
+#     - enable_keycloak | bool
+#     - item == "deployment"
+#   no_log: true
+
+- name: Get forms-flow-bpm Keycloak client secret if .env file does not exist
+  community.general.keycloak_clientsecret_info:
+    client_id: 'forms-flow-bpm'
+    realm: "{{ keycloak.realm }}"
+    auth_client_id: "admin-cli"
+    auth_keycloak_url: "{{ keycloak_url }}/auth"
+    auth_realm: master
+    auth_username: "{{ keycloak.admin_username }}"
+    auth_password: "{{ keycloak_admin_password }}"
+  register: bpm_keycloak_clientsecret
+  when:
+    - not stat_res.stat.exists
+    - enable_keycloak | bool
+  no_log: true
+
+- name: Generate {{ item }} .env file if it does not exist
+  ansible.builtin.template:
+    src: "./{{ item }}/{{ item }}.env.j2"
+    dest: "{{ formsflow_install_path }}/{{ item }}/.env"
+  when: not stat_res.stat.exists
+
+- name: Generate {{ item }} compose file
+  ansible.builtin.template:
+    src: "./{{ item }}/{{ item }}-compose.yaml.j2"
+    dest: "{{ formsflow_install_path }}/{{ item }}/compose.yaml"
+
+- name: Create database table for redash
+  ansible.builtin.command: "docker compose -f {{ formsflow_install_path }}/{{ item }}/compose.yaml run --rm server create_db"
+  when: item == "analytics"
+
+- name: Create and start services
+  community.docker.docker_compose_v2:
+    project_src: "{{ formsflow_install_path }}/{{ item }}"

@@ -1,0 +1,22 @@
+---
+- name: Add non-root user
+  ansible.builtin.include_tasks: "add-non-root-user.yaml"
+
+- name: Disable swap
+  ansible.builtin.include_tasks: "disable-swap.yaml"
+
+- name: Add Kubernetes apt resources
+  ansible.builtin.include_tasks: "add-kubernetes-apt-resources.yaml"
+
+- name: Configure apt packages
+  ansible.builtin.include_tasks: "configure-apt-packages.yaml"
+
+- name: Add Helm apt packages
+  when: inventory_hostname == groups['controlplanes'][0]
+  ansible.builtin.include_tasks: "add-helm-apt-resources.yaml"
+
+- name: Configure fail2ban service
+  ansible.builtin.include_tasks: "configure-fail2ban.yaml"
+
+- name: Configure sshd service
+  ansible.builtin.include_tasks: "configure-sshd.yaml"

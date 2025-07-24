@@ -1,0 +1,111 @@
+---
+# Source: chartmuseum/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chartmuseum
+  labels:
+    helm.sh/chart: chartmuseum-3.10.2
+    app.kubernetes.io/name: chartmuseum
+    app.kubernetes.io/instance: chartmuseum
+    app.kubernetes.io/version: "0.16.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: chartmuseum
+      app.kubernetes.io/instance: chartmuseum
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+  revisionHistoryLimit: 10
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: chartmuseum
+        app.kubernetes.io/instance: chartmuseum
+    spec:
+      securityContext:
+        fsGroup: 1000      
+      containers:
+      - name: chartmuseum
+        image: DOCKER_IMAGE_1
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
+        env:
+        - name: "CHART_POST_FORM_FIELD_NAME"
+          value: "chart"
+        - name: "CHART_URL"
+          value: "https://charts.staging.wsp.owl-it.de"
+        - name: "DISABLE_API"
+          value: "true"
+        - name: "LOG_JSON"
+          value: "true"
+        - name: "PROV_POST_FORM_FIELD_NAME"
+          value: "prov"
+        - name: "STORAGE"
+          value: "amazon"
+        - name: "STORAGE_AMAZON_BUCKET"
+          value: "helm-charts"
+        - name: "STORAGE_AMAZON_ENDPOINT"
+          value: "https://minio-wsp-snsd-api.staging.wsp.owl-it.de"
+        - name: "AWS_ACCESS_KEY_ID"
+          valueFrom:
+            secretKeyRef:
+              name: chartmuseum
+              key: "AWS_ACCESS_KEY_ID"
+        - name: "AWS_SECRET_ACCESS_KEY"
+          valueFrom:
+            secretKeyRef:
+              name: chartmuseum
+              key: "AWS_SECRET_ACCESS_KEY"
+        - name: "BASIC_AUTH_PASS"
+          valueFrom:
+            secretKeyRef:
+              name: chartmuseum
+              key: "BASIC_AUTH_PASS"
+        - name: "BASIC_AUTH_USER"
+          valueFrom:
+            secretKeyRef:
+              name: chartmuseum
+              key: "BASIC_AUTH_USER"
+        args:
+        - --port=8080
+        ports:
+        - name: http
+          containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: http
+            scheme: HTTP
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: http
+            scheme: HTTP
+          failureThreshold: 3
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        volumeMounts:
+      serviceAccountName: default
+      automountServiceAccountToken: false
+      volumes:
+      - name: storage-volume
+        emptyDir: {}

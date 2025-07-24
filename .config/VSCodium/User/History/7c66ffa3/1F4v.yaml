@@ -1,0 +1,143 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: domibus-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: domibus-mysql
+  template:
+    metadata:
+      labels:
+        k8s-app: domibus-mysql
+    spec:
+      securityContext:
+        fsGroup: 0
+        fsGroupChangePolicy: "OnRootMismatch"
+      initContainers:
+        - name: mysql-datacopy
+          command: ["sh", "-c", "cp -r /resources/* /copydata && cp -r /usr/local/bin/* /copydata2"]
+          image: DATABASE_DOCKER_IMAGE_1
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            seccompProfile:
+              type: RuntimeDefault
+            readOnlyRootFilesystem: false
+            runAsNonRoot: false
+            runAsUser: 0
+          volumeMounts:
+            - mountPath: /copydata
+              name: resources
+            - mountPath: /copydata2
+              name: bin
+      containers:
+      # - name: uptime-sidecar
+      #   image: DATABASE_DOCKER_IMAGE_99
+      #   command:
+      #     - /healthcheck
+      #   securityContext:
+      #     allowPrivilegeEscalation: false
+      #     privileged: false
+      #     runAsNonRoot: true
+      #     runAsUser: 10000
+      #     readOnlyRootFilesystem: true
+      #     capabilities:
+      #       drop: ["ALL"]
+      #     seccompProfile:
+      #       type: RuntimeDefault
+      #   env:
+      #   - name: DB_TYPE
+      #     value: mysql
+      #   - name: DB_PASSWORD
+      #     valueFrom:
+      #       secretKeyRef:
+      #         name: domibus-mysql
+      #         key: mysql-password
+      #   - name: DB_NAME
+      #     valueFrom:
+      #       secretKeyRef:
+      #         name: domibus-mysql
+      #         key: MYSQL_DATABASE
+      #   - name: DB_USERNAME
+      #     valueFrom:
+      #       secretKeyRef:
+      #         name: domibus-mysql
+      #         key: MYSQL_USER
+      #   - name: DB_HOST
+      #     value: domibus-mysql
+      #   - name: DB_PORT
+      #     value: "3306"
+      #   ports:
+      #   - name: http
+      #     containerPort: 8081
+      - name: mysql
+        image: DATABASE_DOCKER_IMAGE_1
+        ports:
+        - containerPort: 3306
+          name: mysql
+          protocol: TCP
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: domibus-mysql
+                key: mysql-root-password
+          - name: MYSQL_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: domibus-mysql
+                key: MYSQL_DATABASE
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: domibus-mysql
+                key: MYSQL_USER
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: domibus-mysql
+                key: mysql-password
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+          runAsNonRoot: false
+          readOnlyRootFilesystem: false
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+          - name: mysql-data
+            mountPath: /var/lib/mysql
+          - name: tmp
+            mountPath: /tmp
+          - name: mysqld
+            mountPath: /var/run/mysqld
+          - name: resources
+            mountPath: /resources
+          - name: bin
+            mountPath: /usr/local/bin
+        resources:
+          limits:
+            memory: "1Gi"
+          requests:
+            memory: "512Mi"
+      volumes:
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: domibus-mysql-pvc
+        - name: tmp
+          emptyDir: {}
+        - name: mysqld
+          emptyDir: {}
+        - name: resources
+          emptyDir: {}
+        - name: bin
+          emptyDir: {}
+      imagePullSecrets:
+        - name: gitlab-registry

@@ -1,0 +1,25 @@
+---
+# Source: matomo/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matomo
+spec:
+  template:
+    spec:
+      containers:
+        - name: matomo
+          env:
+            - name: MATOMO_USERNAME
+              value: "matomo-develop-admin"
+            - name: MATOMO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: matomo
+                  key: matomo-password
+            - name: MATOMO_EMAIL
+              value: "admin@example.com"
+            - name: MATOMO_WEBSITE_NAME
+              value: "Matomo New Develop"
+            - name: MATOMO_WEBSITE_HOST
+              value: "https://matomo-new.develop.wspdev.de"

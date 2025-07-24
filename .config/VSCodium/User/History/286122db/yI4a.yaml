@@ -1,0 +1,35 @@
+endpoints:
+  - name: govforms-api-service-svc
+    group: govforms-api
+    url: "http://govforms-api-service.govforms-api.svc/"
+    interval: 60s
+    conditions:
+      - "[STATUS] == 200"
+    alerts:
+      - type: slack
+  - name: govforms-api.pre-stage.wspdev.de
+    group: govforms-api
+    url: "https://govforms-api.pre-stage.wspdev.de/"
+    interval: 60s
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+    alerts:
+      - type: slack
+  - name: mysql-http-check
+    group: govforms-api
+    url: "http://mysql-http-check.govforms-api.svc:8081/health"
+    interval: 60s
+    conditions:
+      - "[STATUS] == 200"
+      - "[CONNECTED] == true"
+    alerts:
+      - type: slack
+  - name: minio-service-svc
+    group: govforms-api
+    url: "http://minio-service.collector.svc:9002"
+    interval: 60s
+    conditions:
+      - "[CONNECTED] == true"
+    alerts:
+      - type: slack

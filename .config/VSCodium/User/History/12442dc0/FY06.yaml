@@ -1,0 +1,27 @@
+---
+- name: Add Helm apt repository
+  block:
+    - name: Remove old Helm sources
+      ansible.builtin.file:
+        path: "/etc/apt/sources.list.d/helm-stable.list"
+        state: absent
+
+    - name: Download Helm signing key
+      ansible.builtin.apt_key:
+        url: https://baltocdn.com/helm/signing.asc
+        keyring: /usr/share/keyrings/helm-key.gpg
+        state: present
+
+    - name: Add Helm sources
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/helm-key.gpg] https://baltocdn.com/helm/stable/debian/ all main"
+        state: present
+        filename: "helm-stable"
+
+- name: Install Helm package
+  ansible.builtin.apt:
+    pkg:
+      - helm
+    state: present
+    allow_change_held_packages: true
+    update_cache: true

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: harbor-credentials
+stringData:
+  username: "harbor-admin"
+  password: "jogTI89_imfAri7TDoa1vhSUrMCRc4EQG_in8xMftOr9lHIJHS93I79cSiHCoJuH"

@@ -1,0 +1,9 @@
+expose:
+  tls:
+    certSource: secret
+    secret:
+      secretName: "internalcluster-harbor-ingress"
+  ingress:
+    hosts:
+      core: harbor.cloudical.net
+    className: "nginx"

@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: settings
+data:
+  settings.cluster.php: |
+    <?php
+    $databases['default']['default'] = [
+       'database' => $_ENV['MYSQL_DATABASE'],
+       'username' => $_ENV['MYSQL_USER'],
+       'password' => $_ENV['MYSQL_PASSWORD'],
+       'host' => $_ENV['MYSQL_HOST'],
+       'port' => '3306',
+       'driver' => 'mysql',
+       'prefix' => '',
+       'collation' => 'utf8mb4_general_ci',
+    ];
+    $config["config_split.config_split.plusserver"]["status"] = TRUE;
+    $config["shield.settings"]["shield_enable"] = TRUE;
+    $config["shield.settings"]["credentials"]["shield"]["user"] = $_ENV['HTTP_BASIC_USER'];
+    $config["shield.settings"]["credentials"]["shield"]["pass"] = $_ENV['HTTP_BASIC_PASSWORD'];
+    $config["search_api.server.opensearch"]["backend_config"]["connector_config"]["url"] = $_ENV['OPENSEARCH_URL'];
+    $settings['open_search.node'] = $_ENV['OPENSEARCH_MIDDLEWARE_URL'];
+    $settings['open_search.index'] = 'opensearch_lvn';
+    $settings['open_search.static_site.node'] = $_ENV['OPENSEARCH_MIDDLEWARE_URL'];
+    $settings['open_search.static_site.index'] = 'opensearch_internet';
+    $settings['static_site.base_url'] = $_ENV['STATIC_SITE_BASE_URL'];
+    $settings['static_site.base_intranet_url'] = $_ENV['STATIC_SITE_BASE_URL_INTRANET'];
+    $settings['tome_static_directory'] = '/srv';
+    $settings['nrw_entity_pdf.http_client']['auth'] = [$_ENV['HTTP_BASIC_USER'], $_ENV['HTTP_BASIC_PASSWORD']];
+    $settings['reverse_proxy'] = TRUE;
+    $settings['reverse_proxy_addresses'] = array($_SERVER['REMOTE_ADDR']);
+    $settings['reverse_proxy_trusted_headers'] = \Symfony\Component\HttpFoundation\Request::HEADER_X_FORWARDED_HOST |
+        \Symfony\Component\HttpFoundation\Request::HEADER_X_FORWARDED_PORT |
+        \Symfony\Component\HttpFoundation\Request::HEADER_X_FORWARDED_PROTO |
+        \Symfony\Component\HttpFoundation\Request::HEADER_X_FORWARDED_FOR;
+
+    $trusted_hosts_env = $_ENV['DRUPAL_TRUSTED_HOSTS'] ?? '';
+    if (!empty($trusted_hosts_env)) {
+        $patterns = array_map(function($host) {
+            $host = trim($host);
+            return '^' . preg_quote($host, '/') . '$';
+        }, explode(',', $trusted_hosts_env));
+
+        $settings['trusted_host_patterns'] = $patterns;
+    }
+    $settings['automated_cron']['interval'] = 0;
+  settings.tome-cron.php: |
+    <?php
+    $config['tome_static_cron.settings']['base_url'] = $_ENV['STATIC_SITE_BASE_URL'];

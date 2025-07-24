@@ -1,0 +1,3 @@
+security:
+  tls:
+    restEncryption: false
