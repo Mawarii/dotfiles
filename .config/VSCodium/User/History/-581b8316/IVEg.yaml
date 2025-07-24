@@ -1,7 +1,0 @@
-upgradeCompatibility: "1.16"
-encryption:
-  enabled: true
-  type: wireguard
-  nodeEncryption: true
-  strictMode:
-    enabled: true

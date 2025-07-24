@@ -1,5 +1,0 @@
-grafana:
-  forceDeployDashboards: true
-  namespaceOverride: "monitoring"
-prometheus:
-  enabled: true

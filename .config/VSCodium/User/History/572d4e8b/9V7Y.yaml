@@ -1,3 +1,0 @@
----
-- name: Upgrade Kubernetes
-  ansible.builtin.include_tasks: "upgrade-kubernetes.yaml"

@@ -1,3 +1,0 @@
----
-- name: Prepare machine for Kubernetes
-  ansible.builtin.include_tasks: "prepare-machine.yaml"

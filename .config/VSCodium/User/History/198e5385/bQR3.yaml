@@ -1,3 +1,0 @@
-expose:
-  tls:
-    certSource: secret

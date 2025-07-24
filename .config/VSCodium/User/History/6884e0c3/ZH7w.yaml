@@ -1,3 +1,0 @@
-grafana:
-  forceDeployDashboards: true
-  namespaceOverride: "monitoring"

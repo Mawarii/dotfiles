@@ -1,9 +1,0 @@
-services:
-  updater:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile-k8s
-    image: localhost/chart-updater:latest
-    entrypoint: "/bin/sleep infinity" 
-    stdin_open: true # docker run -i
-    tty: true        # docker run -t

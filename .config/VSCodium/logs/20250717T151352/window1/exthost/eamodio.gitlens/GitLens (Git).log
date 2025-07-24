@@ -1,4 +1,0 @@
-2025-07-17 15:20:43.520 [info] [2025-07-17 13:20:43.512] [          9ms] [/home/dmarkovic/git-projects/publicplan/recht.nrw-dist] git log --format=%x1E%H%x1D -n2 -L1,1:kustomization/envs/dev/pdfreactor/secret.yaml • FAILED
-2025-07-17 15:20:43.520 [info] 
-Error: fatal: There is no path kustomization/envs/dev/pdfreactor/secret.yaml in the commit
-

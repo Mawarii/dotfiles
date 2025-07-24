@@ -1,4 +1,0 @@
----
-- name: Open default SSH port via Hetzner firewall
-  when: hcloud_token != ""
-  ansible.builtin.include_role: "open-hetzner-default-ssh-port.yaml"

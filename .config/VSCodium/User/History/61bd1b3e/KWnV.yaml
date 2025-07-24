@@ -1,7 +1,0 @@
----
-- name: Machine preparation and hardening
-  hosts: all
-  become: true
-  gather_facts: false
-  roles:
-    - role: prepare-machine

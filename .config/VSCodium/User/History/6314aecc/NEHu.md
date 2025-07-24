@@ -1,3 +1,0 @@
-# CheckImageUpdates
-
-CheckImageUpdate (CIU)

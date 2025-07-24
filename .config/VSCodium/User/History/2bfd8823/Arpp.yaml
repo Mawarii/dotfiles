@@ -1,6 +1,0 @@
----
-- name: Uncordon node
-  ansible.builtin.command:
-    cmd: kubectl uncordon {{ inventory_hostname }}
-  changed_when: true
-  delegate_to: "{{ groups['controlplanes'][0] }}"

@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  name: alertmanager-basic-auth
-type: kubernetes.io/basic-auth
-stringData:
-  username: shield
-  password: mypassword

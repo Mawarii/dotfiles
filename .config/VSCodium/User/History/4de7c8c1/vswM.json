@@ -1,5 +1,0 @@
-{
-    "yaml.schemas": {
-        "https://json.schemastore.org/yamllint.json": "file:///home/dmarkovic/git-projects/publicplan/wsp/app-configs/applications/domibus-test/overlays/develop/domibus-ingress.patch.yaml"
-    }
-}

@@ -1,5 +1,0 @@
----
-- name: Get kubeadm join token and certificate hash
-  ansible.builtin.shell: |
-    "sudo kubeadm token delete {{ hostvars[groups['controlplanes'][0]]['kubeadm_join_token'] }}"
-  changed_when: false

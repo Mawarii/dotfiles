@@ -1,3 +1,0 @@
-auth:
-  existingSecret: "redis-secret"
-  existingSecretPasswordKey: "redis-password"

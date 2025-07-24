@@ -1,9 +1,0 @@
----
-- name: Install required packages
-  ansible.builtin.apt:
-    pkg:
-      - vim
-      - fail2ban
-      - rsyslog
-    state: present
-    update_cache: true

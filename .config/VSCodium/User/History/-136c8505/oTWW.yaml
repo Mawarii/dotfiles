@@ -1,8 +1,0 @@
----
-- name: Configure firewall
-  when: hcloud_token != ""
-  ansible.builtin.include_tasks: "configure-hetzner-firewall.yaml"
-
-- name: Add default SSH firewall
-  when: hcloud_token != ""
-  ansible.builtin.include_tasks: "add-hetzner-default-ssh-firewall.yaml"

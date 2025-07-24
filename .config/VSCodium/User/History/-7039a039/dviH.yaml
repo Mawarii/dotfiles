@@ -1,4 +1,0 @@
----
-- name: Disable swap temporarily
-  ansible.builtin.shell: sudo swapoff -a
-  changed_when: false

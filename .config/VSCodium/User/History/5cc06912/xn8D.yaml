@@ -1,3 +1,0 @@
----
-- name: Bootstrap controlplane
-  ansible.builtin.include_tasks: "bootstrap-machine.yaml"

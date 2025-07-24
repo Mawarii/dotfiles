@@ -1,8 +1,0 @@
-{
-    "files.associations": {
-        "*.yaml": "yaml",
-    },
-    "yaml.schemas": {
-        "https://json.schemastore.org/yamllint.json": "*.yaml"
-    },
-}

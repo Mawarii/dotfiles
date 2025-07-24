@@ -1,5 +1,0 @@
----
-- name: Install Cilium via Helm
-  kubernetes.core.helm:
-    api_key: "{{ hcloud_token }}"
-    atomic: true

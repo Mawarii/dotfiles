@@ -1,6 +1,0 @@
----
-- name: Prepare machine for Kubernetes
-  ansible.builtin.include_tasks: "prepare-machine.yaml"
-
-- name: Bootstrap controlplane
-  ansible.builtin.include_tasks: "bootstrap-controlplane.yaml"

@@ -1,3 +1,0 @@
----
-- name: "{{ action }}"
-  ansible.builtin.include_tasks: "{{ action }}.yaml"

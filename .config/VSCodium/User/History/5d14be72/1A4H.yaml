@@ -1,8 +1,0 @@
-services:
-  mkdocs:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: 'gitlab.publicplan.cloud:5050/team-kops/documentation:${VERSION:-dev}'
-    ports:
-      - '80:80'

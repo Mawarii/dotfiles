@@ -1,6 +1,0 @@
----
-- name: Upgrade apt repositories
-  ansible.builtin.include_tasks: "add-apt-repositories.yaml"
-
-- name: Upgrade Kubernetes packages
-  ansible.builtin.include_tasks: "upgrade-kube-packages.yaml"

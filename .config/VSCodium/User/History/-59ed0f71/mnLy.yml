@@ -1,1 +1,0 @@
-# docker run -v ./config.yaml:/config.yaml gcr.io/bitnami-labs/charts-syncer:v0.20.3 sync -c /config.yaml --skip-dependencies

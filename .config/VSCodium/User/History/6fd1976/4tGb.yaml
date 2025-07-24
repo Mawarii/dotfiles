@@ -1,4 +1,0 @@
-auth:
-  database: "akeneo_pim"
-  username: "akeneo_pim"
-  existingSecret: "mysql-auth"

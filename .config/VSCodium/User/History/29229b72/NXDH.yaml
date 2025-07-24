@@ -1,7 +1,0 @@
----
-- name: Delete firewall rule for default SSH port
-  hetzner.hcloud.firewall:
-    api_token: "{{ hcloud_token }}"
-    name: "default_ssh_port"
-    state: absent
-    force: true

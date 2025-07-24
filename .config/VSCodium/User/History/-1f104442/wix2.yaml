@@ -1,3 +1,0 @@
----
-- name: Delete join secrets
-  ansible.builtin.include_tasks: "delete-join-secrets.yaml"

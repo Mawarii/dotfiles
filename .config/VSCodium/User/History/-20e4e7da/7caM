@@ -1,9 +1,0 @@
-[controlplanes] ansible_user=root ansible_port=22
-controlplane-001 ansible_host=95.217.13.136
-controlplane-002 ansible_host=135.181.90.170
-controlplane-003 ansible_host=37.27.86.132
-
-[worker] ansible_user=root ansible_port=22
-worker-001 ansible_host=37.27.202.69
-worker-002 ansible_host=37.27.216.136
-worker-003 ansible_host=65.109.225.216

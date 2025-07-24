@@ -1,1 +1,0 @@
-hcloud_token = "lugQ0QNDBJp7KTJNvw6djXTVXylmRjzLb3ev7zXxbHyzEwRHvnCwgVtXCkOhhNm0"

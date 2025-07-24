@@ -1,4 +1,0 @@
----
-- name: Run kubeadm upgrade plan command
-  ansible.builtin.command:
-    cmd: kubeadm upgrade plan

@@ -1,6 +1,0 @@
----
-- name: Open default SSH port
-  ansible.builtin.include_tasks: "open-default-ssh-port.yaml"
-
-- name: Configure firewall
-  ansible.builtin.include_tasks: "configure-firewall.yaml"

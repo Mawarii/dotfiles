@@ -1,9 +1,0 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - mysql_deployment.yaml
-  - domibus_service.yaml
-  - domibus_deployment.yaml
-  - secrets.yaml
-  - pvc_domibus.yaml
-  - pvc_mysql.yaml

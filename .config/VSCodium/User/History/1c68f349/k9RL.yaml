@@ -1,3 +1,0 @@
-wordpress:
-  chart_version: "24.1.18"
-  namespace: "wordpress"

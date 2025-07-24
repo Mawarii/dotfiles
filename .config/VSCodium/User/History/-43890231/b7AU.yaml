@@ -1,9 +1,0 @@
----
-- name: Add Helm apt packages
-  ansible.builtin.include_tasks: "add-helm-apt-resources.yaml"
-
-- name: Initialize first controlplane
-  ansible.builtin.include_tasks: "initialize-first-controlplane.yaml"
-
-- name: Generate join secrets
-  ansible.builtin.include_tasks: "generate-join-secrets.yaml"

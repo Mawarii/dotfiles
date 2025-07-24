@@ -1,9 +1,0 @@
-objstoreConfig: "thanos-config"
-
-auth:
-  basicAuthUsers:
-    shield: N8ZXC5te5qFtgTeptfQ3iQSyccLt04Sc
-  dnsDiscovery:
-    enabled: true
-    sidecarsService: "kube-prometheus-stack-thanos-discovery"
-    sidecarsNamespace: "kube-prometheus-stack"

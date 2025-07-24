@@ -1,8 +1,0 @@
-2025-07-18 10:30:47.639 [info] Getting Manifest... redhat.ansible
-2025-07-18 10:30:47.732 [info] Installing extension: redhat.ansible {"productVersion":{"version":"1.102.14746","date":"2025-07-16T18:35:36.263Z"},"pinned":false,"operation":3,"isApplicationScoped":false,"profileLocation":{"$mid":1,"external":"vscode-userdata:/home/dmarkovic/.vscode-oss/extensions/extensions.json","path":"/home/dmarkovic/.vscode-oss/extensions/extensions.json","scheme":"vscode-userdata"}}
-2025-07-18 10:30:48.707 [info] Getting Manifest... ms-python.python
-2025-07-18 10:30:48.820 [info] Getting Manifest... redhat.vscode-yaml
-2025-07-18 10:30:49.994 [info] Extracted extension to file:///home/dmarkovic/.vscode-oss/extensions/redhat.ansible-25.7.1: redhat.ansible
-2025-07-18 10:30:50.003 [info] Renamed to /home/dmarkovic/.vscode-oss/extensions/redhat.ansible-25.7.1
-2025-07-18 10:30:50.035 [info] Marked extension as removed redhat.ansible-25.7.0
-2025-07-18 10:30:50.041 [info] Extension installed successfully: redhat.ansible vscode-userdata:/home/dmarkovic/.vscode-oss/extensions/extensions.json

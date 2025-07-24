@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  name: mariadb-secret
-  annotations:
-    secret-generator.v1.mittwald.de/autogenerate: mariadb-root-password,mariadb-password

@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  name: phpmyadmin-basic-auth
-  namespace: default
-type: Opaque
-data:
-  # $ htpasswd -nbB nextcloud OaMQAvoWcSVdguhHNMUcCEIBUtBnRATfm3KCsEjsWDEZi2FXhADzXdCeeO9wAdCG | base64
-  auth: bmV4dGNsb3VkOiQyeSQwNSRiaWF4cDJZd0dyT1QyMHVpLmV5Qm5PM2oyWnJsWFE0L04wWEIueDVTczBndndYRWt6QXRtQwoK

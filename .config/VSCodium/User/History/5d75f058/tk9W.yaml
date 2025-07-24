@@ -1,9 +1,0 @@
-kind: Kustomization
-apiVersion: kustomize.config.k8s.io/v1beta1
-
-labels:
-  - pairs:
-      layer: hsi-intranet
-
-resources:
-  - drupal

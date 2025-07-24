@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: identity-gateway-configmap
-data:
-  APP_ENV: "dev"
-  APP_DEBUG: "1"
-  AUTHENTICATION_SUCCESS_REDIRECT_URL: "https://identity-gateway.dev.efa.publicplan.cloud/oidc/dev"

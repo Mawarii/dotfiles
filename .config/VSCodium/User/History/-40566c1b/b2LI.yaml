@@ -1,4 +1,0 @@
-grafana:
-  enabled: false
-  forceDeployDashboards: true
-  namespaceOverride: "loki"

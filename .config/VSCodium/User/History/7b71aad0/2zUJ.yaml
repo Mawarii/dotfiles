@@ -1,7 +1,0 @@
-apiVersion: v1
-data:
-  .dockerconfigjson: eyJhdXRocyI6eyJnaXRsYWIucHVibGljcGxhbi5jbG91ZDo1MDUwIjp7InVzZXJuYW1lIjoibmV4dGNsb3VkLXZvX2ZlZGVyYXRpb24tZGVwbG95bWVudC10b2tlbiIsInBhc3N3b3JkIjoiMlpFb2VCM1Yzc3o0c25WZ01SRkYiLCJhdXRoIjoiYm1WNGRHTnNiM1ZrTFhadlgyWmxaR1Z5WVhScGIyNHRaR1Z3Ykc5NWJXVnVkQzEwYjJ0bGJqb3lXa1Z2WlVJelZqTnplalJ6YmxablRWSkdSZz09In19fQ==
-kind: Secret
-metadata:
-  name: gitlab-registry-nextcloud-server
-type: kubernetes.io/dockerconfigjson

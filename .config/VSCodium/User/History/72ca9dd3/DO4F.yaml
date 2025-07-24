@@ -1,6 +1,0 @@
----
-- name: Install Kubernetes packages
-  ansible.builtin.include_tasks: "install-kubernetes-apt-packages.yaml"
-
-- name: Install Helm packages
-  ansible.builtin.include_tasks: "install-helm-apt-packages.yaml"

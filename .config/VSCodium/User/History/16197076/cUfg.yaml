@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  name: domibus-mysql
-  annotations:
-    secret-generator.v1.mittwald.de/autogenerate: mariadb-password,mariadb-root-password

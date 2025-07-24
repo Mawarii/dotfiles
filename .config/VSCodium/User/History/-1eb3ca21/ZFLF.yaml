@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  name: minio-secret
-data:
-  FIT_CONNECT_CALLBACK_SECRET: "UUljYTkyU1R1VGtkdms2SlhYX1BfbGEtRDZVRmlBT19WejFCSnJFUnJhZw=="
-  FORMIO_API_TOKEN: "SjhLTkU0QlhOb0o5YlVoajNhVGNVVXhkRmI2c2Vh"
-  MAILBOX_PASSWORD: "SE1DX11RNi1jMXYyM28mSQ=="

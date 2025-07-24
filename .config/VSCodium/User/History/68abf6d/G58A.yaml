@@ -1,7 +1,0 @@
----
-- name: Join new node
-  ansible.builtin.include_tasks: "join-node.yaml"
-
-- name: Upgrade node
-  when: auto_upgrades and kube_upgrade_needed
-  ansible.builtin.include_tasks: "upgrade-node.yaml"

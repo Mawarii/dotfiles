@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  name: minio-secret
-stringData:
-  root-user: "root"
-  root-password: "g0pxn2BeTlKIUhHWr-tLRXfEPQfBjlxOuHrz1s5F"

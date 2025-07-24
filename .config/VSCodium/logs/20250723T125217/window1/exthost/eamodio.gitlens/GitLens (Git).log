@@ -1,5 +1,0 @@
-2025-07-23 12:52:20.553 [info] [2025-07-23 10:52:20.521] [         26ms] [/home/dmarkovic/git-projects/publicplan/efa] git rev-parse --show-toplevel • FAILED
-2025-07-23 12:52:20.553 [info] 
-Error: fatal: not a git repository (or any parent up to mount point /)
-Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
-

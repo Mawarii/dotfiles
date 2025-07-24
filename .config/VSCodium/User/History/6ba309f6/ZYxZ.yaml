@@ -1,3 +1,0 @@
-cert_manager:
-  chart_version: "24.1.18"
-  namespace: "cert-manager"

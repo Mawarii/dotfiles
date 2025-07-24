@@ -1,8 +1,0 @@
-grafana:
-  enabled: false
-  forceDeployDashboards: true
-  namespaceOverride: "grafana"
-alertmanager:
-  enabled: false
-prometheus:
-  enabled: false

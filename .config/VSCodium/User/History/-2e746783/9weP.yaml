@@ -1,9 +1,0 @@
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: mariadb-wsp-secret
-stringData:
-  mariadb-user: mariadb
-  mariadb-database: mariadb
-type: Opaque

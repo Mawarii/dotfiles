@@ -1,8 +1,0 @@
-# The purpose of this file is to set a custom password for the Restic repository. This ensures that the password is secure.
-apiVersion: v1
-kind: Secret
-metadata:
-  name: velero-repo-credentials
-type: Opaque
-stringData:
-  repository-password: aexegh1gey4Iequo0oaceBia2eikukeezoo7booghohpohMeiB

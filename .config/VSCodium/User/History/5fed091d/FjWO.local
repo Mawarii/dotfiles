@@ -1,8 +1,0 @@
-[server]
-jitsi-server ansible_host="{{ jitsi_public_url }}" ansible_port=22 ansible_user=root
-
-[all:vars]
-jitsi_advertise_ips=192.168.178.45
-jitsi_public_url=jitsi.example.com
-caddy_tls_mode=internal
-caddy_tls_email=random@example.com

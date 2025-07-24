@@ -1,3 +1,0 @@
----
-- name: "{{ custom_action }}"
-  ansible.builtin.include_tasks: "{{ custom_action }}.yaml"

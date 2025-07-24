@@ -1,4 +1,0 @@
----
-- name: Install Hetzner Cloud CSI
-  when: hcloud_token != ""
-  ansible.builtin.include_tasks: "install-hcloud-csi.yaml"

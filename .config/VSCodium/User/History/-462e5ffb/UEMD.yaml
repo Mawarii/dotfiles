@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  name:  secretName
-stringData:
-   secretKey: k1RvImF2nbnYPeLM
-type: Opaque

@@ -1,3 +1,0 @@
----
-- name: Open default SSH port
-  ansible.builtin.include_tasks: "first-cp.yaml"

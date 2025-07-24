@@ -1,6 +1,0 @@
-auth:
-  database: mariadb
-  username: mariadb
-  existingSecret: "mariadb-auth"
-
-initdbScriptsConfigMap: "mariadb-init"

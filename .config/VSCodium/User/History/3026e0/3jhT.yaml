@@ -1,4 +1,0 @@
-auth:
-  username: rabbitmq
-  existingPasswordSecret: "rabbitmq-auth"
-  existingErlangSecret: "rabbitmq-auth"

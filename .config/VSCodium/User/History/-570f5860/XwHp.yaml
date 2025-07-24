@@ -1,3 +1,0 @@
-ingress_nginx:
-  chart_version: "24.1.18"
-  namespace: "ingress-nginx"

@@ -1,8 +1,0 @@
-controller:
-  enableAnnotationValidations: false
-  allowSnippetAnnotations: true
-  ingressClassResource:
-    default: true
-  replicaCount: 2
-  service:
-    type: NodePort

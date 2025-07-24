@@ -1,7 +1,0 @@
----
-- name: Prepare Machine
-  hosts: localhost
-  become: false
-  gather_facts: false
-  roles:
-    - prepare-machine

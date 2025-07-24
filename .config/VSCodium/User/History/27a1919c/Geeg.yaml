@@ -1,7 +1,0 @@
----
-- name: Install Cilium via Helm
-  kubernetes.core.helm:
-    api_key: "{{ hcloud_token }}"
-    atomic: true
-    chart_repo_url: https://helm.cilium.io
-    kubeconfig: /etc/kubernetes/admin.conf

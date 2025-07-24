@@ -1,9 +1,0 @@
-SBOM_DEPENDENCY_TRACK_URL=http://localhost:8081
-SBOM_DEPENDENCY_TRACK_PROJECT=Example BOM Project
-SBOM_DEPENDENCY_TRACK_API_KEY=odt_0cqMLGQrsji2quDb2PoEHlfEINAGKrOy
-SBOM_PROJECT_DIR=/home/dmarkovic/git-projects/publicplan/dependency-track-upload/test/project
-PROJECT_NAME=team-kops/manual-test
-CI_PROJECT_NAMESPACE=team-kops
-CI_PROJECT_NAME=manual-test
-CI_COMMIT_TAG=v1.0.0
-DEPENDENCY_TRACK_LANGUAGE=js

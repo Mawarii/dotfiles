@@ -1,6 +1,0 @@
----
-- name: Upgrade apt repositories
-  ansible.builtin.include_tasks: "add-apt-repositories.yaml"
-
-- name: "artifacts"
-  ansible.builtin.include_tasks: "get-versions.yaml"

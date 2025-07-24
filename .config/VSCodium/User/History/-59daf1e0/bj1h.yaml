@@ -1,3 +1,0 @@
----
-- name: "Install Docker"
-  ansible.builtin.include_tasks: "./install-docker.yaml"

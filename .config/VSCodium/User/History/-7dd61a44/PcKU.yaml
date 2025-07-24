@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: Secret
-metadata:
-  name: pullsecret-drupal
-type: kubernetes.io/dockerconfigjson
-data:
-  .dockerconfigjson: eyJhdXRocyI6eyJnaXRsYWIucHVibGljcGxhbi5jbG91ZDo1MDUwIjp7InVzZXJuYW1lIjoicmVjaHRucnctaW1hZ2UtcHVsbCIsInBhc3N3b3JkIjoieExYc2lGaXpMdkVEM3g0UWg2VWIiLCJhdXRoIjoiY21WamFIUnVjbmN0YVcxaFoyVXRjSFZzYkRwNFRGaHphVVpwZWt4MlJVUXplRFJSYURaVllnPT0ifX19

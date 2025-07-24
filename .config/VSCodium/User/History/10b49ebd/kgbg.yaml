@@ -1,3 +1,0 @@
-kube_prometheus_stack:
-  chart_version: "70.4.1"
-  namespace: "monitoring"

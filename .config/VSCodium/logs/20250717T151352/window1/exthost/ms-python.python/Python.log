@@ -1,7 +1,0 @@
-2025-07-17 15:13:53.930 [info] Telemetry level is off
-2025-07-17 15:13:53.930 [info] Experiments are disabled, only manually opted experiments are active.
-2025-07-17 15:13:53.930 [warning] Dir "/home/dmarkovic/git-projects/publicplan/recht.nrw-dist/.pixi/envs" is not watchable (directory does not exist)
-2025-07-17 15:13:53.968 [info] Python interpreter path: /bin/python
-2025-07-17 15:13:54.122 [info] > pyenv which python
-2025-07-17 15:13:54.122 [info] cwd: .
-2025-07-17 15:13:54.630 [info] Starting Pylance language server.

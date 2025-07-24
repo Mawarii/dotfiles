@@ -1,4 +1,0 @@
----
-- name: Remove default SSH Hetzner firewall
-  when: hcloud_token != ""
-  ansible.builtin.include_tasks: "delete-default-ssh-hetzner-firewall.yaml"

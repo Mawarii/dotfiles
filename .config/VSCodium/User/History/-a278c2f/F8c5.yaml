@@ -1,5 +1,0 @@
----
-- name: Delete kubeadm join token
-  ansible.builtin.shell: |
-    kubeadm token delete "{{ hostvars[groups['controlplanes'][0]]['kubeadm_join_token'] }}"
-  changed_when: true

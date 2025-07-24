@@ -1,3 +1,0 @@
-# Get your API token (Read + Write) for Hetzner Cloud in the Hetzner Console: https://console.hetzner.cloud/projects/<id>/security/tokens
-# Current Token: PSONO -> KOPS -> Infrastruktur -> MoniCore -> Hetzner Cloud Token (Tofu/Terraform)
-hcloud_token = "PASTE_YOUR_HETZNER_CLOUD_TOKEN_HERE"

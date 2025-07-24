@@ -1,9 +1,0 @@
-kind: Service
-apiVersion: v1
-metadata:
-  name: oots-preview-space-service
-spec:
-  selector:
-    k8s-app: oots-preview-space
-  ports:
-    - port: 3000

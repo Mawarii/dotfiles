@@ -1,3 +1,0 @@
-#!/bin/env bash
-
-BUCKET_SUBDIR=${BUCKET_SUBDIR:-"default"}

@@ -1,4 +1,0 @@
----
-- name: create random but idempotent password
-  ansible.builtin.set_fact:
-    formio_password: "{{ lookup('ansible.builtin.password', '/dev/null', chars=['ascii_letters', 'digits'], length=32) }}"
